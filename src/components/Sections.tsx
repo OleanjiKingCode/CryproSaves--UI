@@ -13,14 +13,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Sections = () => {
   return (
-    <Tabs defaultValue="saves" className="w-full">
+    <Tabs defaultValue="saves" className="w-full px-16 py-10">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="saves">Saves</TabsTrigger>
+        <TabsTrigger value="saves" className="bg-slate-100">
+          Saves
+        </TabsTrigger>
         <TabsTrigger value="txns">Transactions</TabsTrigger>
         <TabsTrigger value="stats">Stats</TabsTrigger>
       </TabsList>
-      <TabsContent value="account">
-        <Card>
+      <TabsContent value="saves">
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Account</CardTitle>
             <CardDescription>
@@ -43,7 +45,7 @@ export const Sections = () => {
         </Card>
       </TabsContent>
       <TabsContent value="txns">
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Password</CardTitle>
             <CardDescription>
@@ -66,7 +68,7 @@ export const Sections = () => {
         </Card>
       </TabsContent>
       <TabsContent value="stats">
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Password</CardTitle>
             <CardDescription>
