@@ -10,7 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RiTimer2Fill, RiTimerFlashFill } from "react-icons/ri";
 import { useState } from "react";
+import { FaLock } from "react-icons/fa";
+import { TbListDetails } from "react-icons/tb";
+import { LockedSaves, UnlockedSaves } from "./Saves";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
@@ -20,7 +24,7 @@ export const Sections = () => {
       className="w-full px-16 py-10"
       onValueChange={(val) => setActive(val)}
     >
-      <TabsList className="grid w-full grid-cols-3 gap-2 bg-slate-200">
+      <TabsList className="grid w-full grid-cols-3 gap-2 bg-gray-100">
         <TabsTrigger
           value="saves"
           className={`${
@@ -45,27 +49,24 @@ export const Sections = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="saves">
-        <Card className="bg-white">
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-            <CardDescription>
-              Make changes to your account here. Click save when you're done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
-        </Card>
+        <div className="bg-white flex flex-col gap-3 w-full p-4 ">
+          <div className="flex flex-row items-center justify-end gap-3 w-full">
+            <Button className="bg-red-200 rounded-md shadow-md">
+              <FaLock className="mr-2 h-4 w-4 text-red-500" />
+              Emergency Withdraw
+            </Button>
+            <Button className="bg-green-200 rounded-md shadow-md">
+              Create
+            </Button>
+          </div>
+          <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
+            {[0, 1, 2, 3, 4, 5, 6].map((item, i) => {
+              if (i % 2 === 0) {
+                return <LockedSaves key={i} />;
+              } else return <UnlockedSaves key={i} />;
+            })}
+          </div>
+        </div>
       </TabsContent>
       <TabsContent value="txns">
         <Card className="bg-white">
