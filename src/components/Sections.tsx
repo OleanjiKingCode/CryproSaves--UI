@@ -10,16 +10,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
 
 export const Sections = () => {
+  const [active, setActive] = useState("saves");
   return (
-    <Tabs defaultValue="saves" className="w-full px-16 py-10">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="saves" className="bg-slate-100">
+    <Tabs
+      defaultValue="saves"
+      className="w-full px-16 py-10"
+      onValueChange={(val) => setActive(val)}
+    >
+      <TabsList className="grid w-full grid-cols-3 gap-2 bg-slate-200">
+        <TabsTrigger
+          value="saves"
+          className={`${
+            active === "saves" ? "bg-white" : "bg-none"
+          } rounded-lg`}
+        >
           Saves
         </TabsTrigger>
-        <TabsTrigger value="txns">Transactions</TabsTrigger>
-        <TabsTrigger value="stats">Stats</TabsTrigger>
+        <TabsTrigger
+          value="txns"
+          className={`${active === "txns" ? "bg-white" : "bg-none"} rounded-lg`}
+        >
+          Transactions
+        </TabsTrigger>
+        <TabsTrigger
+          value="stats"
+          className={`${
+            active === "stats" ? "bg-white" : "bg-none"
+          } rounded-lg`}
+        >
+          Stats
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="saves">
         <Card className="bg-white">
