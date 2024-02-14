@@ -15,6 +15,7 @@ import {
 } from "./ui/table";
 import { IoCopy } from "react-icons/io5";
 import { TiExport } from "react-icons/ti";
+import { Create } from "./create";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
@@ -90,9 +91,8 @@ export const Sections = () => {
               <FaLock className="mr-2 h-4 w-4 text-red-500" />
               Emergency Withdraw
             </Button>
-            <Button className="bg-green-200 rounded-md shadow-md">
-              New Save
-            </Button>
+
+            <Create />
           </div>
           <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {

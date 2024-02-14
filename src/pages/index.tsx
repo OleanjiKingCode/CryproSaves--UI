@@ -9,6 +9,19 @@ import { useToast } from "@/components/ui/use-toast";
 import { IoCopy, IoCopyOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
+import {
+  AlertDialogHeader,
+  AlertDialogFooter,
+} from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@radix-ui/react-alert-dialog";
 
 export default function Home() {
   const { toast } = useToast();
@@ -50,6 +63,7 @@ export default function Home() {
       </div>
 
       <Sections />
+
       <Toaster />
     </div>
   );
