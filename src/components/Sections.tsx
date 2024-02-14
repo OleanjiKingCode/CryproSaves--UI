@@ -3,7 +3,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FaLock } from "react-icons/fa";
 import { LockedSaves, UnlockedSaves } from "./Saves";
-import { Table } from "lucide-react";
 import {
   TableCaption,
   TableHeader,
@@ -12,6 +11,7 @@ import {
   TableBody,
   TableCell,
   TableFooter,
+  Table,
 } from "./ui/table";
 
 export const Sections = () => {
@@ -19,43 +19,43 @@ export const Sections = () => {
 
   const invoices = [
     {
-      invoice: "INV001",
+      invoice: "1",
       paymentStatus: "Paid",
       totalAmount: "$250.00",
       paymentMethod: "Credit Card",
     },
     {
-      invoice: "INV002",
+      invoice: "2",
       paymentStatus: "Pending",
       totalAmount: "$150.00",
       paymentMethod: "PayPal",
     },
     {
-      invoice: "INV003",
+      invoice: "3",
       paymentStatus: "Unpaid",
       totalAmount: "$350.00",
       paymentMethod: "Bank Transfer",
     },
     {
-      invoice: "INV004",
+      invoice: "4",
       paymentStatus: "Paid",
       totalAmount: "$450.00",
       paymentMethod: "Credit Card",
     },
     {
-      invoice: "INV005",
+      invoice: "5",
       paymentStatus: "Paid",
       totalAmount: "$550.00",
       paymentMethod: "PayPal",
     },
     {
-      invoice: "INV006",
+      invoice: "6",
       paymentStatus: "Pending",
       totalAmount: "$200.00",
       paymentMethod: "Bank Transfer",
     },
     {
-      invoice: "INV007",
+      invoice: "7",
       paymentStatus: "Unpaid",
       totalAmount: "$300.00",
       paymentMethod: "Credit Card",
@@ -104,35 +104,32 @@ export const Sections = () => {
         </div>
       </TabsContent>
       <TabsContent value="txns">
-        <Table className="w-full">
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
-                </TableCell>
+        <div className="bg-white flex flex-col gap-3 w-full p-4 ">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Invoice</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Method</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$2,500.00</TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {invoices.map((invoice) => (
+                <TableRow key={invoice.invoice}>
+                  <TableCell className="font-medium">
+                    {invoice.invoice}
+                  </TableCell>
+                  <TableCell>{invoice.paymentStatus}</TableCell>
+                  <TableCell>{invoice.paymentMethod}</TableCell>
+                  <TableCell className="text-right">
+                    {invoice.totalAmount}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </TabsContent>
     </Tabs>
   );
