@@ -13,52 +13,47 @@ import {
   TableFooter,
   Table,
 } from "./ui/table";
+import { IoCopy } from "react-icons/io5";
+import { TiExport } from "react-icons/ti";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
 
   const invoices = [
     {
-      invoice: "1",
-      paymentStatus: "Paid",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
+      "#": "1",
+      TxnHash:
+        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
+      time: "2 hrs ago",
+      function: "Withdrawal",
     },
     {
-      invoice: "2",
-      paymentStatus: "Pending",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
+      "#": "2",
+      TxnHash:
+        "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
+      time: "30 days 20 hrs ago",
+      function: "Create Save",
     },
     {
-      invoice: "3",
-      paymentStatus: "Unpaid",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
+      "#": "3",
+      TxnHash:
+        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
+      time: "234days 11hrs ago",
+      function: "Increased Lock Time",
     },
     {
-      invoice: "4",
-      paymentStatus: "Paid",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
+      "#": "4",
+      TxnHash:
+        "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
+      time: "344 days 1hr ago",
+      function: "Emergency Withdrawal",
     },
     {
-      invoice: "5",
-      paymentStatus: "Paid",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "6",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "7",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
+      "#": "5",
+      TxnHash:
+        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
+      time: "430 days 22 hrs ago",
+      function: "Unlock Save",
     },
   ];
   return (
@@ -108,23 +103,37 @@ export const Sections = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead className="w-[100px]">#</TableHead>
+                <TableHead className="w-[200px]">Transaction Hash</TableHead>
+                <TableHead className="w-[200px]">Function</TableHead>
+                <TableHead className="">Age</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">
-                    {invoice.invoice}
+                <TableRow key={invoice["#"]}>
+                  <TableCell className="font-medium">{invoice["#"]}</TableCell>
+                  <TableCell className="w-fit">
+                    <div className="py-1 px-2 bg-gray-100 flex items-center rounded-md justify-start w-fit">
+                      <span className="font-semibold text-black text-sm">
+                        {invoice.TxnHash}
+                      </span>
+                      <IoCopy
+                        className="ml-2 h-4 w-4 text-gray-400 cursor-pointer"
+                        title="Copy"
+                      />
+                      <TiExport
+                        className="ml-3 h-4 w-4 text-green-800 cursor-pointer"
+                        title="explorer"
+                      />
+                    </div>
                   </TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">
-                    {invoice.totalAmount}
+                  <TableCell>
+                    <div className="p-1 text-gray-800 bg-gray-400 rounded-md font-medium text-center">
+                      {invoice.function}
+                    </div>
                   </TableCell>
+                  <TableCell className="font-medium">{invoice.time}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
