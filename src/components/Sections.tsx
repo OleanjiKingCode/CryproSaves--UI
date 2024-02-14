@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FaLock } from "react-icons/fa";
-import { LockedSaves, UnlockedSaves } from "./Saves";
+import { LockedSaves, TimeEndedSaves, UnlockedSaves } from "./Saves";
 import {
   TableCaption,
   TableHeader,
@@ -26,6 +26,7 @@ export const Sections = () => {
         "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
       time: "2 hrs ago",
       function: "Withdrawal",
+      value: "2.03",
     },
     {
       "#": "2",
@@ -33,6 +34,7 @@ export const Sections = () => {
         "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
       time: "30 days 20 hrs ago",
       function: "Create Save",
+      value: "10",
     },
     {
       "#": "3",
@@ -40,6 +42,7 @@ export const Sections = () => {
         "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
       time: "234days 11hrs ago",
       function: "Increased Lock Time",
+      value: "3.22",
     },
     {
       "#": "4",
@@ -47,6 +50,7 @@ export const Sections = () => {
         "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
       time: "344 days 1hr ago",
       function: "Emergency Withdrawal",
+      value: "200.47",
     },
     {
       "#": "5",
@@ -54,6 +58,7 @@ export const Sections = () => {
         "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
       time: "430 days 22 hrs ago",
       function: "Unlock Save",
+      value: "1.10",
     },
   ];
   return (
@@ -86,14 +91,18 @@ export const Sections = () => {
               Emergency Withdraw
             </Button>
             <Button className="bg-green-200 rounded-md shadow-md">
-              Create
+              New Save
             </Button>
           </div>
           <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
-            {[0, 1, 2, 3, 4, 5, 6].map((item, i) => {
-              if (i % 2 === 0) {
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
+              if (i % 3 === 0) {
                 return <LockedSaves key={i} />;
-              } else return <UnlockedSaves key={i} />;
+              } else if (i % 2 === 0) {
+                return <TimeEndedSaves key={i} />;
+              } else {
+                return <UnlockedSaves key={i} />;
+              }
             })}
           </div>
         </div>
@@ -107,6 +116,7 @@ export const Sections = () => {
                 <TableHead className="w-[200px]">Transaction Hash</TableHead>
                 <TableHead className="w-[200px]">Function</TableHead>
                 <TableHead className="">Age</TableHead>
+                <TableHead className="">Value (ETH)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -119,7 +129,7 @@ export const Sections = () => {
                         {invoice.TxnHash}
                       </span>
                       <IoCopy
-                        className="ml-2 h-4 w-4 text-gray-400 cursor-pointer"
+                        className="ml-2 h-4 w-4 text-blue-400 cursor-pointer"
                         title="Copy"
                       />
                       <TiExport
@@ -134,6 +144,7 @@ export const Sections = () => {
                     </div>
                   </TableCell>
                   <TableCell className="font-medium">{invoice.time}</TableCell>
+                  <TableCell className="font-medium">{invoice.value}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
