@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { FaUnlock } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from "react-icons/ri";
 import { Input } from "@/components/ui/input";
@@ -56,7 +56,7 @@ export const IncreaseTimeModal = ({
                       type="number"
                       defaultValue="0"
                       placeholder="300"
-                      className=" w-[45px] text-center px-0 border-[2px] mx-2 border-gray-500 outline-none focus-visible:ring-0"
+                      className=" w-[45px] text-center py-0 px-0 border-[2px] mx-2 border-gray-500 outline-none focus-visible:ring-0"
                     />
                     Days
                   </span>
@@ -75,7 +75,7 @@ export const IncreaseTimeModal = ({
           </span>
 
           <div className="bg-red-200 backdrop-blur-md rounded-md items-center flex justify-center shadow-md py-10 w-[30%] ">
-            <FaUnlock className="mr-2 h-14 w-14 text-red-600 " />
+            <FaLock className="mr-2 h-14 w-14 text-red-600 " />
           </div>
         </div>
         <DialogFooter className="flex flex-row items-center " onClick={onClose}>
