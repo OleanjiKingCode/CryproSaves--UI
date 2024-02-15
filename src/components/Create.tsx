@@ -66,7 +66,10 @@ export const Create = ({
             <Button className="bg-blue-400 font-medium px-7">MAX</Button>
           </div>
         </div>
-        <DialogFooter className="flex flex-row items-center " onClick={onClose}>
+        <DialogFooter
+          className="flex flex-row items-center justify-between md:justify-end "
+          onClick={onClose}
+        >
           <Button className="bg-red-400 font-medium px-7">Close</Button>
           <Button type="submit" className="bg-green-400 font-medium px-7">
             Lock

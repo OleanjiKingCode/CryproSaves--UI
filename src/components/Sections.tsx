@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Emergency } from "./Emergency";
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
@@ -187,8 +188,8 @@ export const Sections = () => {
           </Table>
         </div>
       </TabsContent>
-      <Create isOpen={isOpen} onClose={handleCloseDialog} />
       <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} />
+      <Create isOpen={isOpen} onClose={handleCloseDialog} />
     </Tabs>
   );
 };
