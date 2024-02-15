@@ -25,7 +25,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full flex flex-col min-h-screen bg-pink-50">
+    <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
       <Details />
 
