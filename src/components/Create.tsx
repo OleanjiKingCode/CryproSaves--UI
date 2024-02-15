@@ -63,7 +63,7 @@ export const Create = ({
               placeholder="10.01"
               className="col-span-3 border-[2px] border-gray-500 focus-visible:ring-0"
             />
-            <Button className="bg-blue-400 font-medium px-7">MAX</Button>
+            <Button className="bg-blue-400 font-medium px-7">max</Button>
           </div>
         </div>
         <DialogFooter

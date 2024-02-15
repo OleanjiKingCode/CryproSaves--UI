@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaLock, FaUnlock } from "react-icons/fa";
 import { RiTimer2Fill, RiTimerFlashFill } from "react-icons/ri";
 import { TbListDetails } from "react-icons/tb";
 import { Button } from "./ui/button";
 import { ImCancelCircle, ImCheckboxChecked } from "react-icons/im";
+import { Details } from "./Details";
 
-export const LockedSaves = () => {
+export const LockedSaves = ({
+  handleDetailsModal,
+}: {
+  handleDetailsModal: () => void;
+}) => {
   return (
     <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-5 rounded-lg w-[300px]">
       <div className="bg-red-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -31,7 +36,10 @@ export const LockedSaves = () => {
           <RiTimerFlashFill className="mr-2 h-4 w-4 text-blue-500 text-sm" />
           Increase Time
         </Button>
-        <Button className="bg-green-200 rounded-md shadow-md text-sm">
+        <Button
+          className="bg-green-200 rounded-md shadow-md text-sm"
+          onClick={handleDetailsModal}
+        >
           <TbListDetails className="mr-2 h-4 w-4 text-green-500 text-sm" />
           Details
         </Button>
@@ -40,7 +48,11 @@ export const LockedSaves = () => {
   );
 };
 
-export const UnlockedSaves = () => {
+export const UnlockedSaves = ({
+  handleDetailsModal,
+}: {
+  handleDetailsModal: () => void;
+}) => {
   return (
     <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -60,7 +72,10 @@ export const UnlockedSaves = () => {
         </div>
       </div>
       <div className="flex flex-row items-center justify-between w-full pt-5 ">
-        <Button className="bg-blue-200 rounded-md shadow-md text-sm">
+        <Button
+          className="bg-blue-200 rounded-md shadow-md text-sm"
+          onClick={handleDetailsModal}
+        >
           <TbListDetails className="mr-2 h-4 w-4 text-blue-500 text-sm" />
           Details
         </Button>
@@ -77,7 +92,11 @@ export const UnlockedSaves = () => {
   );
 };
 
-export const TimeEndedSaves = () => {
+export const TimeEndedSaves = ({
+  handleDetailsModal,
+}: {
+  handleDetailsModal: () => void;
+}) => {
   return (
     <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -97,11 +116,41 @@ export const TimeEndedSaves = () => {
         </div>
       </div>
       <div className="flex flex-row items-center justify-between w-full pt-3 ">
-        <Button className="bg-blue-200 rounded-md shadow-md text-sm w-full">
+        <Button
+          className="bg-blue-200 rounded-md shadow-md text-sm w-full"
+          onClick={handleDetailsModal}
+        >
           <TbListDetails className="mr-2 h-4 w-4 text-blue-500 text-sm" />
           Details
         </Button>
       </div>
     </div>
+  );
+};
+
+export const SavesManager = ({ type }: { type: string }) => {
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const handleDetailsModal = () => {
+    setDetailsOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setDetailsOpen(false);
+  };
+
+  return (
+    <>
+      {type === "Locked" ? (
+        <LockedSaves handleDetailsModal={handleDetailsModal} />
+      ) : type === "Unlocked" ? (
+        <UnlockedSaves handleDetailsModal={handleDetailsModal} />
+      ) : (
+        <TimeEndedSaves handleDetailsModal={handleDetailsModal} />
+      )}
+      {detailsOpen && (
+        <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
+      )}
+    </>
   );
 };

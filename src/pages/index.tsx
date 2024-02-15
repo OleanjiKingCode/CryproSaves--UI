@@ -1,13 +1,12 @@
 import { Navbar } from "@/components/Navbar";
 import { Sections } from "@/components/Sections";
-import { Details } from "@/components/Details";
+import { Stats } from "@/components/Stats";
 import copy from "clipboard-copy";
 import { Toaster } from "@/components/ui/toaster";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { IoCopy } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-
 
 export default function Home() {
   const { toast } = useToast();
@@ -27,7 +26,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
-      <Details />
+      <Stats />
 
       <div className="px-16 w-full py-5">
         <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
