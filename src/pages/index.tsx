@@ -1,4 +1,3 @@
-import { RiFileCopyLine } from "react-icons/ri";
 import { Navbar } from "@/components/Navbar";
 import { Sections } from "@/components/Sections";
 import { Details } from "@/components/Details";
@@ -6,22 +5,9 @@ import copy from "clipboard-copy";
 import { Toaster } from "@/components/ui/toaster";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { IoCopy, IoCopyOutline } from "react-icons/io5";
+import { IoCopy } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import { FaLock } from "react-icons/fa";
-import {
-  AlertDialogHeader,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogCancel,
-  AlertDialogAction,
-} from "@radix-ui/react-alert-dialog";
+
 
 export default function Home() {
   const { toast } = useToast();

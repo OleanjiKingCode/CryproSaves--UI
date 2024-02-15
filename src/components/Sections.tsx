@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FaLock } from "react-icons/fa";
@@ -15,11 +14,23 @@ import {
 } from "./ui/table";
 import { IoCopy } from "react-icons/io5";
 import { TiExport } from "react-icons/ti";
-import { Create } from "./create";
+import { Create } from "./Create";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
-
+  const [isOpen, setIsOpen] = useState(false);
   const invoices = [
     {
       "#": "1",
@@ -62,6 +73,15 @@ export const Sections = () => {
       value: "1.10",
     },
   ];
+
+  const handleOpenDialog = () => {
+    setIsOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Tabs
       defaultValue="saves"
@@ -92,7 +112,12 @@ export const Sections = () => {
               Emergency Withdraw
             </Button>
 
-            <Create />
+            <Button
+              className="bg-green-200 rounded-md shadow-md"
+              onClick={handleOpenDialog}
+            >
+              New Save
+            </Button>
           </div>
           <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
@@ -151,6 +176,7 @@ export const Sections = () => {
           </Table>
         </div>
       </TabsContent>
+      <Create isOpen={isOpen} onClose={handleCloseDialog} />
     </Tabs>
   );
 };
