@@ -6,11 +6,16 @@ import { Button } from "./ui/button";
 import { ImCancelCircle, ImCheckboxChecked } from "react-icons/im";
 import { Details } from "./Details";
 
-export const LockedSaves = ({
-  handleDetailsModal,
-}: {
-  handleDetailsModal: () => void;
-}) => {
+export const LockedSaves = () => {
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const handleDetailsModal = () => {
+    setDetailsOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setDetailsOpen(false);
+  };
   return (
     <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-5 rounded-lg w-[300px]">
       <div className="bg-red-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -44,15 +49,21 @@ export const LockedSaves = ({
           Details
         </Button>
       </div>
+      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
     </div>
   );
 };
 
-export const UnlockedSaves = ({
-  handleDetailsModal,
-}: {
-  handleDetailsModal: () => void;
-}) => {
+export const UnlockedSaves = () => {
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const handleDetailsModal = () => {
+    setDetailsOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setDetailsOpen(false);
+  };
   return (
     <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -88,15 +99,21 @@ export const UnlockedSaves = ({
           Increase Time
         </Button> */}
       </div>
+      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
     </div>
   );
 };
 
-export const TimeEndedSaves = ({
-  handleDetailsModal,
-}: {
-  handleDetailsModal: () => void;
-}) => {
+export const TimeEndedSaves = () => {
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const handleDetailsModal = () => {
+    setDetailsOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setDetailsOpen(false);
+  };
   return (
     <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
@@ -124,33 +141,43 @@ export const TimeEndedSaves = ({
           Details
         </Button>
       </div>
+      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
     </div>
   );
 };
 
-export const SavesManager = ({ type }: { type: string }) => {
-  const [detailsOpen, setDetailsOpen] = useState(false);
+// export const SavesManager = ({ type }: { type: string }) => {
+//   const [detailsOpen, setDetailsOpen] = useState(false);
 
-  const handleDetailsModal = () => {
-    setDetailsOpen(true);
-  };
+//   const handleDetailsModal = () => {
+//     setDetailsOpen(true);
+//   };
 
-  const handleCloseDetailsModal = () => {
-    setDetailsOpen(false);
-  };
+//   const handleCloseDetailsModal = () => {
+//     setDetailsOpen(false);
+//   };
 
-  return (
-    <>
-      {type === "Locked" ? (
-        <LockedSaves handleDetailsModal={handleDetailsModal} />
-      ) : type === "Unlocked" ? (
-        <UnlockedSaves handleDetailsModal={handleDetailsModal} />
-      ) : (
-        <TimeEndedSaves handleDetailsModal={handleDetailsModal} />
-      )}
-      {detailsOpen && (
-        <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
-      )}
-    </>
-  );
-};
+//   return (
+//     <>
+//       {type === "Locked" ? (
+//         <LockedSaves
+//           handleDetailsModal={handleDetailsModal}
+//           onClose={handleCloseDetailsModal}
+//           isOpen={detailsOpen}
+//         />
+//       ) : type === "Unlocked" ? (
+//         <UnlockedSaves
+//           handleDetailsModal={handleDetailsModal}
+//           onClose={handleCloseDetailsModal}
+//           isOpen={detailsOpen}
+//         />
+//       ) : (
+//         <TimeEndedSaves
+//           handleDetailsModal={handleDetailsModal}
+//           onClose={handleCloseDetailsModal}
+//           isOpen={detailsOpen}
+//         />
+//       )}
+//     </>
+//   );
+// };

@@ -1,12 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FaLock } from "react-icons/fa";
-import {
-  LockedSaves,
-  SavesManager,
-  TimeEndedSaves,
-  UnlockedSaves,
-} from "./Saves";
+import { LockedSaves, TimeEndedSaves, UnlockedSaves } from "./Saves";
 import {
   TableCaption,
   TableHeader,
@@ -139,11 +134,11 @@ export const Sections = () => {
           <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
               if (i % 3 === 0) {
-                return <SavesManager key={i} type="Locked" />;
+                return <LockedSaves key={i} />;
               } else if (i % 2 === 0) {
-                return <SavesManager key={i} type="TimeEnded" />;
+                return <TimeEndedSaves key={i} />;
               } else {
-                return <SavesManager key={i} type="Unlocked" />;
+                return <UnlockedSaves key={i} />;
               }
             })}
           </div>
