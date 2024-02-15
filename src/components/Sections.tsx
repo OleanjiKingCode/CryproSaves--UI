@@ -27,10 +27,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Emergency } from "./Emergency";
 
 export const Sections = () => {
   const [active, setActive] = useState("saves");
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenPop, setIsOpenPop] = useState(false);
   const invoices = [
     {
       "#": "1",
@@ -82,6 +84,13 @@ export const Sections = () => {
     setIsOpen(false);
   };
 
+  const handleOpenDialogPop = () => {
+    setIsOpenPop(true);
+  };
+
+  const handleCloseDialogPop = () => {
+    setIsOpenPop(false);
+  };
   return (
     <Tabs
       defaultValue="saves"
@@ -107,11 +116,13 @@ export const Sections = () => {
       <TabsContent value="saves">
         <div className="bg-white flex flex-col gap-3 w-full p-4 ">
           <div className="flex flex-row items-center justify-end gap-3 w-full">
-            <Button className="bg-red-200 rounded-md shadow-md">
+            <Button
+              className="bg-red-200 rounded-md shadow-md"
+              onClick={handleOpenDialogPop}
+            >
               <FaLock className="mr-2 h-4 w-4 text-red-500" />
               Emergency Withdraw
             </Button>
-
             <Button
               className="bg-green-200 rounded-md shadow-md"
               onClick={handleOpenDialog}
@@ -177,6 +188,7 @@ export const Sections = () => {
         </div>
       </TabsContent>
       <Create isOpen={isOpen} onClose={handleCloseDialog} />
+      <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} />
     </Tabs>
   );
 };
