@@ -20,7 +20,6 @@ export const Create = ({
 }) => {
   return (
     <Dialog open={isOpen} modal onOpenChange={onClose}>
-      <DialogOverlay className="z-50 relative grid w-full max-w-lg gap-4 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg md:w-full" />
       <DialogContent className="text-black bg-white outline-none">
         <DialogHeader>
           <DialogTitle>Create Save</DialogTitle>
