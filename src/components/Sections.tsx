@@ -145,7 +145,7 @@ export const Sections = () => {
         </div>
       </TabsContent>
       <TabsContent value="txns">
-        <div className="bg-white flex flex-col gap-3 w-full p-4 ">
+        <div className="bg-white flex flex-col gap-3 w-full p-4 rounded-lg ">
           <Table>
             <TableHeader>
               <TableRow>
