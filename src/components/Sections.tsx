@@ -95,7 +95,7 @@ export const Sections = () => {
   return (
     <Tabs
       defaultValue="saves"
-      className="w-full px-16 py-10"
+      className="w-full px-10 md:px-16 py-10"
       onValueChange={(val) => setActive(val)}
     >
       <TabsList className="grid w-full grid-cols-2 gap-2 bg-gray-100">
@@ -115,7 +115,7 @@ export const Sections = () => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="saves">
-        <div className="bg-white flex flex-col gap-3 w-full p-4 ">
+        <div className="bg-white flex flex-col gap-3 w-full p-4  rounded-lg">
           <div className="flex flex-row items-center justify-end gap-3 w-full">
             <Button
               className="bg-red-200 rounded-md shadow-md"
@@ -131,7 +131,7 @@ export const Sections = () => {
               New Save
             </Button>
           </div>
-          <div className="w-full flex flex-row flex-wrap gap-10 items-center justify-evenly pt-5">
+          <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly pt-5">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
               if (i % 3 === 0) {
                 return <LockedSaves key={i} />;

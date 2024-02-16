@@ -30,7 +30,7 @@ export const LockedSaves = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-5 rounded-lg w-[300px]">
+    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-3 md:p-5 rounded-lg w-[300px]">
       <div className="bg-red-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
         <FaLock className="mr-2 h-14 w-14 text-red-600 " />
       </div>

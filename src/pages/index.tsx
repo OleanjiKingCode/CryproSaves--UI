@@ -27,8 +27,7 @@ export default function Home() {
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
       <Stats />
-
-      <div className="px-16 w-full py-5">
+      <div className="px-10 md:px-16 w-full py-5">
         <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
           <span className="text-lg font-medium">
             Owner's Address:{" "}
