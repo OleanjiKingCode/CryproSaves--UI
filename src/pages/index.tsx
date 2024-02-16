@@ -32,17 +32,15 @@ export default function Home() {
         <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
           <span className="text-lg font-medium">
             Owner's Address:{" "}
-            <span className="font-normal text-base">
-              0x000000000000000000000000000000
-            </span>{" "}
+            <span className="font-normal text-base">0x00...00</span>{" "}
           </span>
           <Button
             className="bg-red-200 rounded-md shadow-md"
             onClick={() => handleCopyToClipboard("djdj")}
             title="copy address"
           >
-            <IoCopy className="mr-2 h-4 w-4 text-red-500" />
-            Copy
+            <IoCopy className="md:mr-2 h-4 w-4 text-red-500" />
+            <span className="hidden md:block">Copy</span>
           </Button>
         </div>
       </div>
