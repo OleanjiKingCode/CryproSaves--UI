@@ -74,7 +74,7 @@ export const UnlockModal = ({
         </div>
         <DialogFooter
           className="flex flex-row items-center justify-between md:justify-end gap-3 w-full "
-          onClick={onClose}
+         
         >
           <Button
             className="bg-blue-200 rounded-md shadow-md"

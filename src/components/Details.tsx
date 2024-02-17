@@ -66,11 +66,12 @@ export const Details = ({
             </div>
           </div>
         </div>
-        <DialogFooter className="flex flex-row items-center " onClick={onClose}>
+        <DialogFooter className="flex flex-row items-center w-full ">
           <Button
             type="submit"
-            className="bg-red-400 font-medium px-7"
+            className="bg-red-400 font-medium px-7 w-fit"
             disabled
+            onClick={onClose}
           >
             Close
           </Button>

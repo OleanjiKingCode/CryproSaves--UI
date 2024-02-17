@@ -78,11 +78,12 @@ export const IncreaseTimeModal = ({
             <FaLock className="mr-2 h-14 w-14 text-red-600 " />
           </div>
         </div>
-        <DialogFooter className="flex flex-row items-center " onClick={onClose}>
+        <DialogFooter className="flex flex-row items-center ">
           <Button
             type="submit"
             className="bg-green-400 font-medium px-7"
             disabled
+            
           >
             Unlock
           </Button>
