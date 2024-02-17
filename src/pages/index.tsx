@@ -30,7 +30,7 @@ export default function Home() {
       <div className="px-10 md:px-16 w-full py-5">
         <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
           <span className="text-lg font-medium">
-            Owner's Address:{" "}
+            Owner&apos;s Address:{" "}
             <span className="font-normal text-base">0x00...00</span>{" "}
           </span>
           <Button
