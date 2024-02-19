@@ -1,12 +1,11 @@
-import { Navbar } from "@/components/Navbar";
-import { Sections } from "@/components/Sections";
-import { Stats } from "@/components/Stats";
-import copy from "clipboard-copy";
-import { Toaster } from "@/components/ui/toaster";
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { IoCopy } from "react-icons/io5";
-import { Button } from "@/components/ui/button";
+import { Navbar } from '@/components/Navbar';
+import { Sections } from '@/components/Sections';
+import { Stats } from '@/components/Stats';
+import copy from 'clipboard-copy';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/components/ui/use-toast';
+import { IoCopy } from 'react-icons/io5';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   const { toast } = useToast();
@@ -15,11 +14,11 @@ export default function Home() {
     try {
       await copy(textToCopy);
       toast({
-        description: "Successfully Copied Address",
-        style: { backgroundColor: "green", color: "white" },
+        description: 'Successfully Copied Address',
+        style: { backgroundColor: 'green', color: 'white' },
       });
     } catch (error) {
-      console.error("Error copying to clipboard", error);
+      console.error('Error copying to clipboard', error);
     }
   };
 
@@ -30,12 +29,12 @@ export default function Home() {
       <div className="px-10 md:px-16 w-full py-5">
         <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
           <span className="text-lg font-medium">
-            Owner&apos;s Address:{" "}
-            <span className="font-normal text-base">0x00...00</span>{" "}
+            Owner&apos;s Address:{' '}
+            <span className="font-normal text-base">0x00...00</span>{' '}
           </span>
           <Button
             className="bg-red-200 rounded-md shadow-md"
-            onClick={() => handleCopyToClipboard("djdj")}
+            onClick={() => handleCopyToClipboard('djdj')}
             title="copy address"
           >
             <IoCopy className="md:mr-2 h-4 w-4 text-red-500" />

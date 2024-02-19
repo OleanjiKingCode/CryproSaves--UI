@@ -1,18 +1,14 @@
-import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { FaLock } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { ImCancelCircle } from "react-icons/im";
-import { RiMoneyDollarCircleFill, RiTimer2Fill } from "react-icons/ri";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { ImCancelCircle } from 'react-icons/im';
+import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
 
 export const Details = ({
   isOpen,

@@ -3,14 +3,13 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { FaLock } from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
-import { RiMoneyDollarCircleFill, RiTimer2Fill } from "react-icons/ri";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { FaLock } from 'react-icons/fa';
+import { ImCancelCircle } from 'react-icons/im';
+import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
+import { Input } from '@/components/ui/input';
 
 export const IncreaseTimeModal = ({
   isOpen,
@@ -50,7 +49,7 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-blue-200 flex items-center rounded-md w-[63%]  ">
                   <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
                   <span className=" flex flex-row items-center font-semibold text-black text-sm w-full">
-                    400 +{" "}
+                    400 +{' '}
                     <Input
                       id="days"
                       type="number"
@@ -83,7 +82,6 @@ export const IncreaseTimeModal = ({
             type="submit"
             className="bg-green-400 font-medium px-7"
             disabled
-            
           >
             Unlock
           </Button>

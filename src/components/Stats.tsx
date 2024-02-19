@@ -1,5 +1,3 @@
-import React from "react";
-
 export const Stats = () => {
   return (
     <div className="w-full flex flex-row gap-5 items-center justify-center lg:justify-between pt-4 px-5 sm:px-12 md:px-16 flex-wrap md:flex-nowrap">

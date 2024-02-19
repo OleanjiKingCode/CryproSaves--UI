@@ -1,7 +1,8 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { FaLock } from "react-icons/fa";
-import { LockedSaves, TimeEndedSaves, UnlockedSaves } from "./Saves";
+/* eslint-disable no-unused-vars */
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import { FaLock } from 'react-icons/fa';
+import { LockedSaves, TimeEndedSaves, UnlockedSaves } from './Saves';
 import {
   TableCaption,
   TableHeader,
@@ -11,10 +12,10 @@ import {
   TableCell,
   TableFooter,
   Table,
-} from "./ui/table";
-import { IoCopy } from "react-icons/io5";
-import { TiExport } from "react-icons/ti";
-import { Create } from "./Create";
+} from './ui/table';
+import { IoCopy } from 'react-icons/io5';
+import { TiExport } from 'react-icons/ti';
+import { Create } from './Create';
 import {
   Dialog,
   DialogContent,
@@ -23,57 +24,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Emergency } from "./Emergency";
-import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Emergency } from './Emergency';
+import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
 
 export const Sections = () => {
-  const [active, setActive] = useState("saves");
+  const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
   const invoices = [
     {
-      "#": "1",
+      '#': '1',
       TxnHash:
-        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
-      time: "2 hrs ago",
-      function: "Withdrawal",
-      value: "2.03",
+        '0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173',
+      time: '2 hrs ago',
+      function: 'Withdrawal',
+      value: '2.03',
     },
     {
-      "#": "2",
+      '#': '2',
       TxnHash:
-        "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
-      time: "30 days 20 hrs ago",
-      function: "Create Save",
-      value: "10",
+        '0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7',
+      time: '30 days 20 hrs ago',
+      function: 'Create Save',
+      value: '10',
     },
     {
-      "#": "3",
+      '#': '3',
       TxnHash:
-        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
-      time: "234days 11hrs ago",
-      function: "Increased Lock Time",
-      value: "3.22",
+        '0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173',
+      time: '234days 11hrs ago',
+      function: 'Increased Lock Time',
+      value: '3.22',
     },
     {
-      "#": "4",
+      '#': '4',
       TxnHash:
-        "0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7",
-      time: "344 days 1hr ago",
-      function: "Emergency Withdrawal",
-      value: "200.47",
+        '0x7c6c99d3a174c1c27ee2eaa10aa8c935ad86d6a0daf472dd5b9acb5f41adb0d7',
+      time: '344 days 1hr ago',
+      function: 'Emergency Withdrawal',
+      value: '200.47',
     },
     {
-      "#": "5",
+      '#': '5',
       TxnHash:
-        "0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173",
-      time: "430 days 22 hrs ago",
-      function: "Unlock Save",
-      value: "1.10",
+        '0x888166ebc4dfe361f323db776758a13917e2c555fb66be6b4b9421bb4139b173',
+      time: '430 days 22 hrs ago',
+      function: 'Unlock Save',
+      value: '1.10',
     },
   ];
 
@@ -102,14 +103,14 @@ export const Sections = () => {
         <TabsTrigger
           value="saves"
           className={`${
-            active === "saves" ? "bg-white" : "bg-none"
+            active === 'saves' ? 'bg-white' : 'bg-none'
           } rounded-lg`}
         >
           Saves
         </TabsTrigger>
         <TabsTrigger
           value="txns"
-          className={`${active === "txns" ? "bg-white" : "bg-none"} rounded-lg`}
+          className={`${active === 'txns' ? 'bg-white' : 'bg-none'} rounded-lg`}
         >
           Transactions
         </TabsTrigger>
@@ -158,8 +159,8 @@ export const Sections = () => {
             </TableHeader>
             <TableBody>
               {invoices.map((invoice) => (
-                <TableRow key={invoice["#"]}>
-                  <TableCell className="font-medium">{invoice["#"]}</TableCell>
+                <TableRow key={invoice['#']}>
+                  <TableCell className="font-medium">{invoice['#']}</TableCell>
                   <TableCell className="w-fit">
                     <div className="py-1 px-2 bg-gray-100 flex items-center rounded-md justify-start w-fit">
                       <span className="font-semibold text-black text-sm">

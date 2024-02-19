@@ -1,11 +1,5 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogOverlay,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { FaLock } from "react-icons/fa";
+import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
+import { FaLock } from 'react-icons/fa';
 
 export const Emergency = ({
   isOpen,

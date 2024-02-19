@@ -3,13 +3,12 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { FaLock } from "react-icons/fa";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { FaLock } from 'react-icons/fa';
 
 export const Create = ({
   isOpen,

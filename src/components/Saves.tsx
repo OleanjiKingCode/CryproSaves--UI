@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { FaLock, FaUnlock } from "react-icons/fa";
-import { RiTimer2Fill, RiTimerFlashFill } from "react-icons/ri";
-import { TbListDetails } from "react-icons/tb";
-import { Button } from "./ui/button";
-import { ImCancelCircle, ImCheckboxChecked } from "react-icons/im";
-import { Details } from "./Details";
-import { UnlockModal } from "./UnlockModal";
-import { IncreaseTimeModal } from "./IncreaseTime";
+import { useState } from 'react';
+import { FaLock, FaUnlock } from 'react-icons/fa';
+import { RiTimer2Fill, RiTimerFlashFill } from 'react-icons/ri';
+import { TbListDetails } from 'react-icons/tb';
+import { Button } from './ui/button';
+import { ImCancelCircle, ImCheckboxChecked } from 'react-icons/im';
+import { Details } from './Details';
+import { UnlockModal } from './UnlockModal';
+import { IncreaseTimeModal } from './IncreaseTime';
 
 export const LockedSaves = () => {
   const [detailsOpen, setDetailsOpen] = useState(false);

@@ -3,17 +3,16 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { FaUnlock } from "react-icons/fa";
-import { ImCancelCircle } from "react-icons/im";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { FaUnlock } from 'react-icons/fa';
+import { ImCancelCircle } from 'react-icons/im';
 import {
   RiMoneyDollarCircleFill,
   RiTimer2Fill,
   RiTimerFlashFill,
-} from "react-icons/ri";
+} from 'react-icons/ri';
 
 export const UnlockModal = ({
   isOpen,
@@ -72,10 +71,7 @@ export const UnlockModal = ({
             </div>
           </span>
         </div>
-        <DialogFooter
-          className="flex flex-row items-center justify-between md:justify-end gap-3 w-full "
-         
-        >
+        <DialogFooter className="flex flex-row items-center justify-between md:justify-end gap-3 w-full ">
           <Button
             className="bg-blue-200 rounded-md shadow-md"
             onClick={() => {
