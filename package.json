@@ -5,12 +5,12 @@
   "homepage": "https://github.com/OleanjiKingCode/crypto-saves",
   "description": "A Dapp that allows users to lock their Ether for a specified period, and the locked funds can be unlocked or extended by the contract owner. It is designed to facilitate time-based locking of funds.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 2000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=20.11.0",

@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -5,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
@@ -53,9 +53,9 @@ export const Details = ({
             </div>
           </div>
           <div className="flex flex-row w-[80%] justify-between items-center gap-4">
-    <Label htmlFor="name" className="">
-      Status
-    </Label>
+            <Label htmlFor="name" className="">
+              Status
+            </Label>
             <div className="py-1 px-2 bg-red-100 flex items-center  w-[50%] rounded-md  col-span-3">
               <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
               <span className="font-semibold text-black text-sm">Locked</span>
