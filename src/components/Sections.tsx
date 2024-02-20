@@ -1,35 +1,22 @@
 /* eslint-disable no-unused-vars */
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 import { FaLock } from 'react-icons/fa';
-import { LockedSaves, TimeEndedSaves, UnlockedSaves } from './Saves';
-import {
-  TableCaption,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableFooter,
-  Table,
-} from './ui/table';
 import { IoCopy } from 'react-icons/io5';
 import { TiExport } from 'react-icons/ti';
 import { Create } from './Create';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Emergency } from './Emergency';
-import { Popover, PopoverTrigger, PopoverContent } from './ui/popover';
+import { LockedSaves, TimeEndedSaves, UnlockedSaves } from './Saves';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './ui/table';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
@@ -132,17 +119,20 @@ export const Sections = () => {
               New Save
             </Button>
           </div>
-          <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly pt-5">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
-              if (i % 3 === 0) {
-                return <LockedSaves key={i} />;
-              } else if (i % 2 === 0) {
-                return <TimeEndedSaves key={i} />;
-              } else {
-                return <UnlockedSaves key={i} />;
-              }
-            })}
-          </div>
+          <ScrollArea className=" w-full h-[30rem]">
+            <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
+                if (i % 3 === 0) {
+                  return <LockedSaves key={i} />;
+                } else if (i % 2 === 0) {
+                  return <TimeEndedSaves key={i} />;
+                } else {
+                  return <UnlockedSaves key={i} />;
+                }
+              })}
+            </div>
+          
+          </ScrollArea>
         </div>
       </TabsContent>
       <TabsContent value="txns">
