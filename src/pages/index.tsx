@@ -44,7 +44,6 @@ export default function Home() {
       </div>
 
       <Sections />
-
       <Toaster />
     </div>
   );
