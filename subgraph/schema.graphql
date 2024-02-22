@@ -1,0 +1,43 @@
+type EtherLocked @entity(immutable: true) {
+  id: Bytes!
+  EtherLockup_id: BigInt! # uint256
+  name: String! # string
+  owner: Bytes! # address
+  amount: BigInt! # uint256
+  releaseTime: BigInt! # uint256
+  lockType: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EtherUnlocked @entity(immutable: true) {
+  id: Bytes!
+  EtherLockup_id: BigInt! # uint256
+  name: String! # string
+  owner: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LockupExtended @entity(immutable: true) {
+  id: Bytes!
+  EtherLockup_id: BigInt! # uint256
+  name: String! # string
+  owner: Bytes! # address
+  releaseTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
