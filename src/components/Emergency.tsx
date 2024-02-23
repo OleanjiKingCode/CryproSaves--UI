@@ -1,6 +1,5 @@
 import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
 import { useGetAllDetails } from '@/hooks/useGetAllDetails';
-import { useEffect } from 'react';
 import { FaLock } from 'react-icons/fa';
 
 export const Emergency = ({
