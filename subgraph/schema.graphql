@@ -6,9 +6,7 @@ type EtherLocked @entity(immutable: true) {
   amount: BigInt! # uint256
   releaseTime: BigInt! # uint256
   lockType: Int! # uint8
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  locked: Boolean
 }
 
 type EtherUnlocked @entity(immutable: true) {
@@ -17,9 +15,7 @@ type EtherUnlocked @entity(immutable: true) {
   name: String! # string
   owner: Bytes! # address
   amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  locked: Boolean
 }
 
 type LockupExtended @entity(immutable: true) {
@@ -28,9 +24,6 @@ type LockupExtended @entity(immutable: true) {
   name: String! # string
   owner: Bytes! # address
   releaseTime: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
 }
 
 type OwnershipTransferred @entity(immutable: true) {
