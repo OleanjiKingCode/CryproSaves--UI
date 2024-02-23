@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
-import { useGetAllDetails } from '@/hooks/useGetAllDetails';
+import { GetTimer } from '@/utils/getTimer';
 import { FaLock } from 'react-icons/fa';
 
 export const Emergency = ({
@@ -9,7 +9,7 @@ export const Emergency = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const { result } = useGetAllDetails();
+  const { result } = GetTimer();
 
   return (
     <Dialog open={isOpen} modal onOpenChange={onClose}>

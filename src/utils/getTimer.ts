@@ -1,7 +1,5 @@
 import { useReadContract } from 'wagmi';
 import { LockupABI, LockupAddress } from '@/constants/LockupData';
-import { createClient } from 'urql';
-import { APIURL } from '@/constants/urql';
 
 interface TimeLeftType {
   days?: number;

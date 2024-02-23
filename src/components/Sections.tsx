@@ -17,7 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import { useGetAllDetails } from '@/hooks/useGetAllDetails';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
