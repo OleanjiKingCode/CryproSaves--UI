@@ -17,11 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
+import { useGetAllDetails } from '@/hooks/useGetAllDetails';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
+
   const invoices = [
     {
       '#': '1',
@@ -80,6 +82,7 @@ export const Sections = () => {
   const handleCloseDialogPop = () => {
     setIsOpenPop(false);
   };
+
   return (
     <Tabs
       defaultValue="saves"
@@ -106,14 +109,14 @@ export const Sections = () => {
         <div className="bg-white flex flex-col gap-3 w-full p-4  rounded-lg">
           <div className="flex flex-row items-center justify-end gap-3 w-full">
             <Button
-              className="bg-red-200 rounded-md shadow-md"
+              className="bg-red-200 rounded-md shadow-md  hover:bg-red-800"
               onClick={handleOpenDialogPop}
             >
               <FaLock className="mr-2 h-4 w-4 text-red-500" />
               Emergency Withdraw
             </Button>
             <Button
-              className="bg-green-200 rounded-md shadow-md"
+              className="bg-green-600 rounded-md shadow-md hover:bg-green-800"
               onClick={handleOpenDialog}
             >
               New Save
@@ -131,7 +134,6 @@ export const Sections = () => {
                 }
               })}
             </div>
-          
           </ScrollArea>
         </div>
       </TabsContent>
