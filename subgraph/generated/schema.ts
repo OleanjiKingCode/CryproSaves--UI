@@ -12,9 +12,9 @@ import {
 } from "@graphprotocol/graph-ts";
 
 export class EtherLocked extends Entity {
-  constructor(id: Bytes) {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
@@ -22,49 +22,34 @@ export class EtherLocked extends Entity {
     assert(id != null, "Cannot save EtherLocked entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type EtherLocked must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        id.kind == ValueKind.STRING,
+        `Entities of type EtherLocked must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("EtherLocked", id.toBytes().toHexString(), this);
+      store.set("EtherLocked", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): EtherLocked | null {
+  static loadInBlock(id: string): EtherLocked | null {
     return changetype<EtherLocked | null>(
-      store.get_in_block("EtherLocked", id.toHexString()),
+      store.get_in_block("EtherLocked", id),
     );
   }
 
-  static load(id: Bytes): EtherLocked | null {
-    return changetype<EtherLocked | null>(
-      store.get("EtherLocked", id.toHexString()),
-    );
+  static load(id: string): EtherLocked | null {
+    return changetype<EtherLocked | null>(store.get("EtherLocked", id));
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
-  }
-
-  get EtherLockup_id(): BigInt {
-    let value = this.get("EtherLockup_id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set EtherLockup_id(value: BigInt) {
-    this.set("EtherLockup_id", Value.fromBigInt(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
   get name(): string {
@@ -132,6 +117,19 @@ export class EtherLocked extends Entity {
     this.set("lockType", Value.fromI32(value));
   }
 
+  get locked(): boolean {
+    let value = this.get("locked");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set locked(value: boolean) {
+    this.set("locked", Value.fromBoolean(value));
+  }
+
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
     if (!value || value.kind == ValueKind.NULL) {
@@ -173,9 +171,9 @@ export class EtherLocked extends Entity {
 }
 
 export class EtherUnlocked extends Entity {
-  constructor(id: Bytes) {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
@@ -183,49 +181,34 @@ export class EtherUnlocked extends Entity {
     assert(id != null, "Cannot save EtherUnlocked entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type EtherUnlocked must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        id.kind == ValueKind.STRING,
+        `Entities of type EtherUnlocked must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("EtherUnlocked", id.toBytes().toHexString(), this);
+      store.set("EtherUnlocked", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): EtherUnlocked | null {
+  static loadInBlock(id: string): EtherUnlocked | null {
     return changetype<EtherUnlocked | null>(
-      store.get_in_block("EtherUnlocked", id.toHexString()),
+      store.get_in_block("EtherUnlocked", id),
     );
   }
 
-  static load(id: Bytes): EtherUnlocked | null {
-    return changetype<EtherUnlocked | null>(
-      store.get("EtherUnlocked", id.toHexString()),
-    );
+  static load(id: string): EtherUnlocked | null {
+    return changetype<EtherUnlocked | null>(store.get("EtherUnlocked", id));
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
-  }
-
-  get EtherLockup_id(): BigInt {
-    let value = this.get("EtherLockup_id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set EtherLockup_id(value: BigInt) {
-    this.set("EtherLockup_id", Value.fromBigInt(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
   get name(): string {
@@ -265,6 +248,19 @@ export class EtherUnlocked extends Entity {
 
   set amount(value: BigInt) {
     this.set("amount", Value.fromBigInt(value));
+  }
+
+  get locked(): boolean {
+    let value = this.get("locked");
+    if (!value || value.kind == ValueKind.NULL) {
+      return false;
+    } else {
+      return value.toBoolean();
+    }
+  }
+
+  set locked(value: boolean) {
+    this.set("locked", Value.fromBoolean(value));
   }
 
   get blockNumber(): BigInt {
@@ -308,9 +304,9 @@ export class EtherUnlocked extends Entity {
 }
 
 export class LockupExtended extends Entity {
-  constructor(id: Bytes) {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
@@ -318,49 +314,34 @@ export class LockupExtended extends Entity {
     assert(id != null, "Cannot save LockupExtended entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type LockupExtended must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        id.kind == ValueKind.STRING,
+        `Entities of type LockupExtended must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("LockupExtended", id.toBytes().toHexString(), this);
+      store.set("LockupExtended", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): LockupExtended | null {
+  static loadInBlock(id: string): LockupExtended | null {
     return changetype<LockupExtended | null>(
-      store.get_in_block("LockupExtended", id.toHexString()),
+      store.get_in_block("LockupExtended", id),
     );
   }
 
-  static load(id: Bytes): LockupExtended | null {
-    return changetype<LockupExtended | null>(
-      store.get("LockupExtended", id.toHexString()),
-    );
+  static load(id: string): LockupExtended | null {
+    return changetype<LockupExtended | null>(store.get("LockupExtended", id));
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
-  }
-
-  get EtherLockup_id(): BigInt {
-    let value = this.get("EtherLockup_id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set EtherLockup_id(value: BigInt) {
-    this.set("EtherLockup_id", Value.fromBigInt(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
   get name(): string {
@@ -443,9 +424,9 @@ export class LockupExtended extends Entity {
 }
 
 export class OwnershipTransferred extends Entity {
-  constructor(id: Bytes) {
+  constructor(id: string) {
     super();
-    this.set("id", Value.fromBytes(id));
+    this.set("id", Value.fromString(id));
   }
 
   save(): void {
@@ -453,36 +434,36 @@ export class OwnershipTransferred extends Entity {
     assert(id != null, "Cannot save OwnershipTransferred entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type OwnershipTransferred must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        id.kind == ValueKind.STRING,
+        `Entities of type OwnershipTransferred must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("OwnershipTransferred", id.toBytes().toHexString(), this);
+      store.set("OwnershipTransferred", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): OwnershipTransferred | null {
+  static loadInBlock(id: string): OwnershipTransferred | null {
     return changetype<OwnershipTransferred | null>(
-      store.get_in_block("OwnershipTransferred", id.toHexString()),
+      store.get_in_block("OwnershipTransferred", id),
     );
   }
 
-  static load(id: Bytes): OwnershipTransferred | null {
+  static load(id: string): OwnershipTransferred | null {
     return changetype<OwnershipTransferred | null>(
-      store.get("OwnershipTransferred", id.toHexString()),
+      store.get("OwnershipTransferred", id),
     );
   }
 
-  get id(): Bytes {
+  get id(): string {
     let value = this.get("id");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
   }
 
   get previousOwner(): Bytes {

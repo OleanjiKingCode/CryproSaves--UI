@@ -43,7 +43,7 @@ export class EtherLocked__Params {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get lockType(): number {
+  get lockType(): i32 {
     return this._event.parameters[5].value.toI32();
   }
 }
@@ -151,7 +151,7 @@ export class EtherLockup__getAllLockUpsResultValue0Struct extends ethereum.Tuple
     return this[4].toBoolean();
   }
 
-  get lockType(): number {
+  get lockType(): i32 {
     return this[5].toI32();
   }
 }
@@ -177,7 +177,7 @@ export class EtherLockup__getLockupDetailsByIdResultValue0Struct extends ethereu
     return this[4].toBoolean();
   }
 
-  get lockType(): number {
+  get lockType(): i32 {
     return this[5].toI32();
   }
 }
@@ -188,7 +188,7 @@ export class EtherLockup__lockupsResult {
   value2: BigInt;
   value3: BigInt;
   value4: boolean;
-  value5: number;
+  value5: i32;
 
   constructor(
     value0: BigInt,
@@ -196,7 +196,7 @@ export class EtherLockup__lockupsResult {
     value2: BigInt,
     value3: BigInt,
     value4: boolean,
-    value5: number,
+    value5: i32,
   ) {
     this.value0 = value0;
     this.value1 = value1;
@@ -240,7 +240,7 @@ export class EtherLockup__lockupsResult {
     return this.value4;
   }
 
-  getLockType(): number {
+  getLockType(): i32 {
     return this.value5;
   }
 }
@@ -499,7 +499,7 @@ export class LockEtherCall__Inputs {
     return this._call.inputValues[1].value.toString();
   }
 
-  get _lockType(): number {
+  get _lockType(): i32 {
     return this._call.inputValues[2].value.toI32();
   }
 }
