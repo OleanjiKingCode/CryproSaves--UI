@@ -1,5 +1,7 @@
 import { useReadContract } from 'wagmi';
-import { LockupABI, LockupAddress } from '@/data/LockupData';
+import { LockupABI, LockupAddress } from '@/constants/LockupData';
+import { createClient } from 'urql';
+import { APIURL } from '@/constants/urql';
 
 interface TimeLeftType {
   days?: number;
@@ -8,7 +10,7 @@ interface TimeLeftType {
   seconds?: number;
 }
 
-export const useGetAllDetails = () => {
+export const GetTimer = () => {
   const { data: emergencyTime } = useReadContract({
     abi: LockupABI,
     address: LockupAddress,
@@ -47,3 +49,5 @@ export const useGetAllDetails = () => {
 
   return { result: calculateTimeLeft(Number(emergencyTime)) };
 };
+
+
