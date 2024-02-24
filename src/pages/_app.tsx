@@ -10,10 +10,10 @@ import { WagmiProvider } from 'wagmi';
 import { polygonMumbai } from 'wagmi/chains';
 import '../styles/globals.css';
 
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID ?? '';
+const Id = process.env.NEXT_PUBLIC_PROJECT_ID ?? '';
 const config = getDefaultConfig({
   appName: 'Crypto Saves',
-  projectId: projectId,
+  projectId: '5762313ef0525fb601da0030e0b4d60d',
   chains: [polygonMumbai],
   ssr: true,
 });

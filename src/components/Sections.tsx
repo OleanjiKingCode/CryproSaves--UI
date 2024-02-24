@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useState } from 'react';
 import { FaLock } from 'react-icons/fa';
 import { IoCopy } from 'react-icons/io5';
 import { TiExport } from 'react-icons/ti';
@@ -17,11 +16,21 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
+import { useEffect, useState } from 'react';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { GetALLLockQuery } from '@/constants/LockUp';
+import { APIURL } from '@/constants/urql';
+
+const client = new ApolloClient({
+  uri: APIURL,
+  cache: new InMemoryCache(),
+});
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
+  const [LockUp, setLockData] = useState([]);
 
   const invoices = [
     {
@@ -65,6 +74,23 @@ export const Sections = () => {
       value: '1.10',
     },
   ];
+
+  const getLockupData = () => {
+    client
+      .query({
+        query: gql(GetALLLockQuery),
+      })
+      .then((data: any) => {
+        setLockData(data.data.etherLockeds);
+      })
+      .catch((err) => {
+        console.log('Error fetching data: ', err);
+      });
+  };
+
+  useEffect(() => {
+    getLockupData();
+  }, []);
 
   const handleOpenDialog = () => {
     setIsOpen(true);
@@ -121,18 +147,35 @@ export const Sections = () => {
               New Save
             </Button>
           </div>
-          <ScrollArea className=" w-full h-[30rem]">
-            <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
-              {[].map((item, i) => {
-                if (i % 3 === 0) {
-                  return <LockedSaves key={i} />;
-                } else if (i % 2 === 0) {
-                  return <TimeEndedSaves key={i} />;
-                } else {
-                  return <UnlockedSaves key={i} />;
-                }
-              })}
-            </div>
+          <ScrollArea className="w-full h-[30rem]">
+            <>
+              {LockUp.length > 0 ? (
+                <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
+                    if (i % 3 === 0) {
+                      return <LockedSaves key={i} />;
+                    } else if (i % 2 === 0) {
+                      return <TimeEndedSaves key={i} />;
+                    } else {
+                      return <UnlockedSaves key={i} />;
+                    }
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 items-center self-center py-[11rem]">
+                  <img
+                    src="/bookApple.png"
+                    width={50}
+                    height={50}
+                    alt="EMPTY"
+                  />
+                  <span className="font-semibold text-lg">No Lockups</span>
+                  <span className="text-base">
+                    There are no lockups for this account
+                  </span>
+                </div>
+              )}
+            </>
           </ScrollArea>
         </div>
       </TabsContent>

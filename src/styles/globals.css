@@ -66,6 +66,26 @@
   }
 }
 
+@font-face {
+  font-family: 'gelion-500';
+  src: url('../assets/fonts/Gelion-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'gelion-600';
+  src: url('../assets/fonts/Gelion-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'gelion-700';
+  src: url('../assets/fonts/Gelion-Black.ttf');
+}
+
+html,
+body {
+  font-family: 'gelion-500';
+}
+
 /* @layer base {
   * {
     @apply border-border;
