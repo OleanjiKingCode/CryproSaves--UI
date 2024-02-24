@@ -7,10 +7,37 @@ import { useToast } from '@/components/ui/use-toast';
 import { IoCopy } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
+import { useEffect, useState } from 'react';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { GetALLLockQuery } from '@/constants/LockUp';
+import { APIURL } from '@/constants/urql';
+
+const client = new ApolloClient({
+  uri: APIURL,
+  cache: new InMemoryCache(),
+});
 
 export default function Home() {
   const { toast } = useToast();
   const { address, isConnected } = useAccount();
+  const [LockUp, setLockData] = useState([]);
+
+  const getLockupData = () => {
+    client
+      .query({
+        query: gql(GetALLLockQuery),
+      })
+      .then((data: any) => {
+        setLockData(data.data);
+      })
+      .catch((err) => {
+        console.log('Error fetching data: ', err);
+      });
+  };
+
+  useEffect(() => {
+    getLockupData();
+  }, []);
 
   const handleCopyToClipboard = async (textToCopy: string) => {
     try {

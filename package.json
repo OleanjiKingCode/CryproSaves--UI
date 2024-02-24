@@ -12,13 +12,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky install"
   },
-  "engines": {
-    "node": ">=18.x",
-    "yarn": ">=1.22.17",
-    "npm": "please-use-yarn"
-  },
   "dependencies": {
-    "@graphprotocol/graph-ts": "^0.33.0",
+    "@apollo/client": "^3.9.5",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
@@ -41,7 +36,6 @@
     "react-icons": "^5.0.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "urql": "^4.0.6",
     "viem": "2.x",
     "wagmi": "^2.5.7"
   },
