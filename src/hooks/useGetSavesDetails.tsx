@@ -8,7 +8,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const useGetLockDetails = () => {
+export const useGetSavesDetails = () => {
   const [saves, setSavesData] = useState([]);
 
   const getSavesData = async () => {
@@ -26,7 +26,7 @@ export const useGetLockDetails = () => {
   getSavesData();
 
   return {
-    Locks: saves ?? [],
+    Saves: saves ?? [],
     SavesNum: saves.length,
     LockedSaves: 0,
     UnlockedSaves: 0,

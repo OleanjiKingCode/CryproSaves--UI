@@ -17,17 +17,15 @@ import {
   TableRow,
 } from './ui/table';
 import { useState } from 'react';
-import { useGetLockDetails } from '@/hooks/useGetLockDetails';
+import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import { useAccount } from 'wagmi';
-import { useToast } from './ui/use-toast';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
+  const { Saves } = useGetSavesDetails();
   const { isConnected } = useAccount();
-  const { Locks } = useGetLockDetails();
-  const { toast } = useToast();
   const invoices = [
     {
       '#': '1',
@@ -72,14 +70,7 @@ export const Sections = () => {
   ];
 
   const handleOpenDialog = () => {
-    if (isConnected) {
-      //setIsOpen(true);
-    } else {
-      toast({
-        description: 'No Wallet Connected',
-        style: { backgroundColor: 'orange', color: 'white' },
-      });
-    }
+    setIsOpen(true);
   };
 
   const handleCloseDialog = () => {
@@ -87,14 +78,7 @@ export const Sections = () => {
   };
 
   const handleOpenDialogPop = () => {
-    if (isConnected) {
-      //setIsOpenPop(true);
-    } else {
-      toast({
-        description: 'No Wallet Connected',
-        style: { backgroundColor: 'orange', color: 'white' },
-      });
-    }
+    setIsOpenPop(true);
   };
 
   const handleCloseDialogPop = () => {
@@ -129,7 +113,12 @@ export const Sections = () => {
             <Button
               className="bg-red-200 rounded-md shadow-md  hover:bg-red-800"
               onClick={handleOpenDialogPop}
-              //disabled={isConnected}
+              disabled={isConnected}
+              title={
+                isConnected
+                  ? 'No Wallet Connected'
+                  : 'Withdraw Tokens In Emergency'
+              }
             >
               <FaLock className="mr-2 h-4 w-4 text-red-500" />
               Emergency Withdraw
@@ -137,14 +126,15 @@ export const Sections = () => {
             <Button
               className="bg-green-600 rounded-md shadow-md hover:bg-green-800"
               onClick={handleOpenDialog}
-              // disabled={isConnected}
+              disabled={isConnected}
+              title={isConnected ? 'No Wallet Connected' : 'Create New Save'}
             >
               New Save
             </Button>
           </div>
           <ScrollArea className="w-full h-[30rem]">
             <>
-              {Locks.length > 0 ? (
+              {Saves.length > 0 ? (
                 <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
                     if (i % 3 === 0) {
