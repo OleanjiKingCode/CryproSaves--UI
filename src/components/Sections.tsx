@@ -73,7 +73,7 @@ export const Sections = () => {
 
   const handleOpenDialog = () => {
     if (isConnected) {
-      setIsOpen(true);
+      //setIsOpen(true);
     } else {
       toast({
         description: 'No Wallet Connected',
@@ -88,7 +88,7 @@ export const Sections = () => {
 
   const handleOpenDialogPop = () => {
     if (isConnected) {
-      setIsOpenPop(true);
+      //setIsOpenPop(true);
     } else {
       toast({
         description: 'No Wallet Connected',

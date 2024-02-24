@@ -15,7 +15,6 @@ const config = getDefaultConfig({
   appName: 'Crypto Saves',
   projectId: Id,
   chains: [polygonMumbai],
-  ssr: true,
 });
 
 const client = new QueryClient();
