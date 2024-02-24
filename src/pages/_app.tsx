@@ -1,7 +1,7 @@
 import {
   RainbowKitProvider,
-  darkTheme,
   getDefaultConfig,
+  lightTheme,
 } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ import '../styles/globals.css';
 const Id = process.env.NEXT_PUBLIC_PROJECT_ID ?? '';
 const config = getDefaultConfig({
   appName: 'Crypto Saves',
-  projectId: '5762313ef0525fb601da0030e0b4d60d',
+  projectId: Id,
   chains: [polygonMumbai],
   ssr: true,
 });
@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
         <RainbowKitProvider
-          theme={darkTheme({
+          theme={lightTheme({
             accentColor: '#dcaac7',
             accentColorForeground: 'white',
           })}

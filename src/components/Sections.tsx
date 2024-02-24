@@ -16,22 +16,18 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import { useEffect, useState } from 'react';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { GetALLLockQuery } from '@/constants/LockUp';
-import { APIURL } from '@/constants/urql';
-
-const client = new ApolloClient({
-  uri: APIURL,
-  cache: new InMemoryCache(),
-});
+import { useState } from 'react';
+import { useGetLockDetails } from '@/hooks/useGetLockDetails';
+import { useAccount } from 'wagmi';
+import { useToast } from './ui/use-toast';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
-  const [LockUp, setLockData] = useState([]);
-
+  const { isConnected } = useAccount();
+  const { Locks } = useGetLockDetails();
+  const { toast } = useToast();
   const invoices = [
     {
       '#': '1',
@@ -75,25 +71,15 @@ export const Sections = () => {
     },
   ];
 
-  const getLockupData = () => {
-    client
-      .query({
-        query: gql(GetALLLockQuery),
-      })
-      .then((data: any) => {
-        setLockData(data.data.etherLockeds);
-      })
-      .catch((err) => {
-        console.log('Error fetching data: ', err);
-      });
-  };
-
-  useEffect(() => {
-    getLockupData();
-  }, []);
-
   const handleOpenDialog = () => {
-    setIsOpen(true);
+    if (isConnected) {
+      setIsOpen(true);
+    } else {
+      toast({
+        description: 'No Wallet Connected',
+        style: { backgroundColor: 'orange', color: 'white' },
+      });
+    }
   };
 
   const handleCloseDialog = () => {
@@ -101,7 +87,14 @@ export const Sections = () => {
   };
 
   const handleOpenDialogPop = () => {
-    setIsOpenPop(true);
+    if (isConnected) {
+      setIsOpenPop(true);
+    } else {
+      toast({
+        description: 'No Wallet Connected',
+        style: { backgroundColor: 'orange', color: 'white' },
+      });
+    }
   };
 
   const handleCloseDialogPop = () => {
@@ -136,6 +129,7 @@ export const Sections = () => {
             <Button
               className="bg-red-200 rounded-md shadow-md  hover:bg-red-800"
               onClick={handleOpenDialogPop}
+              //disabled={isConnected}
             >
               <FaLock className="mr-2 h-4 w-4 text-red-500" />
               Emergency Withdraw
@@ -143,13 +137,14 @@ export const Sections = () => {
             <Button
               className="bg-green-600 rounded-md shadow-md hover:bg-green-800"
               onClick={handleOpenDialog}
+              // disabled={isConnected}
             >
               New Save
             </Button>
           </div>
           <ScrollArea className="w-full h-[30rem]">
             <>
-              {LockUp.length > 0 ? (
+              {Locks.length > 0 ? (
                 <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
                     if (i % 3 === 0) {

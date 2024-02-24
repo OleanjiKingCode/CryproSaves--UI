@@ -9,6 +9,7 @@ interface TimeLeftType {
 }
 
 export const GetTimer = () => {
+  let finishedStatus = false;
   const { data: emergencyTime } = useReadContract({
     abi: LockupABI,
     address: LockupAddress,
@@ -19,6 +20,7 @@ export const GetTimer = () => {
     const currentTime = Math.floor(new Date().getTime() / 1000);
     const difference = emergencyTime - currentTime;
     let timeLeft = {};
+
     if (difference > 0) {
       const numDaysLeft = Math.floor(difference / 86400);
       const remainderSecs = difference % 86400;
@@ -41,11 +43,13 @@ export const GetTimer = () => {
         minutes: 0,
         seconds: 0,
       };
+      finishedStatus = true;
     }
     return timeLeft;
   };
 
-  return { result: calculateTimeLeft(Number(emergencyTime)) };
+  return {
+    result: calculateTimeLeft(Number(emergencyTime)),
+    status: finishedStatus,
+  };
 };
-
-
