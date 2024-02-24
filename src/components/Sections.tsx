@@ -19,6 +19,7 @@ import {
 import { useState } from 'react';
 import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import { useAccount } from 'wagmi';
+import { useToast } from './ui/use-toast';
 
 export const Sections = () => {
   const [active, setActive] = useState('saves');
@@ -26,6 +27,7 @@ export const Sections = () => {
   const [isOpenPop, setIsOpenPop] = useState(false);
   const { Saves } = useGetSavesDetails();
   const { isConnected } = useAccount();
+  const { toast } = useToast();
   const invoices = [
     {
       '#': '1',
@@ -70,7 +72,14 @@ export const Sections = () => {
   ];
 
   const handleOpenDialog = () => {
-    setIsOpen(true);
+    if (isConnected) {
+      setIsOpen(true);
+    } else {
+      toast({
+        description: 'No Wallet Connected',
+        style: { backgroundColor: 'orange', color: 'white' },
+      });
+    }
   };
 
   const handleCloseDialog = () => {
@@ -78,7 +87,14 @@ export const Sections = () => {
   };
 
   const handleOpenDialogPop = () => {
-    setIsOpenPop(true);
+    if (isConnected) {
+      setIsOpenPop(true);
+    } else {
+      toast({
+        description: 'No Wallet Connected',
+        style: { backgroundColor: 'orange', color: 'white' },
+      });
+    }
   };
 
   const handleCloseDialogPop = () => {
@@ -86,130 +102,130 @@ export const Sections = () => {
   };
 
   return (
-    <Tabs
-      defaultValue="saves"
-      className="w-full px-10 md:px-16 py-10"
-      onValueChange={(val) => setActive(val)}
-    >
-      <TabsList className="grid w-full grid-cols-2 gap-2 bg-gray-100">
-        <TabsTrigger
-          value="saves"
-          className={`${
-            active === 'saves' ? 'bg-white' : 'bg-none'
-          } rounded-lg`}
-        >
-          Saves
-        </TabsTrigger>
-        <TabsTrigger
-          value="txns"
-          className={`${active === 'txns' ? 'bg-white' : 'bg-none'} rounded-lg`}
-        >
-          Transactions
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="saves">
-        <div className="bg-white flex flex-col gap-3 w-full p-4  rounded-lg">
-          <div className="flex flex-row items-center justify-end gap-3 w-full">
-            <Button
-              className="bg-red-200 rounded-md shadow-md  hover:bg-red-800"
-              onClick={handleOpenDialogPop}
-              disabled={isConnected}
-              title={
-                isConnected
-                  ? 'No Wallet Connected'
-                  : 'Withdraw Tokens In Emergency'
-              }
-            >
-              <FaLock className="mr-2 h-4 w-4 text-red-500" />
-              Emergency Withdraw
-            </Button>
-            <Button
-              className="bg-green-600 rounded-md shadow-md hover:bg-green-800"
-              onClick={handleOpenDialog}
-              disabled={isConnected}
-              title={isConnected ? 'No Wallet Connected' : 'Create New Save'}
-            >
-              New Save
-            </Button>
+    <>
+      <Tabs
+        defaultValue="saves"
+        className="w-full px-10 md:px-16 py-10"
+        onValueChange={(val) => setActive(val)}
+      >
+        <TabsList className="grid w-full grid-cols-2 gap-2 bg-gray-100">
+          <TabsTrigger
+            value="saves"
+            className={`${
+              active === 'saves' ? 'bg-white' : 'bg-none'
+            } rounded-lg`}
+          >
+            Saves
+          </TabsTrigger>
+          <TabsTrigger
+            value="txns"
+            className={`${active === 'txns' ? 'bg-white' : 'bg-none'} rounded-lg`}
+          >
+            Transactions
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="saves">
+          <div className="bg-white flex flex-col gap-3 w-full p-4  rounded-lg">
+            <div className="flex flex-row items-center justify-end gap-3 w-full">
+              <Button
+                className="bg-red-200 rounded-md shadow-md  hover:bg-red-800"
+                onClick={handleOpenDialogPop}
+              >
+                <FaLock className="mr-2 h-4 w-4 text-red-500" />
+                Emergency Withdraw
+              </Button>
+              <Button
+                className="bg-green-600 rounded-md shadow-md hover:bg-green-800"
+                onClick={handleOpenDialog}
+              >
+                New Save
+              </Button>
+            </div>
+            <ScrollArea className="w-full h-[30rem]">
+              <>
+                {Saves.length > 0 ? (
+                  <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
+                      if (i % 3 === 0) {
+                        return <LockedSaves key={i} />;
+                      } else if (i % 2 === 0) {
+                        return <TimeEndedSaves key={i} />;
+                      } else {
+                        return <UnlockedSaves key={i} />;
+                      }
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3 items-center self-center py-[11rem]">
+                    <img
+                      src="/bookApple.png"
+                      width={50}
+                      height={50}
+                      alt="EMPTY"
+                    />
+                    <span className="font-semibold text-lg">No Lockups</span>
+                    <span className="text-base">
+                      There are no lockups for this account
+                    </span>
+                  </div>
+                )}
+              </>
+            </ScrollArea>
           </div>
-          <ScrollArea className="w-full h-[30rem]">
-            <>
-              {Saves.length > 0 ? (
-                <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
-                    if (i % 3 === 0) {
-                      return <LockedSaves key={i} />;
-                    } else if (i % 2 === 0) {
-                      return <TimeEndedSaves key={i} />;
-                    } else {
-                      return <UnlockedSaves key={i} />;
-                    }
-                  })}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-3 items-center self-center py-[11rem]">
-                  <img
-                    src="/bookApple.png"
-                    width={50}
-                    height={50}
-                    alt="EMPTY"
-                  />
-                  <span className="font-semibold text-lg">No Lockups</span>
-                  <span className="text-base">
-                    There are no lockups for this account
-                  </span>
-                </div>
-              )}
-            </>
-          </ScrollArea>
-        </div>
-      </TabsContent>
-      <TabsContent value="txns">
-        <div className="bg-white flex flex-col gap-3 w-full p-4 rounded-lg ">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">#</TableHead>
-                <TableHead className="w-[200px]">Transaction Hash</TableHead>
-                <TableHead className="w-[200px]">Function</TableHead>
-                <TableHead className="">Age</TableHead>
-                <TableHead className="">Value (ETH)</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice['#']}>
-                  <TableCell className="font-medium">{invoice['#']}</TableCell>
-                  <TableCell className="w-fit">
-                    <div className="py-1 px-2 bg-gray-100 flex items-center rounded-md justify-start w-fit">
-                      <span className="font-semibold text-black text-sm">
-                        {invoice.TxnHash}
-                      </span>
-                      <IoCopy
-                        className="ml-2 h-4 w-4 text-blue-400 cursor-pointer"
-                        title="Copy"
-                      />
-                      <TiExport
-                        className="ml-3 h-4 w-4 text-green-800 cursor-pointer"
-                        title="explorer"
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="p-1 text-gray-800 bg-gray-400 rounded-md font-medium text-center">
-                      {invoice.function}
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-medium">{invoice.time}</TableCell>
-                  <TableCell className="font-medium">{invoice.value}</TableCell>
+        </TabsContent>
+        <TabsContent value="txns">
+          <div className="bg-white flex flex-col gap-3 w-full p-4 rounded-lg ">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">#</TableHead>
+                  <TableHead className="w-[200px]">Transaction Hash</TableHead>
+                  <TableHead className="w-[200px]">Function</TableHead>
+                  <TableHead className="">Age</TableHead>
+                  <TableHead className="">Value (ETH)</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </TabsContent>
+              </TableHeader>
+              <TableBody>
+                {invoices.map((invoice) => (
+                  <TableRow key={invoice['#']}>
+                    <TableCell className="font-medium">
+                      {invoice['#']}
+                    </TableCell>
+                    <TableCell className="w-fit">
+                      <div className="py-1 px-2 bg-gray-100 flex items-center rounded-md justify-start w-fit">
+                        <span className="font-semibold text-black text-sm">
+                          {invoice.TxnHash}
+                        </span>
+                        <IoCopy
+                          className="ml-2 h-4 w-4 text-blue-400 cursor-pointer"
+                          title="Copy"
+                        />
+                        <TiExport
+                          className="ml-3 h-4 w-4 text-green-800 cursor-pointer"
+                          title="explorer"
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="p-1 text-gray-800 bg-gray-400 rounded-md font-medium text-center">
+                        {invoice.function}
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {invoice.time}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {invoice.value}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+      </Tabs>
       <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} />
       <Create isOpen={isOpen} onClose={handleCloseDialog} />
-    </Tabs>
+    </>
   );
 };

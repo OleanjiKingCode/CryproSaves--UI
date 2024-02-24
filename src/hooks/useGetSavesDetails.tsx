@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import { GetALLLockQuery } from '@/constants/LockUp';
 import { APIURL } from '@/constants/urql';
@@ -9,7 +8,7 @@ const client = new ApolloClient({
 });
 
 export const useGetSavesDetails = () => {
-  const [saves, setSavesData] = useState([]);
+  let saves: any[] = [];
 
   const getSavesData = async () => {
     try {
@@ -17,7 +16,7 @@ export const useGetSavesDetails = () => {
         query: gql(GetALLLockQuery),
       });
 
-      setSavesData(data.etherLockeds);
+      saves = data.etherLockeds;
     } catch (err) {
       console.log('Error fetching data: ', err);
     }

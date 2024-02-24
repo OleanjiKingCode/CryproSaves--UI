@@ -7,11 +7,13 @@ import { useToast } from '@/components/ui/use-toast';
 import { IoCopy } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
+import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 
 export default function Home() {
   const { toast } = useToast();
   const { address, isConnected } = useAccount();
-
+  const { SavesNum, LockedSaves, UnlockedSaves, EthSaved } =
+    useGetSavesDetails();
   const handleCopyToClipboard = async (textToCopy: string) => {
     try {
       await copy(textToCopy);
@@ -27,27 +29,36 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
-      {isConnected && address && (
-        <>
-          <Stats />
-          <div className="px-10 md:px-16 w-full py-5">
-            <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
-              <span className="text-lg font-medium">
-                Owner&apos;s Address:{' '}
-                <span className="font-normal text-base">{address}</span>{' '}
-              </span>
-              <Button
-                className="bg-red-200 rounded-md shadow-md hover:bg-red-800"
-                onClick={() => handleCopyToClipboard(address)}
-                title="copy address"
-              >
-                <IoCopy className="md:mr-2 h-4 w-4 text-red-500" />
-                <span className="hidden md:block">Copy</span>
-              </Button>
+      <>
+        <Stats
+          SavesNum={SavesNum ?? 0}
+          LockedSaves={LockedSaves ?? 0}
+          UnlockedSaves={UnlockedSaves ?? 0}
+          EthSaved={EthSaved ?? 0}
+        />
+
+        {isConnected && address && (
+          <>
+            <div className="px-10 md:px-16 w-full py-5">
+              <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
+                <span className="text-lg font-medium">
+                  Owner&apos;s Address:{' '}
+                  <span className="font-normal text-base">{address}</span>{' '}
+                </span>
+                <Button
+                  className="bg-red-200 rounded-md shadow-md hover:bg-red-800"
+                  onClick={() => handleCopyToClipboard(address)}
+                  title="copy address"
+                >
+                  <IoCopy className="md:mr-2 h-4 w-4 text-red-500" />
+                  <span className="hidden md:block">Copy</span>
+                </Button>
+              </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </>
+
       <Sections />
       <Toaster />
     </div>

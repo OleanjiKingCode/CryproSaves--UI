@@ -1,8 +1,14 @@
-import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
-
-export const Stats = () => {
-  const { SavesNum, LockedSaves, UnlockedSaves, EthSaved } =
-  useGetSavesDetails();
+export const Stats = ({
+  SavesNum,
+  LockedSaves,
+  UnlockedSaves,
+  EthSaved,
+}: {
+  SavesNum: any;
+  LockedSaves: any;
+  UnlockedSaves: any;
+  EthSaved: any;
+}) => {
   return (
     <div className="w-full flex flex-row gap-5 items-center justify-center lg:justify-between pt-4 px-5 sm:px-12 md:px-16 flex-wrap md:flex-nowrap">
       <div className="rounded-2xl py-7 px-5 lg:w-[230px] md:w-[200px] sm:w-[200px] w-[150px] h-[150px] flex flex-col items-center justify-center text-center gap-4 bg-white cursor-pointer">
