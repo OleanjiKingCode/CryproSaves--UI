@@ -30,7 +30,7 @@ export const LockedSaves = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-3 md:p-5 rounded-lg w-[300px]">
+    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-3 md:p-5 rounded-lg w-[300px] text-black">
       <div className="bg-red-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
         <FaLock className="mr-2 h-14 w-14 text-red-600 " />
       </div>
@@ -49,19 +49,19 @@ export const LockedSaves = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-between w-full pt-3 ">
+      <div className="flex flex-row items-center justify-between w-full pt-3 text-black ">
         <Button
-          className="bg-blue-200 rounded-md shadow-md"
+          className="bg-blue-200 hover:bg-blue-600 rounded-md shadow-md font-semibold text-black"
           onClick={handleTimeModal}
         >
           <RiTimerFlashFill className="mr-2 h-4 w-4 text-blue-500 text-sm" />
           Increase Time
         </Button>
         <Button
-          className="bg-green-200 rounded-md shadow-md text-sm"
+          className="bg-green-200  hover:bg-green-600 rounded-md shadow-md text-sm font-semibold text-black"
           onClick={handleDetailsModal}
         >
-          <TbListDetails className="mr-2 h-4 w-4 text-green-500 text-sm" />
+          <TbListDetails className="mr-2 h-4 w-4 text-green-800 text-sm" />
           Details
         </Button>
       </div>
@@ -112,14 +112,14 @@ export const UnlockedSaves = () => {
       </div>
       <div className="flex flex-row items-center justify-between w-full pt-5 ">
         <Button
-          className="bg-blue-200 rounded-md shadow-md text-sm"
+          className="bg-blue-200 hover:bg-blue-600 rounded-md shadow-md text-sm font-semibold text-black"
           onClick={handleDetailsModal}
         >
           <TbListDetails className="mr-2 h-4 w-4 text-blue-500 text-sm" />
           Details
         </Button>
         <Button
-          className="bg-green-200 rounded-md shadow-md"
+          className="bg-green-200 hover:bg-green-600 rounded-md shadow-md font-semibold text-black"
           onClick={handleUnlockModal}
         >
           <FaUnlock className="mr-2 h-4 w-4 text-green-500 text-sm" />
@@ -166,7 +166,7 @@ export const TimeEndedSaves = () => {
       </div>
       <div className="flex flex-row items-center justify-between w-full pt-3 ">
         <Button
-          className="bg-blue-200 rounded-md shadow-md text-sm w-full"
+          className="bg-blue-200 hover:bg-blue-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
           onClick={handleDetailsModal}
         >
           <TbListDetails className="mr-2 h-4 w-4 text-blue-500 text-sm" />

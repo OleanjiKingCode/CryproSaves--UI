@@ -143,7 +143,7 @@ export const Sections = () => {
             </div>
             <ScrollArea className="w-full h-[30rem]">
               <>
-                {Saves.length > 0 ? (
+                {Saves.length <= 0 ? (
                   <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
                     {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
                       if (i % 3 === 0) {
