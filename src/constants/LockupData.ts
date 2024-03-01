@@ -1,8 +1,11 @@
-
-export const LockupAddress = '0xD40750a362a7288220fea047A2E8A15C3B7d8188';
+export const LockupAddress = '0x4b1D98AF1af713456c1fC86Afed67b94c4648f6d';
 
 export const LockupABI = [
-  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+  {
+    inputs: [{ internalType: 'uint256', name: '_months', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   { inputs: [], name: 'AdditionalMonthsShouldBeMoreThanZero', type: 'error' },
   { inputs: [], name: 'CannotLockZeroEther', type: 'error' },
   { inputs: [], name: 'LockupIsntLocked', type: 'error' },
@@ -43,9 +46,9 @@ export const LockupABI = [
       },
       {
         indexed: false,
-        internalType: 'enum EtherLockup.LockType',
+        internalType: 'string',
         name: 'lockType',
-        type: 'uint8',
+        type: 'string',
       },
     ],
     name: 'EtherLocked',
@@ -90,7 +93,7 @@ export const LockupABI = [
         type: 'uint256',
       },
     ],
-    name: 'LockupExtended',
+    name: 'LockupTimeExtended',
     type: 'event',
   },
   {
@@ -131,7 +134,7 @@ export const LockupABI = [
       { internalType: 'uint256', name: '_additionalMonths', type: 'uint256' },
       { internalType: 'uint256', name: '_lockId', type: 'uint256' },
     ],
-    name: 'extendLockup',
+    name: 'extendLockTime',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -144,16 +147,12 @@ export const LockupABI = [
         components: [
           { internalType: 'uint256', name: 'lockId', type: 'uint256' },
           { internalType: 'string', name: 'name', type: 'string' },
+          { internalType: 'string', name: 'lockType', type: 'string' },
           { internalType: 'uint256', name: 'amount', type: 'uint256' },
           { internalType: 'uint256', name: 'releaseTime', type: 'uint256' },
           { internalType: 'bool', name: 'locked', type: 'bool' },
-          {
-            internalType: 'enum EtherLockup.LockType',
-            name: 'lockType',
-            type: 'uint8',
-          },
         ],
-        internalType: 'struct EtherLockup.Lockup[]',
+        internalType: 'struct CryptoSaves.Lockup[]',
         name: '',
         type: 'tuple[]',
       },
@@ -169,16 +168,12 @@ export const LockupABI = [
         components: [
           { internalType: 'uint256', name: 'lockId', type: 'uint256' },
           { internalType: 'string', name: 'name', type: 'string' },
+          { internalType: 'string', name: 'lockType', type: 'string' },
           { internalType: 'uint256', name: 'amount', type: 'uint256' },
           { internalType: 'uint256', name: 'releaseTime', type: 'uint256' },
           { internalType: 'bool', name: 'locked', type: 'bool' },
-          {
-            internalType: 'enum EtherLockup.LockType',
-            name: 'lockType',
-            type: 'uint8',
-          },
         ],
-        internalType: 'struct EtherLockup.Lockup',
+        internalType: 'struct CryptoSaves.Lockup',
         name: '',
         type: 'tuple',
       },
@@ -190,11 +185,7 @@ export const LockupABI = [
     inputs: [
       { internalType: 'uint256', name: '_months', type: 'uint256' },
       { internalType: 'string', name: '_name', type: 'string' },
-      {
-        internalType: 'enum EtherLockup.LockType',
-        name: '_lockType',
-        type: 'uint8',
-      },
+      { internalType: 'string', name: '_lockType', type: 'string' },
     ],
     name: 'lockEther',
     outputs: [],
@@ -207,14 +198,10 @@ export const LockupABI = [
     outputs: [
       { internalType: 'uint256', name: 'lockId', type: 'uint256' },
       { internalType: 'string', name: 'name', type: 'string' },
+      { internalType: 'string', name: 'lockType', type: 'string' },
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
       { internalType: 'uint256', name: 'releaseTime', type: 'uint256' },
       { internalType: 'bool', name: 'locked', type: 'bool' },
-      {
-        internalType: 'enum EtherLockup.LockType',
-        name: 'lockType',
-        type: 'uint8',
-      },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -249,7 +236,7 @@ export const LockupABI = [
   },
   {
     inputs: [],
-    name: 'withdraw',
+    name: 'withdrawAllEther',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

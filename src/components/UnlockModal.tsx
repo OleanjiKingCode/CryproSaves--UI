@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { FaUnlock } from 'react-icons/fa';
+import { FaLockOpen  } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import {
   RiMoneyDollarCircleFill,
@@ -29,7 +29,7 @@ export const UnlockModal = ({
         </DialogHeader>
         <div className="flex flex-row items-center justify-center gap-5 py-4 w-full">
           <div className="bg-green-200 backdrop-blur-md rounded-md items-center flex justify-center shadow-md py-10 w-[30%] ">
-            <FaUnlock className="mr-2 h-14 w-14 text-green-600 " />
+            <FaLockOpen className="mr-2 h-14 w-14 text-green-600 " />
           </div>
           <span className="text-red-400 font-medium w-[60%]">
             <div className="flex flex-col gap-4 py-4">

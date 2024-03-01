@@ -8,6 +8,7 @@ import { IoCopy } from 'react-icons/io5';
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
 import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
+import shortenAccount from '@/utils/shoternAddress';
 
 export default function Home() {
   const { toast } = useToast();
@@ -43,7 +44,9 @@ export default function Home() {
               <div className=" px-4 py-5 bg-white rounded-md flex flex-row items-center gap-2 w-full">
                 <span className="text-lg font-medium">
                   Owner&apos;s Address:{' '}
-                  <span className="font-normal text-base">{address}</span>{' '}
+                  <span className="font-normal text-base">
+                    {shortenAccount(address)}
+                  </span>
                 </span>
                 <Button
                   className="bg-red-200 rounded-md shadow-md hover:bg-red-800"

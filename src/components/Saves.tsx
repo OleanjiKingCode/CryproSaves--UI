@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaLock, FaUnlock } from 'react-icons/fa';
+import { FaLock, FaUnlock, FaLockOpen } from 'react-icons/fa';
 import { RiTimer2Fill, RiTimerFlashFill } from 'react-icons/ri';
 import { TbListDetails } from 'react-icons/tb';
 import { Button } from './ui/button';
@@ -122,7 +122,7 @@ export const UnlockedSaves = () => {
           className="bg-green-200 hover:bg-green-600 rounded-md shadow-md font-semibold text-black"
           onClick={handleUnlockModal}
         >
-          <FaUnlock className="mr-2 h-4 w-4 text-green-500 text-sm" />
+          <FaLockOpen className="mr-2 h-4 w-4 text-green-500 text-sm" />
           Unlock
         </Button>
         {/* <Button className="bg-blue-200 rounded-md shadow-md">
@@ -149,7 +149,7 @@ export const TimeEndedSaves = () => {
   return (
     <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
-        <FaUnlock className="mr-2 h-14 w-14 text-green-600 " />
+        <FaLockOpen className="mr-2 h-14 w-14 text-green-600" />
       </div>
       <div className="w-full flex flex-col justify-center items-start gap-4">
         <span className="font-semibold">Name Of Save</span>
