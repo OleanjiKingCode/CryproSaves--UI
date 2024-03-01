@@ -25,7 +25,7 @@ export const Create = ({
         </DialogHeader>
         <div className="">
           <div className="grid grid-cols-5 gap-5 py-4">
-            <div className="grid col-span-3 ">
+            <div className="grid col-span-3 gap-3 ">
               <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
                 <Label htmlFor="name" className="col-span-1">
                   Name
@@ -38,12 +38,23 @@ export const Create = ({
               </div>
               <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
                 <Label htmlFor="days" className="col-span-1">
-                  Lock Days
+                  Lock Months
                 </Label>
                 <Input
                   id="days"
                   type="number"
                   placeholder="300"
+                  className="col-span-2 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
+                <Label htmlFor="days" className="col-span-1">
+                  Lock Type
+                </Label>
+                <Input
+                  id="days"
+                  type="text"
+                  placeholder="Pet"
                   className="col-span-2 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
                 />
               </div>
