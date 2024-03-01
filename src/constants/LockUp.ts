@@ -14,3 +14,29 @@ query  {
   }
 }
 `;
+
+export const GetOnlyLockedQuery = `
+query  {
+  etherLockeds(where: {locked: true}, orderBy: id, orderDirection: asc) {
+    id
+    name
+    owner
+    amount
+    lockType
+    locked
+  }
+}
+`;
+
+export const GetOnlyUnlockedQuery = `
+query  {
+  etherLockeds(where: {locked: false}, orderBy: id, orderDirection: asc) {
+    id
+    name
+    owner
+    amount
+    lockType
+    locked
+  }
+}
+`;

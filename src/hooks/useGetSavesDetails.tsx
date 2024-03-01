@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import { GetALLLockQuery } from '@/constants/LockUp';
 import { APIURL } from '@/constants/urql';
+import { useState } from 'react';
 
 const client = new ApolloClient({
   uri: APIURL,
@@ -8,15 +9,21 @@ const client = new ApolloClient({
 });
 
 export const useGetSavesDetails = () => {
-  let saves: any[] = [];
+  const [allSaves, setAllSaves] = useState([]);
+  let lockedCount = 0;
+  let unlockedCount = 0;
+  let totalEth = 0;
 
   const getSavesData = async () => {
     try {
-      const { data } = await client.query({
+      const { data: allData } = await client.query({
         query: gql(GetALLLockQuery),
       });
-
-      saves = data.etherLockeds;
+      setAllSaves(allData.etherLockeds);
+      allData.etherLockeds.map((save: any) => {
+        save.locked === true ? (lockedCount += 1) : (unlockedCount += 1);
+        totalEth += save.amount;
+      });
     } catch (err) {
       console.log('Error fetching data: ', err);
     }
@@ -25,10 +32,10 @@ export const useGetSavesDetails = () => {
   getSavesData();
 
   return {
-    Saves: saves ?? [],
-    SavesNum: saves.length,
-    LockedSaves: 0,
-    UnlockedSaves: 0,
-    EthSaved: 10,
+    Saves: allSaves,
+    SavesNum: allSaves.length,
+    LockedSaves: lockedCount,
+    UnlockedSaves: unlockedCount,
+    EthSaved: totalEth,
   };
 };
