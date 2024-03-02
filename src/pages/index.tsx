@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
 import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import shortenAccount from '@/utils/shoternAddress';
+import { Setup } from '@/components/Setup/setup';
 
 export default function Home() {
   const { toast } = useToast();
@@ -30,7 +31,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
-      <>
+      {/* <>
         <Stats
           SavesNum={SavesNum ?? 0}
           LockedSaves={LockedSaves ?? 0}
@@ -62,7 +63,9 @@ export default function Home() {
         )}
       </>
 
-      <Sections />
+      <Sections /> */}
+      
+      <Setup />
       <Toaster />
     </div>
   );
