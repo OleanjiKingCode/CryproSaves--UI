@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -12,8 +13,12 @@ export default function HomePage() {
           your personal crypto savings dapp
         </span>
         <div className="w-full flex flex-col items-center pt-10 justify-center gap-5">
-          <Button className="w-[25rem]">Login</Button>
-          <Button className="w-[25rem]">Create Account</Button>
+          <Link href="/main">
+            <Button className="w-[25rem]">Login</Button>
+          </Link>
+          <Link href="/setup">
+            <Button className="w-[25rem]">Create Account</Button>
+          </Link>
         </div>
       </div>
     </div>

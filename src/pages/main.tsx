@@ -2,12 +2,12 @@ import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import shortenAccount from '@/utils/shoternAddress';
 import { IoCopy } from 'react-icons/io5';
 import { useAccount } from 'wagmi';
-import { Navbar } from '../Navbar';
-import { Stats } from '../Stats';
-import { Button } from '../ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import copy from 'clipboard-copy';
-import { Sections } from '../Sections';
+import { Navbar } from '@/components/Navbar';
+import { Sections } from '@/components/Sections';
+import { Button } from '@/components/ui/button';
+import { Stats } from '@/components/Stats';
 
 export default function Main() {
   const { address, isConnected } = useAccount();
