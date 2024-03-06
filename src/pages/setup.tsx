@@ -10,8 +10,29 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
+import { useAccount } from 'wagmi';
+import { useState } from 'react';
 
 const Setup = () => {
+  const { address } = useAccount();
+  const [contractAddress, setContractAddress] = useState('');
+  
+  // const deployContract = async () => {
+  //   if (!address) return alert('Please connect wallet first.');
+
+  //   const provider = new providers.Web3Provider(client.provider as any);
+  //   const signer = provider.getSigner(accounts[0]);
+
+  //   const contractABI = []; // Add ABI here
+  //   const contractByteCode = ''; // Add bytecode here
+
+  //   const factory = new ContractFactory(contractABI, contractByteCode, signer);
+  //   const contractInstance = await factory.deploy();
+  //   const receipt = await contractInstance.deployTransaction.wait();
+
+  //   setContractAddress(receipt.contractAddress);
+  // };
+
   return (
     <div className="w-full flex flex-col min-h-screen  bg-pink-100">
       <Navbar />
