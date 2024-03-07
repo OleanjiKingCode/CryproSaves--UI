@@ -12,7 +12,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
-import { getContractInfo } from '@/utils/deployScript';
+// import { getContractInfo } from '@/utils/deployScript';
 
 export default function Main() {
   const { address, isConnected } = useAccount();
@@ -32,9 +32,9 @@ export default function Main() {
     }
   };
 
-  const getDetails = async () => {
-    await getContractInfo();
-  };
+  // const getDetails = async () => {
+  //   await getContractInfo();
+  // };
 
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
@@ -95,8 +95,8 @@ export default function Main() {
             </div>
             <Button
               className="bg-pink-200 hover:bg-pink-500 rounded-md shadow-md font-semibold text-black"
-              // onClick={() => setHasLockContract(true)}
-              onClick={getDetails}
+              onClick={() => setHasLockContract(true)}
+              //onClick={getDetails}
             >
               Get Contract Details
             </Button>

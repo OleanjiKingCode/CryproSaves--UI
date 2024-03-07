@@ -5,8 +5,8 @@ import fs from 'fs/promises';
 import solc from 'solc';
 
 export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req,
+  res
 ) {
   try {
     // Load the contract source code
@@ -23,7 +23,7 @@ export default async function handler(
   }
 }
 
-function compile(sourceCode: string, contractName: string) {
+function compile(sourceCode, contractName) {
   // Create the Solidity Compiler Standard Input and Output JSON
   const input = {
     language: 'Solidity',

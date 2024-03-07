@@ -16,6 +16,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/deployScript.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/deployScript.js", "src/pages/api/getContractInfo.js"],
   "exclude": ["node_modules"]
 }
