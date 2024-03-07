@@ -1,6 +1,7 @@
 // import { promises as fs } from "fs";
 // import solc from "solc";
 
+
 // async function main(): Promise<void> {
 //   // Load the contract source code
 //   const sourceCode: string = await fs.readFile("Demo.sol", "utf8");
