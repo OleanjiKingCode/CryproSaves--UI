@@ -12,10 +12,12 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import axios from 'axios';
 // import { getContractInfo } from '@/utils/deployScript';
 
 export default function Main() {
   const { address, isConnected } = useAccount();
+  const [data, setData] = useState(null);
   const { toast } = useToast();
   const [hasLockContract, setHasLockContract] = useState(false);
   const { SavesNum, LockedSaves, UnlockedSaves, EthSaved } =
@@ -32,9 +34,16 @@ export default function Main() {
     }
   };
 
-  // const getDetails = async () => {
-  //   await getContractInfo();
-  // };
+  const fetchData = async () => {
+    try {
+      console.log('here');
+      const response = await axios.get('/api/Contract'); // Adjust the endpoint accordingly  
+      console.log(response, 'this is the result');
+      // setData(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
@@ -95,8 +104,8 @@ export default function Main() {
             </div>
             <Button
               className="bg-pink-200 hover:bg-pink-500 rounded-md shadow-md font-semibold text-black"
-              onClick={() => setHasLockContract(true)}
-              //onClick={getDetails}
+              // onClick={() => setHasLockContract(true)}
+              onClick={fetchData}
             >
               Get Contract Details
             </Button>
