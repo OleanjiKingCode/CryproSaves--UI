@@ -12,25 +12,32 @@ import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
 import { useAccount } from 'wagmi';
 import { useState } from 'react';
+import axios from 'axios';
+import { ContractFactory } from 'ethers';
 
 const Setup = () => {
   const { address } = useAccount();
   const [contractAddress, setContractAddress] = useState('');
-  
+
+  const [data, setData] = useState({});
+
+  const fetchData = async () => {
+    try {
+      console.log('here');
+      const response = await axios.get('/api/Contract'); // Adjust the endpoint accordingly
+      console.log(response, 'this is the result');
+      const result = await response.data.json();
+      setData(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   // const deployContract = async () => {
-  //   if (!address) return alert('Please connect wallet first.');
-
-  //   const provider = new providers.Web3Provider(client.provider as any);
-  //   const signer = provider.getSigner(accounts[0]);
-
-  //   const contractABI = []; // Add ABI here
-  //   const contractByteCode = ''; // Add bytecode here
-
-  //   const factory = new ContractFactory(contractABI, contractByteCode, signer);
-  //   const contractInstance = await factory.deploy();
-  //   const receipt = await contractInstance.deployTransaction.wait();
-
-  //   setContractAddress(receipt.contractAddress);
+  //   const factory = new ContractFactory(data?.abi, data?.evm.bytecode.object,);
+  //   // If your contract requires constructor args, you can specify them here
+  //   const contract = await factory.deploy();
+  //   setContractAddress(contract.address);
   // };
 
   return (
@@ -126,7 +133,10 @@ const Setup = () => {
               I Agree with the Terms and Privacy policy
             </Label>
           </div>
-          <Button className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black">
+          <Button
+            onClick={fetchData}
+            className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
+          >
             Compile and Deploy
           </Button>
         </div>
