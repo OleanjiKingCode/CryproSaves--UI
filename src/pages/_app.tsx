@@ -1,21 +1,11 @@
-import {
-  RainbowKitProvider,
-  getDefaultConfig,
-  lightTheme,
-} from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { WagmiProvider } from 'wagmi';
-import { polygonMumbai } from 'wagmi/chains';
-import '../styles/globals.css';
 
-const Id = process.env.NEXT_PUBLIC_PROJECT_ID ?? '';
-const config = getDefaultConfig({
-  appName: 'Crypto Saves',
-  projectId: Id,
-  chains: [polygonMumbai],
-});
+import '../styles/globals.css';
+import { config } from '@/utils/wagmiConfig';
 
 const client = new QueryClient();
 

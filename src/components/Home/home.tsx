@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <div className="w-full flex flex-col min-h-screen gap-5 items-center justify-center px-20">
-      <div className="w-[50rem] bg-white px-5 py-20 text-center rounded-2xl">
+      <div className="w-[80%] bg-white px-5 py-20 text-center rounded-2xl">
         <h2 className="text-2xl w-full bg-white text-pink-400 text-center font-semibold rounded-lg">
           Crypto Saves
         </h2>

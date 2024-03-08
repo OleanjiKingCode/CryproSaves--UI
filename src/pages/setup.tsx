@@ -14,31 +14,40 @@ import { useAccount } from 'wagmi';
 import { useState } from 'react';
 import axios from 'axios';
 import { ContractFactory } from 'ethers';
+import { getEthersSigner } from '@/utils/getEthersSigner';
+import { config } from '@/utils/wagmiConfig';
 
 const Setup = () => {
   const { address } = useAccount();
   const [contractAddress, setContractAddress] = useState('');
-
-  const [data, setData] = useState({});
+  const [data, setData] = useState<any>();
 
   const fetchData = async () => {
     try {
       console.log('here');
       const response = await axios.get('/api/Contract'); // Adjust the endpoint accordingly
       console.log(response, 'this is the result');
-      const result = await response.data.json();
+      const result = await response.data.artifact;
       setData(result);
+      await deployContract(result);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  // const deployContract = async () => {
-  //   const factory = new ContractFactory(data?.abi, data?.evm.bytecode.object,);
-  //   // If your contract requires constructor args, you can specify them here
-  //   const contract = await factory.deploy();
-  //   setContractAddress(contract.address);
-  // };
+  const deployContract = async (result: any) => {
+    const signer = getEthersSigner(config);
+    const factory = new ContractFactory(
+      result?.abi,
+      result?.evm.bytecode.object,
+      await signer
+    );
+    const contract = await factory.deploy('string');
+    let address = await contract.getAddress();
+    let txn = contract.deploymentTransaction()?.hash;
+    console.log(address, txn);
+    setContractAddress(address);
+  };
 
   return (
     <div className="w-full flex flex-col min-h-screen  bg-pink-100">
