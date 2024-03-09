@@ -17,35 +17,75 @@ import { ContractFactory } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
 
+interface ContractDetails {
+  name: string;
+  address: string;
+  abi: any;
+  bytecode: any;
+  sourceCode: string;
+  args: any;
+}
+
 const Setup = () => {
   const { address } = useAccount();
+  let InitialValues: ContractDetails = {
+    name: '',
+    address: '',
+    abi: '',
+    bytecode: '',
+    sourceCode: '',
+    args: '',
+  };
   const [contractAddress, setContractAddress] = useState('');
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<ContractDetails>(InitialValues);
 
   const fetchData = async () => {
     try {
       console.log('here');
-      const response = await axios.get('/api/Contract'); // Adjust the endpoint accordingly
+      const response = await axios.get('/api/Contract');
       console.log(response, 'this is the result');
       const result = await response.data.artifact;
-      setData(result);
-      await deployContract(result);
+      const otherResponse = await response;
+      setData({
+        ...data,
+        abi: result?.abi,
+        bytecode: result?.evm.bytecode.object,
+        sourceCode: otherResponse.data.sourceCode,
+        name: otherResponse.data.contractName,
+      });
+      console.log(
+        result?.abi,
+        result?.evm.bytecode.object,
+        otherResponse.data.sourceCode,
+        otherResponse.data.contractName
+      );
+      await deployContract(response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  const deployContract = async (result: any) => {
+  const deployContract = async (response: any) => {
     const signer = getEthersSigner(config);
     const factory = new ContractFactory(
-      result?.abi,
-      result?.evm.bytecode.object,
+      response.data.artifact.abi,
+      response.data.artifact.evm.bytecode.object,
       await signer
     );
     const contract = await factory.deploy('string');
     let address = await contract.getAddress();
     let txn = contract.deploymentTransaction()?.hash;
     console.log(address, txn);
+    console.log(response);
+    setData({
+      abi: response.data.artifact.abi,
+      bytecode: response.data.artifact.evm.bytecode.object,
+      sourceCode: response.data.sourceCode,
+      name: response.data.contractName,
+      address: address,
+      args: '',
+    });
+    console.log(data);
     setContractAddress(address);
   };
 
@@ -85,7 +125,7 @@ const Setup = () => {
               Contract Properties
             </Label>
 
-            <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-4 w-full col-span-2">
               <div className="flex flex-row items-center gap-3">
                 <Checkbox id="lock" defaultChecked />
                 <Label
@@ -110,7 +150,8 @@ const Setup = () => {
                   htmlFor="emergency"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Emergency Withdraw -(Ability to withdraw before the set date of a save)
+                  Emergency Withdraw -(Ability to withdraw before the set date
+                  of a save)
                 </Label>
               </div>
               <div className="flex flex-row items-center gap-3">
@@ -145,6 +186,12 @@ const Setup = () => {
           >
             Compile and Deploy
           </Button>
+          {/* <Button
+            onClick={verifyContract}
+            className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
+          >
+            Verify
+          </Button> */}
         </div>
       </section>
     </div>

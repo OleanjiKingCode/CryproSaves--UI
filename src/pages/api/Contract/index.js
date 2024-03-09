@@ -1,14 +1,22 @@
 import fs from 'fs/promises';
 import solc from 'solc';
 
+
+export const updateContract = () => {
+  
+}
+
 export default async function handler(req, res) {
   try {
+    console.log('cdnsdncksjk, here');
     const sourceCode = await fs.readFile(
       './src/pages/api/Contract/Demo.sol',
       'utf8'
     );
-    const { artifact } = compile(sourceCode, 'Inbox');
-    res.status(200).json({ artifact });
+    console.log('here');
+    let contractName = 'Inbox';
+    const { artifact } = compile(sourceCode, contractName);
+    res.status(200).json({ artifact, sourceCode, contractName });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -27,5 +35,6 @@ function compile(sourceCode, contractName) {
 
   return {
     artifact: artifact,
+    sourceCode: sourceCode,
   };
 }
