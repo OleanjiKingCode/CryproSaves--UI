@@ -2,18 +2,12 @@ import fs from 'fs/promises';
 import solc from 'solc';
 
 
-export const updateContract = () => {
-  
-}
-
 export default async function handler(req, res) {
   try {
-    console.log('cdnsdncksjk, here');
     const sourceCode = await fs.readFile(
       './src/pages/api/Contract/Demo.sol',
       'utf8'
     );
-    console.log('here');
     let contractName = 'Inbox';
     const { artifact } = compile(sourceCode, contractName);
     res.status(200).json({ artifact, sourceCode, contractName });

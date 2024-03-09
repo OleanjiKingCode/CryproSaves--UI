@@ -12,7 +12,7 @@
 //   constructorArguments: any;
 // }) => {
 //   try {
-//     let apiKey = '65HTGR197S8M887BJXZZVB8F5HGP9BKJ7C';
+//     let apiKey = '';
 //     console.log(
 //       contractAddress,
 //       sourceCode,
@@ -20,7 +20,7 @@
 //       constructorArguments
 //     );
 //     const response = await axios.post('//api.polygonscan.com/api', {
-//       apikey: '65HTGR197S8M887BJXZZVB8F5HGP9BKJ7C',
+//       apikey: '',
 //       module: 'contract',
 //       action: 'verifysourcecode',
 //       contractaddress: contractAddress,

@@ -16,6 +16,10 @@ import axios from 'axios';
 import { ContractFactory } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
+import { useSwitchChain } from 'wagmi';
+import { useChainId } from 'wagmi';
+import { switchChain } from '@wagmi/core';
+import { customizeCryptoSaves } from '@/utils/updateContract';
 
 interface ContractDetails {
   name: string;
@@ -24,10 +28,10 @@ interface ContractDetails {
   bytecode: any;
   sourceCode: string;
   args: any;
+  txn: string;
 }
 
 const Setup = () => {
-  const { address } = useAccount();
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -35,31 +39,47 @@ const Setup = () => {
     bytecode: '',
     sourceCode: '',
     args: '',
+    txn: '',
   };
-  const [contractAddress, setContractAddress] = useState('');
+  const { address } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
+  // const { chains, switchChain } = useSwitchChain();
+  const chainId = useChainId();
+
+  const changeNetwork = async (e: string) => {
+    if (e === 'mumbai' && chainId !== 80001) {
+      console.log('dcnkjsdb');
+      await switchChain(config, { chainId: 137 });
+      // switchChain({ chainId: 137 });
+    } else if (e === 'mainnet' && chainId !== 137) {
+      console.log('dcnkjsdflkfdkldb');
+      // switchChain({ chainId: 80001 });
+
+      await switchChain(config, { chainId: 80001 });
+      console.log('here');
+    }
+  };
 
   const fetchData = async () => {
     try {
-      console.log('here');
+      const contract = customizeCryptoSaves({
+        author: address?.toString() ?? '',
+        contractName: 'CustomCryptoSaves',
+        includeExtendedEvent: false,
+        includeEmergencyWithdraw: false,
+      });
       const response = await axios.get('/api/Contract');
-      console.log(response, 'this is the result');
       const result = await response.data.artifact;
-      const otherResponse = await response;
       setData({
         ...data,
         abi: result?.abi,
         bytecode: result?.evm.bytecode.object,
-        sourceCode: otherResponse.data.sourceCode,
-        name: otherResponse.data.contractName,
+        sourceCode: response.data.sourceCode,
+        name: response.data.contractName,
       });
-      console.log(
-        result?.abi,
-        result?.evm.bytecode.object,
-        otherResponse.data.sourceCode,
-        otherResponse.data.contractName
-      );
-      await deployContract(response);
+
+      console.log(contract);
+      //await deployContract(response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -74,9 +94,6 @@ const Setup = () => {
     );
     const contract = await factory.deploy('string');
     let address = await contract.getAddress();
-    let txn = contract.deploymentTransaction()?.hash;
-    console.log(address, txn);
-    console.log(response);
     setData({
       abi: response.data.artifact.abi,
       bytecode: response.data.artifact.evm.bytecode.object,
@@ -84,9 +101,8 @@ const Setup = () => {
       name: response.data.contractName,
       address: address,
       args: '',
+      txn: contract.deploymentTransaction()?.hash ?? '',
     });
-    console.log(data);
-    setContractAddress(address);
   };
 
   return (
@@ -99,13 +115,13 @@ const Setup = () => {
             <Label htmlFor="name" className="col-span-1">
               Desired Chain
             </Label>
-            <Select>
+            <Select onValueChange={(e) => changeNetwork(e)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Desired chain for contract" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="polygon">Polygon Mainnet </SelectItem>
-                <SelectItem value="mainnet">Polygin Mumbai</SelectItem>
+                <SelectItem value="mainnet">Polygon Mainnet </SelectItem>
+                <SelectItem value="mumbai">Polygin Mumbai</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -127,7 +143,7 @@ const Setup = () => {
 
             <div className="flex flex-col gap-4 w-full col-span-2">
               <div className="flex flex-row items-center gap-3">
-                <Checkbox id="lock" defaultChecked />
+                <Checkbox id="lock" checked disabled />
                 <Label
                   htmlFor="lock"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -136,7 +152,7 @@ const Setup = () => {
                 </Label>
               </div>
               <div className="flex flex-row items-center gap-3">
-                <Checkbox id="unlock" defaultChecked />
+                <Checkbox id="unlock" checked disabled />
                 <Label
                   htmlFor="unlock"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -164,7 +180,7 @@ const Setup = () => {
                 </Label>
               </div>
               <div className="flex flex-row items-center gap-3">
-                <Checkbox id="withdrawAllEther" />
+                <Checkbox id="withdrawAllEther" checked disabled />
                 <Label
                   htmlFor="withdrawAllEther"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
