@@ -66,9 +66,6 @@ const Setup = () => {
               <SelectContent>
                 <SelectItem value="polygon">Polygon Mainnet </SelectItem>
                 <SelectItem value="mainnet">Polygin Mumbai</SelectItem>
-                <SelectItem value="eth" disabled>
-                  Ethereum
-                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -113,7 +110,7 @@ const Setup = () => {
                   htmlFor="emergency"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Emergency Withdraw
+                  Emergency Withdraw -(Ability to withdraw before the set date of a save)
                 </Label>
               </div>
               <div className="flex flex-row items-center gap-3">
@@ -122,7 +119,7 @@ const Setup = () => {
                   htmlFor="extendTime"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Extend Lock Time
+                  Extend Lock Time -(Ability to extend lock time of a save)
                 </Label>
               </div>
               <div className="flex flex-row items-center gap-3">

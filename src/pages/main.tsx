@@ -71,7 +71,7 @@ export default function Main() {
         </>
       ) : (
         <div className="w-full flex flex-col min-h-[80vh] items-center justify-center px-20">
-          <div className="w-[50rem] bg-white px-5 py-10 text-center items-center flex flex-col gap-8 rounded-2xl">
+          <div className="w-[80%] bg-white px-5 py-10 text-center items-center flex flex-col gap-8 rounded-2xl">
             <h2 className="font-semibold text-lg">
               Connected your address to your Save Contract ?
             </h2>
