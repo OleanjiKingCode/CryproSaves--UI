@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
-import { useAccount } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { useState } from 'react';
 import axios from 'axios';
 import { ContractFactory } from 'ethers';
@@ -51,7 +51,7 @@ const Setup = () => {
   };
   const { address } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
-  // const { chains, switchChain } = useSwitchChain();
+  const { chains, switchChain } = useSwitchChain();
   const chainId = useChainId();
 
   const {
@@ -59,15 +59,14 @@ const Setup = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
 
-  const changeNetwork = async (e: string) => {
+  const changeNetwork = (e: string) => {
     if (e === 'mumbai' && chainId !== 80001) {
-      await switchChain(config, { chainId: 137 });
-      // switchChain({ chainId: 137 });
+      switchChain({ chainId: 137 });
     } else if (e === 'mainnet' && chainId !== 137) {
-      // switchChain({ chainId: 80001 });
-      await switchChain(config, { chainId: 80001 });
+      switchChain({ chainId: 80001 });
       console.log('here');
     }
   };
@@ -125,26 +124,20 @@ const Setup = () => {
           <h2 className="font-semibold w-full text-lg">Contract Setup</h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-6"
           >
             <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
               <Label htmlFor="name" className="col-span-1">
                 Desired Chain
               </Label>
-              <Select
-                onValueChange={(e) => changeNetwork(e)}
+              <select
                 {...register('chain', { required: true })}
+                onChange={(e) => changeNetwork(e.target.value)}
+                className="appearance-none bg-white border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 focus:bg-white focus:text-gray-900"
               >
-                <SelectTrigger className="col-span-1">
-                  <SelectValue placeholder="Desired chain for contract" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mainnet" defaultChecked>
-                    Polygon Mainnet{' '}
-                  </SelectItem>
-                  <SelectItem value="mumbai">Polygin Mumbai</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="mainnet"> Polygon Mainnet</option>
+                <option value="mumbai">Polygin Mumbai</option>
+              </select>
 
               {errors.chain?.type === 'required' && (
                 <p className="text-sm text-red-600 col-span-2">
@@ -193,7 +186,13 @@ const Setup = () => {
                   </Label>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  <Checkbox id="emergency" {...register('withdraw')} />
+                  {/* <Checkbox id="emergency" {...register('withdraw')} /> */}
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 col-span-1 accent-pink-600"
+                    id="emergency"
+                    {...register('withdraw')}
+                  />
                   <Label
                     htmlFor="emergency"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -203,7 +202,13 @@ const Setup = () => {
                   </Label>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  <Checkbox id="extendTime" {...register('extendTime')} />
+                  {/* <Checkbox id="extendTime" {...register('extendTime')} /> */}
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 col-span-1 accent-pink-600"
+                    id="extendTime"
+                    {...register('extendTime')}
+                  />
                   <Label
                     htmlFor="extendTime"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -213,6 +218,7 @@ const Setup = () => {
                 </div>
                 <div className="flex flex-row items-center gap-3">
                   <Checkbox id="withdrawAllEther" checked disabled />
+
                   <Label
                     htmlFor="withdrawAllEther"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -223,16 +229,20 @@ const Setup = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full flex items-center  gap-5 py-7">
-              <Checkbox
+            <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
+              <input
+                type="checkbox"
                 id="terms"
+                className="w-4 h-4 col-span-1 accent-pink-600"
                 {...register('privacy', { required: true })}
               />
-              <Label htmlFor="terms">
+              <Label htmlFor="terms" className="col-span-1">
                 I Agree with the Terms and Privacy policy
               </Label>
               {errors.privacy?.type === 'required' && (
-                <p role="alert">Contract Name is required</p>
+                <p className="text-sm text-red-600 col-span-2">
+                  Accept the privacy and policy rules
+                </p>
               )}
             </div>
             <Button
