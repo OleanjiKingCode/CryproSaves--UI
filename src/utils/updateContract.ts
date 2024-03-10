@@ -210,6 +210,7 @@ contract CryptoSaves is Ownable(msg.sender) {
     /// -----------------------------------------------------------------------
     /// Constructor
     /// -----------------------------------------------------------------------
+
     constructor(uint256 _months) {
         lockIdTracker += 1;
         emergencyUnlockTimestamp = block.timestamp + (_months * 30 days);
@@ -381,6 +382,13 @@ export const customizeCryptoSaves = ({
     contractCode = contractCode.replace(
       /\/\/\/ @notice Withdraws all amount in the contract as long as the emergency lock period has passed([\s\S]*?)function emergencyWithdraw([\s\S]*?)}/,
       ''
+    );
+  }
+
+  if (!includeEmergencyWithdraw) {
+    contractCode = contractCode.replace(
+      /constructor(uint256 _months) {/,
+      `constructor() {`
     );
   }
 

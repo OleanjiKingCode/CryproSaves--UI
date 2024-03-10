@@ -40,6 +40,7 @@ interface IFormInput {
   withdraw: boolean;
   privacy: boolean;
   extendTime: boolean;
+  emergencyTime?: number;
 }
 
 const Setup = () => {
@@ -52,6 +53,7 @@ const Setup = () => {
     args: '',
     txn: '',
   };
+  const [pickedWithdraw, setPickedWithdraw] = useState(false);
   const { address } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
   const { chains, switchChain } = useSwitchChain();
@@ -67,10 +69,6 @@ const Setup = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (info) => {
     try {
-      toast({
-        description: 'Successfully Copied Address',
-        style: { backgroundColor: 'green', color: 'white' },
-      });
       setisLoading(true);
       if (!address) {
         toast({
@@ -95,7 +93,7 @@ const Setup = () => {
 
       toast({
         description: 'Now compiling contract',
-        style: { backgroundColor: 'orange', color: 'white' },
+        style: { backgroundColor: '#fedccb', color: 'white' },
       });
       const response = await axios.get('/api/Contract', config);
       const result = await response.data.artifact;
@@ -109,9 +107,9 @@ const Setup = () => {
 
       toast({
         description: 'Now Deploying contract',
-        style: { backgroundColor: 'orange', color: 'white' },
+        style: { backgroundColor: '#fedccb', color: 'white' },
       });
-      await deployContract(response);
+      await deployContract(response, info.withdraw);
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
@@ -128,7 +126,10 @@ const Setup = () => {
     }
   };
 
-  const deployContract = async (response: any) => {
+  const deployContract = async (
+    response: any,
+    includeEmergencyWithdraw: boolean
+  ) => {
     const signer = getEthersSigner(config);
 
     const factory = new ContractFactory(
@@ -136,8 +137,13 @@ const Setup = () => {
       response.data.artifact.evm.bytecode.object,
       await signer
     );
+    let contract;
+    if (includeEmergencyWithdraw) {
+      contract = await factory.deploy(10);
+    } else {
+      contract = await factory.deploy();
+    }
 
-    const contract = await factory.deploy(10);
     let address = await contract.getAddress();
 
     setData({
@@ -157,10 +163,10 @@ const Setup = () => {
   };
 
   return (
-    <div className="w-full flex flex-col min-h-screen  bg-pink-100">
+    <div className="w-full flex flex-col min-h-screen bg-pink-100">
       <Navbar />
       <section className="w-full px-10 md:px-16 py-4 ">
-        <div className=" w-full flex  px-10 md:px-16 py-10 item-center flex-col gap-4  bg-white rounded-lg">
+        <div className=" w-full flex  px-10 md:px-16 py-6 item-center flex-col gap-3  bg-white rounded-lg">
           <h2 className="font-semibold w-full text-lg">Contract Setup</h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -226,12 +232,12 @@ const Setup = () => {
                   </Label>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  {/* <Checkbox id="emergency" {...register('withdraw')} /> */}
                   <input
                     type="checkbox"
                     className="w-4 h-4 col-span-1 accent-pink-600"
                     id="emergency"
                     {...register('withdraw')}
+                    onChange={(e) => setPickedWithdraw(e.target.checked)}
                   />
                   <Label
                     htmlFor="emergency"
@@ -242,7 +248,6 @@ const Setup = () => {
                   </Label>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  {/* <Checkbox id="extendTime" {...register('extendTime')} /> */}
                   <input
                     type="checkbox"
                     className="w-4 h-4 col-span-1 accent-pink-600"
@@ -269,6 +274,25 @@ const Setup = () => {
                 </div>
               </div>
             </div>
+            {pickedWithdraw && (
+              <div className="grid grid-cols-3 gap-4 col-span-3 items-center ease-in-out slide-in-from-top-20">
+                <Label htmlFor="emergency" className="col-span-1">
+                  Emergency Time Duration (In months)
+                </Label>
+                <Input
+                  id="emergency"
+                  type="number"
+                  placeholder="10"
+                  {...register('emergencyTime', { required: true })}
+                  className="col-span-1 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
+                />
+                {errors.emergencyTime?.type === 'required' && (
+                  <p className="text-sm text-red-600 col-span-2">
+                    Enter a suitable duration for emergency withdrawal
+                  </p>
+                )}
+              </div>
+            )}
             <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
               <input
                 type="checkbox"
