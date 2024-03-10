@@ -21,7 +21,8 @@ import { useChainId } from 'wagmi';
 import { switchChain } from '@wagmi/core';
 import { customizeCryptoSaves } from '@/utils/updateContract';
 import { useToast } from '@/components/ui/use-toast';
-import { RiLoader5Fill } from 'react-icons/ri';
+import { RiLoader4Fill, RiLoader5Fill } from 'react-icons/ri';
+import { Toaster } from '@/components/ui/toaster';
 
 interface ContractDetails {
   name: string;
@@ -91,9 +92,10 @@ const Setup = () => {
           contractName: info.contractName,
         },
       };
+
       toast({
         description: 'Now compiling contract',
-        style: { backgroundColor: 'green', color: 'white' },
+        style: { backgroundColor: 'orange', color: 'white' },
       });
       const response = await axios.get('/api/Contract', config);
       const result = await response.data.artifact;
@@ -107,9 +109,10 @@ const Setup = () => {
 
       toast({
         description: 'Now Deploying contract',
-        style: { backgroundColor: 'green', color: 'white' },
+        style: { backgroundColor: 'orange', color: 'white' },
       });
-      //await deployContract(response);
+      await deployContract(response);
+      setisLoading(false);
     } catch (error) {
       setisLoading(false);
       console.error('Error fetching data:', error);
@@ -127,13 +130,16 @@ const Setup = () => {
 
   const deployContract = async (response: any) => {
     const signer = getEthersSigner(config);
+
     const factory = new ContractFactory(
       response.data.artifact.abi,
       response.data.artifact.evm.bytecode.object,
       await signer
     );
-    const contract = await factory.deploy('string');
+
+    const contract = await factory.deploy(10);
     let address = await contract.getAddress();
+
     setData({
       abi: response.data.artifact.abi,
       bytecode: response.data.artifact.evm.bytecode.object,
@@ -142,6 +148,11 @@ const Setup = () => {
       address: address,
       args: '',
       txn: contract.deploymentTransaction()?.hash ?? '',
+    });
+
+    toast({
+      description: 'You have successfully deployed your contract',
+      style: { backgroundColor: 'green', color: 'white' },
     });
   };
 
@@ -279,7 +290,11 @@ const Setup = () => {
               disabled={isLoading}
               className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
             >
-              {isLoading ? <RiLoader5Fill /> : 'Compile and Deploy'}
+              {isLoading ? (
+                <RiLoader4Fill className="animate-spin w-6 h-6" />
+              ) : (
+                'Compile and Deploy'
+              )}
             </Button>
           </form>
           {/* <Button
@@ -290,6 +305,7 @@ const Setup = () => {
           </Button> */}
         </div>
       </section>
+      <Toaster />
     </div>
   );
 };
