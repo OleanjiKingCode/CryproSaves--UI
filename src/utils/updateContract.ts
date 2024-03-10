@@ -3,6 +3,7 @@ export const FIRST_PART_CONTRACT = `
 
 
 // OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
 
@@ -34,6 +35,7 @@ abstract contract Context {
 
 
 // OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)
+
 
 pragma solidity ^0.8.20;
 
@@ -165,12 +167,14 @@ contract CryptoSaves is Ownable(msg.sender) {
         uint256 releaseTime,
         string lockType
     );
+
     event EtherUnlocked(
         uint256 indexed id,
         string name,
         address owner,
         uint256 amount
     );
+
     event LockupTimeExtended(
         uint256 indexed id,
         string name,
@@ -181,6 +185,7 @@ contract CryptoSaves is Ownable(msg.sender) {
     /// -----------------------------------------------------------------------
     /// Structs
     /// -----------------------------------------------------------------------
+    
     struct Lockup {
         uint256 lockId;
         string name;

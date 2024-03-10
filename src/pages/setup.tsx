@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { ContractFactory } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
@@ -20,6 +20,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useChainId } from 'wagmi';
 import { switchChain } from '@wagmi/core';
 import { customizeCryptoSaves } from '@/utils/updateContract';
+import { useToast } from '@/components/ui/use-toast';
+import { RiLoader5Fill } from 'react-icons/ri';
 
 interface ContractDetails {
   name: string;
@@ -53,6 +55,8 @@ const Setup = () => {
   const [data, setData] = useState<ContractDetails>(InitialValues);
   const { chains, switchChain } = useSwitchChain();
   const chainId = useChainId();
+  const { toast } = useToast();
+  const [isLoading, setisLoading] = useState(false);
 
   const {
     register,
@@ -60,7 +64,53 @@ const Setup = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (info) => {
+    try {
+      setisLoading(true);
+      if (!address) {
+        toast({
+          description: 'Connect your wallet',
+          style: { backgroundColor: 'red', color: 'white' },
+        });
+        setisLoading(false);
+      }
+      const contract = customizeCryptoSaves({
+        author: address?.toString() ?? '',
+        contractName: info.contractName,
+        includeExtendedEvent: info.extendTime,
+        includeEmergencyWithdraw: info.withdraw,
+      });
+      const config: AxiosRequestConfig = {
+        params: {
+          contract: contract,
+          contractName: info.contractName,
+        },
+      };
+      toast({
+        description: 'Now compiling contract',
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+      const response = await axios.get('/api/Contract', config);
+      const result = await response.data.artifact;
+      setData({
+        ...data,
+        abi: result?.abi,
+        bytecode: result?.evm.bytecode.object,
+        sourceCode: contract,
+        name: info.contractName,
+      });
+
+      console.log(contract);
+      toast({
+        description: 'Now Deploying contract',
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+      //await deployContract(response);
+    } catch (error) {
+      setisLoading(false);
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const changeNetwork = (e: string) => {
     if (e === 'mumbai' && chainId !== 80001) {
@@ -68,31 +118,6 @@ const Setup = () => {
     } else if (e === 'mainnet' && chainId !== 137) {
       switchChain({ chainId: 80001 });
       console.log('here');
-    }
-  };
-
-  const fetchData = async () => {
-    try {
-      const contract = customizeCryptoSaves({
-        author: address?.toString() ?? '',
-        contractName: 'CustomCryptoSaves',
-        includeExtendedEvent: false,
-        includeEmergencyWithdraw: false,
-      });
-      const response = await axios.get('/api/Contract');
-      const result = await response.data.artifact;
-      setData({
-        ...data,
-        abi: result?.abi,
-        bytecode: result?.evm.bytecode.object,
-        sourceCode: response.data.sourceCode,
-        name: response.data.contractName,
-      });
-
-      console.log(contract);
-      //await deployContract(response);
-    } catch (error) {
-      console.error('Error fetching data:', error);
     }
   };
 
@@ -246,11 +271,11 @@ const Setup = () => {
               )}
             </div>
             <Button
-              onClick={fetchData}
               type="submit"
+              disabled={isLoading}
               className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
             >
-              Compile and Deploy
+              {isLoading ? <RiLoader5Fill /> : 'Compile and Deploy'}
             </Button>
           </form>
           {/* <Button
