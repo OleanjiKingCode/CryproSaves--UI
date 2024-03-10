@@ -15,13 +15,13 @@ export default async function handler(req, res) {
 function compile(sourceCode, contractName) {
   const input = {
     language: 'Solidity',
-    sources: { contractName: { content: sourceCode } },
+    sources: { "CryptoSaves.sol": { content: sourceCode } },
     settings: { outputSelection: { '*': { '*': ['abi', 'evm.bytecode'] } } },
   };
   console.log(input, 'dkojsdin');
   const output = solc.compile(JSON.stringify(input));
   console.log(output, 'dkojsdin');
-  const artifact = JSON.parse(output).contracts[contractName][contractName];
+  const artifact = JSON.parse(output).contracts["CryptoSaves.sol"][contractName];
 
   return {
     artifact: artifact,

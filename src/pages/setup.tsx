@@ -66,6 +66,10 @@ const Setup = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (info) => {
     try {
+      toast({
+        description: 'Successfully Copied Address',
+        style: { backgroundColor: 'green', color: 'white' },
+      });
       setisLoading(true);
       if (!address) {
         toast({
@@ -74,6 +78,7 @@ const Setup = () => {
         });
         setisLoading(false);
       }
+
       const contract = customizeCryptoSaves({
         author: address?.toString() ?? '',
         contractName: info.contractName,
@@ -100,7 +105,6 @@ const Setup = () => {
         name: info.contractName,
       });
 
-      console.log(contract);
       toast({
         description: 'Now Deploying contract',
         style: { backgroundColor: 'green', color: 'white' },

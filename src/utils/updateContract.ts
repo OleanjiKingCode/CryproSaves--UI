@@ -185,7 +185,7 @@ contract CryptoSaves is Ownable(msg.sender) {
     /// -----------------------------------------------------------------------
     /// Structs
     /// -----------------------------------------------------------------------
-    
+
     struct Lockup {
         uint256 lockId;
         string name;
@@ -198,6 +198,7 @@ contract CryptoSaves is Ownable(msg.sender) {
     /// -----------------------------------------------------------------------
     /// Mappings
     /// -----------------------------------------------------------------------
+
     mapping(uint256 => Lockup) public lockups;
 
     /// -----------------------------------------------------------------------
@@ -362,7 +363,7 @@ export const customizeCryptoSaves = ({
   // Remove LockupTimeExtended event and extendLockTime function if includeExtendedEvent is false
   if (!includeExtendedEvent) {
     contractCode = contractCode.replace(
-      /event LockupTimeExtended([\s\S]*?)}/,
+      /event\s+LockupTimeExtended\s*\(([\s\S]*?)\);/,
       ''
     );
   }
