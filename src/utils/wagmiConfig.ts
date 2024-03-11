@@ -5,5 +5,5 @@ const Id = process.env.NEXT_PUBLIC_PROJECT_ID ?? '';
 export const config = getDefaultConfig({
   appName: 'Crypto Saves',
   projectId: Id,
-  chains: [polygonMumbai, polygon],
+  chains: [polygonMumbai],
 });

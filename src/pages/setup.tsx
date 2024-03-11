@@ -10,20 +10,20 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 import { ContractFactory } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useChainId } from 'wagmi';
-import { switchChain } from '@wagmi/core';
 import { customizeCryptoSaves } from '@/utils/updateContract';
 import { RiLoader4Fill, RiLoader5Fill } from 'react-icons/ri';
 import { Toaster } from '@/components/ui/toaster';
 import { IoCopy } from 'react-icons/io5';
 import { useToast } from '@/components/ui/use-toast';
 import copy from 'clipboard-copy';
+import { mainnet, polygon } from 'viem/chains';
 interface ContractDetails {
   name: string;
   address: string;
@@ -54,12 +54,13 @@ const Setup = () => {
     txn: '',
   };
   const [pickedWithdraw, setPickedWithdraw] = useState(false);
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
-  const { chains, switchChain } = useSwitchChain();
-  const chainId = useChainId();
+  const { chains, switchChain } = useSwitchChain({ config });
   const { toast } = useToast();
   const [isLoading, setisLoading] = useState(false);
+  const [isLoadingDeploy, setisLoadingDeploy] = useState(false);
+  const [isLoadingDetails, setisLoadingDetails] = useState(false);
   const [gottenContractDetails, setGottenContractDetails] = useState(false);
   const [deployedContract, setDeployedContract] = useState(false);
   const [allowWithdraw, setAllowWithdraw] = useState(false);
@@ -93,6 +94,7 @@ const Setup = () => {
         });
         setisLoading(false);
       }
+
       setAllowWithdraw(info.withdraw);
       const contract = customizeCryptoSaves({
         author: address?.toString() ?? '',
@@ -131,12 +133,13 @@ const Setup = () => {
     }
   };
 
-  const changeNetwork = (e: string) => {
+  const changeNetwork = async (e: string) => {
     if (e === 'mumbai' && chainId !== 80001) {
+      console.log(chainId, e);
       switchChain({ chainId: 137 });
     } else if (e === 'mainnet' && chainId !== 137) {
+      console.log(chainId, e);
       switchChain({ chainId: 80001 });
-      console.log('here');
     }
   };
 
@@ -148,21 +151,20 @@ const Setup = () => {
 
   const deployContract = async (includeEmergencyWithdraw: boolean) => {
     try {
-      setisLoading(true);
+      setisLoadingDeploy(true);
 
       if (!address) {
         toast({
           description: 'Connect your wallet',
           style: { backgroundColor: 'red', color: 'white' },
         });
-        setisLoading(false);
+        setisLoadingDeploy(false);
       }
 
       toast({
         description: 'Now Deploying contract',
         style: { backgroundColor: 'green', color: 'white' },
       });
-
       const signer = getEthersSigner(config);
       const factory = new ContractFactory(
         data.abi,
@@ -175,7 +177,6 @@ const Setup = () => {
       } else {
         contract = await factory.deploy();
       }
-
       let CA = await contract.getAddress();
 
       setData({
@@ -184,16 +185,15 @@ const Setup = () => {
         args: '',
         txn: contract.deploymentTransaction()?.hash ?? '',
       });
-
       toast({
         description: 'You have successfully deployed your contract',
         style: { backgroundColor: 'green', color: 'white' },
       });
-      setisLoading(false);
+      setisLoadingDeploy(false);
       setDeployedContract(true);
     } catch (error) {
       console.log('error:', error);
-      setisLoading(false);
+      setisLoadingDeploy(false);
     }
   };
 
@@ -363,29 +363,43 @@ const Setup = () => {
                       </AccordionContent>
                     </AccordionItem>
                     {deployedContract && (
-                      <AccordionItem value="item-1" className="w-full">
+                      <AccordionItem value="item-2" className="w-full">
                         <AccordionTrigger className="w-full">
                           CONTRACT ADDRESS
                         </AccordionTrigger>
                         <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
-                          <pre>
-                            {formatText(data.sourceCode).map((line, index) => (
-                              <p key={index} className="mb-1">
-                                {line}
-                              </p>
-                            ))}
-                          </pre>
+                          <div>{data.address}</div>
                         </AccordionContent>
                       </AccordionItem>
                     )}
                   </Accordion>
                 </div>
-                <div className="w-full flex items-center justify-end gap-5">
+                <div className="w-full flex items-center justify-end flex-wrap gap-5">
+                  <div
+                    className="flex gap-2 items-center cursor-pointer"
+                    onClick={() =>
+                      handleCopyToClipboard(data.sourceCode, 'Contract code')
+                    }
+                  >
+                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
+                    Contract Code
+                  </div>
+                  {deployedContract && (
+                    <div
+                      className="flex gap-2 items-center cursor-pointer"
+                      onClick={() =>
+                        handleCopyToClipboard(data.address, 'Contract Address')
+                      }
+                    >
+                      <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
+                      Contract Address
+                    </div>
+                  )}
                   <div
                     className="flex gap-2 items-center cursor-pointer"
                     onClick={() => handleCopyToClipboard(data.abi, 'ABI')}
                   >
-                    <IoCopy className="md:mr-2 h-4 w-4 text-gray-500" />
+                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
                     ABI
                   </div>
                   <div
@@ -394,7 +408,7 @@ const Setup = () => {
                       handleCopyToClipboard(data.bytecode, 'Bytecode')
                     }
                   >
-                    <IoCopy className="md:mr-2 h-4 w-4 text-gray-500" />
+                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
                     Bytecode
                   </div>
                 </div>
@@ -416,15 +430,17 @@ const Setup = () => {
               <Button
                 onClick={() => deployContract(allowWithdraw)}
                 disabled={!gottenContractDetails}
+                type="button"
                 className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
               >
-                {isLoading && gottenContractDetails ? (
+                {isLoadingDeploy && gottenContractDetails ? (
                   <RiLoader4Fill className="animate-spin w-6 h-6" />
                 ) : (
                   'Compile and Deploy'
                 )}
               </Button>
               <Button
+                type="button"
                 onClick={() => deployContract(allowWithdraw)}
                 disabled={!deployedContract}
                 className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
