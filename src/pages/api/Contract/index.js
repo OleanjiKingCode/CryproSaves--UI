@@ -18,9 +18,7 @@ function compile(sourceCode, contractName) {
     sources: { "CryptoSaves.sol": { content: sourceCode } },
     settings: { outputSelection: { '*': { '*': ['abi', 'evm.bytecode'] } } },
   };
-  console.log(input, 'dkojsdin');
   const output = solc.compile(JSON.stringify(input));
-  console.log(output, 'dkojsdin');
   const artifact = JSON.parse(output).contracts["CryptoSaves.sol"][contractName];
 
   return {

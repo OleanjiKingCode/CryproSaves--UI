@@ -1,10 +1,9 @@
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
@@ -20,10 +19,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useChainId } from 'wagmi';
 import { switchChain } from '@wagmi/core';
 import { customizeCryptoSaves } from '@/utils/updateContract';
-import { useToast } from '@/components/ui/use-toast';
 import { RiLoader4Fill, RiLoader5Fill } from 'react-icons/ri';
 import { Toaster } from '@/components/ui/toaster';
-
+import { IoCopy } from 'react-icons/io5';
+import { useToast } from '@/components/ui/use-toast';
+import copy from 'clipboard-copy';
 interface ContractDetails {
   name: string;
   address: string;
@@ -60,6 +60,21 @@ const Setup = () => {
   const chainId = useChainId();
   const { toast } = useToast();
   const [isLoading, setisLoading] = useState(false);
+  const [gottenContractDetails, setGottenContractDetails] = useState(false);
+  const [deployedContract, setDeployedContract] = useState(false);
+  const [allowWithdraw, setAllowWithdraw] = useState(false);
+
+  const handleCopyToClipboard = async (textToCopy: string, toCopy: string) => {
+    try {
+      await copy(textToCopy);
+      toast({
+        description: `Successfully Copied ${toCopy}`,
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+    } catch (error) {
+      console.error('Error copying to clipboard', error);
+    }
+  };
 
   const {
     register,
@@ -70,6 +85,7 @@ const Setup = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (info) => {
     try {
       setisLoading(true);
+
       if (!address) {
         toast({
           description: 'Connect your wallet',
@@ -77,13 +93,14 @@ const Setup = () => {
         });
         setisLoading(false);
       }
-
+      setAllowWithdraw(info.withdraw);
       const contract = customizeCryptoSaves({
         author: address?.toString() ?? '',
         contractName: info.contractName,
         includeExtendedEvent: info.extendTime,
         includeEmergencyWithdraw: info.withdraw,
       });
+
       const config: AxiosRequestConfig = {
         params: {
           contract: contract,
@@ -93,23 +110,20 @@ const Setup = () => {
 
       toast({
         description: 'Now compiling contract',
-        style: { backgroundColor: '#fedccb', color: 'white' },
+        style: { backgroundColor: 'green', color: 'white' },
       });
       const response = await axios.get('/api/Contract', config);
       const result = await response.data.artifact;
+
       setData({
         ...data,
-        abi: result?.abi,
+        abi: JSON.stringify(result?.abi),
         bytecode: result?.evm.bytecode.object,
         sourceCode: contract,
         name: info.contractName,
       });
 
-      toast({
-        description: 'Now Deploying contract',
-        style: { backgroundColor: '#fedccb', color: 'white' },
-      });
-      await deployContract(response, info.withdraw);
+      setGottenContractDetails(true);
       setisLoading(false);
     } catch (error) {
       setisLoading(false);
@@ -126,40 +140,61 @@ const Setup = () => {
     }
   };
 
-  const deployContract = async (
-    response: any,
-    includeEmergencyWithdraw: boolean
-  ) => {
-    const signer = getEthersSigner(config);
+  const formatText = (text: string) => {
+    const sourceCode = data.sourceCode.replace(/\\n/g, '\n'); // Replace '\\n' with actual line breaks
+    const formattedSourceCode = sourceCode.split('\n');
+    return formattedSourceCode;
+  };
 
-    const factory = new ContractFactory(
-      response.data.artifact.abi,
-      response.data.artifact.evm.bytecode.object,
-      await signer
-    );
-    let contract;
-    if (includeEmergencyWithdraw) {
-      contract = await factory.deploy(10);
-    } else {
-      contract = await factory.deploy();
+  const deployContract = async (includeEmergencyWithdraw: boolean) => {
+    try {
+      setisLoading(true);
+
+      if (!address) {
+        toast({
+          description: 'Connect your wallet',
+          style: { backgroundColor: 'red', color: 'white' },
+        });
+        setisLoading(false);
+      }
+
+      toast({
+        description: 'Now Deploying contract',
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+
+      const signer = getEthersSigner(config);
+      const factory = new ContractFactory(
+        data.abi,
+        data.bytecode,
+        await signer
+      );
+      let contract;
+      if (includeEmergencyWithdraw) {
+        contract = await factory.deploy(10);
+      } else {
+        contract = await factory.deploy();
+      }
+
+      let CA = await contract.getAddress();
+
+      setData({
+        ...data,
+        address: CA,
+        args: '',
+        txn: contract.deploymentTransaction()?.hash ?? '',
+      });
+
+      toast({
+        description: 'You have successfully deployed your contract',
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+      setisLoading(false);
+      setDeployedContract(true);
+    } catch (error) {
+      console.log('error:', error);
+      setisLoading(false);
     }
-
-    let address = await contract.getAddress();
-
-    setData({
-      abi: response.data.artifact.abi,
-      bytecode: response.data.artifact.evm.bytecode.object,
-      sourceCode: response.data.sourceCode,
-      name: response.data.contractName,
-      address: address,
-      args: '',
-      txn: contract.deploymentTransaction()?.hash ?? '',
-    });
-
-    toast({
-      description: 'You have successfully deployed your contract',
-      style: { backgroundColor: 'green', color: 'white' },
-    });
   };
 
   return (
@@ -309,24 +344,99 @@ const Setup = () => {
                 </p>
               )}
             </div>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
-            >
-              {isLoading ? (
-                <RiLoader4Fill className="animate-spin w-6 h-6" />
-              ) : (
-                'Compile and Deploy'
-              )}
-            </Button>
+            {gottenContractDetails && (
+              <div className="w-full flex flex-col items-center gap-5">
+                <div className="w-full flex items-center">
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="item-1" className="w-full">
+                      <AccordionTrigger className="w-full">
+                        CONTRACT CODE
+                      </AccordionTrigger>
+                      <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
+                        <pre>
+                          {formatText(data.sourceCode).map((line, index) => (
+                            <p key={index} className="mb-1">
+                              {line}
+                            </p>
+                          ))}
+                        </pre>
+                      </AccordionContent>
+                    </AccordionItem>
+                    {deployedContract && (
+                      <AccordionItem value="item-1" className="w-full">
+                        <AccordionTrigger className="w-full">
+                          CONTRACT ADDRESS
+                        </AccordionTrigger>
+                        <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
+                          <pre>
+                            {formatText(data.sourceCode).map((line, index) => (
+                              <p key={index} className="mb-1">
+                                {line}
+                              </p>
+                            ))}
+                          </pre>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
+                  </Accordion>
+                </div>
+                <div className="w-full flex items-center justify-end gap-5">
+                  <div
+                    className="flex gap-2 items-center cursor-pointer"
+                    onClick={() => handleCopyToClipboard(data.abi, 'ABI')}
+                  >
+                    <IoCopy className="md:mr-2 h-4 w-4 text-gray-500" />
+                    ABI
+                  </div>
+                  <div
+                    className="flex gap-2 items-center cursor-pointer"
+                    onClick={() =>
+                      handleCopyToClipboard(data.bytecode, 'Bytecode')
+                    }
+                  >
+                    <IoCopy className="md:mr-2 h-4 w-4 text-gray-500" />
+                    Bytecode
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="w-full flex flex-row gap-5 items-center justify-between flex-wrap ">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
+              >
+                {isLoading ? (
+                  <RiLoader4Fill className="animate-spin w-6 h-6" />
+                ) : (
+                  'Get Contract Details'
+                )}
+              </Button>
+              <Button
+                onClick={() => deployContract(allowWithdraw)}
+                disabled={!gottenContractDetails}
+                className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
+              >
+                {isLoading && gottenContractDetails ? (
+                  <RiLoader4Fill className="animate-spin w-6 h-6" />
+                ) : (
+                  'Compile and Deploy'
+                )}
+              </Button>
+              <Button
+                onClick={() => deployContract(allowWithdraw)}
+                disabled={!deployedContract}
+                className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
+              >
+                {isLoading && deployedContract ? (
+                  <RiLoader4Fill className="animate-spin w-6 h-6" />
+                ) : (
+                  'Connect Contract to Wallet Address'
+                )}
+              </Button>
+            </div>
           </form>
-          {/* <Button
-            onClick={verifyContract}
-            className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-full font-semibold text-black"
-          >
-            Verify
-          </Button> */}
         </div>
       </section>
       <Toaster />
