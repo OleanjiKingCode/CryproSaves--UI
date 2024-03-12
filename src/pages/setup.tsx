@@ -135,10 +135,9 @@ const Setup = () => {
 
   const changeNetwork = async (e: string) => {
     if (e === 'mumbai' && chainId !== 80001) {
-      console.log(chainId, e);
       switchChain({ chainId: 137 });
     } else if (e === 'mainnet' && chainId !== 137) {
-      console.log(chainId, e);
+      
       switchChain({ chainId: 80001 });
     }
   };
@@ -373,12 +372,62 @@ const Setup = () => {
                             <div>{data.address}</div>
                           </AccordionContent>
                         </AccordionItem>
-                        <AccordionItem value="item-2" className="w-full">
+                        <AccordionItem value="item-3" className="w-full">
                           <AccordionTrigger className="w-full">
                             VERIFY CONTRACT INSTRUCTIONS
                           </AccordionTrigger>
-                          <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
-                            <div>{data.address}</div>
+                          <AccordionContent className="bg-gray-200 rounded-xl p-3">
+                            <span>
+                              To verify your recently deployed contract, follow
+                              the following steps:
+                            </span>
+                            <ol className="flex flex-col gap-3 list-decimal pl-5 pt-2">
+                              <li>
+                                Go to{' '}
+                                <a
+                                  href={`https://mumbai.polygonscan.com/verifyContract?a=${data.address}`}
+                                  target="_blank"
+                                  className="text-blue-400 underline"
+                                >
+                                  Verify Page
+                                </a>{' '}
+                                to begin verification.
+                              </li>
+                              <b>Fill in the following:</b>
+                              <li>
+                                Please select Compiler Type:{' '}
+                                <b> Solidity (Single-file).</b>
+                              </li>
+                              <li>
+                                Please select Compiler Version:{' '}
+                                <b> v0.8.24+commit.e11b9ed9</b>{' '}
+                                <i className="pl-5">
+                                  Make sure{' '}
+                                  <b>
+                                    Un-Check to show all nightly Commits also
+                                  </b>{' '}
+                                  is checked.
+                                </i>
+                              </li>
+                              <li>
+                                Please select Open Source License Type:{' '}
+                                <b>MIT License (MIT)</b>
+                              </li>
+                              <li>
+                                Click the <b>Continue</b> button.
+                              </li>
+                              <li>
+                                Copy the Contract code form below and Paste the
+                                code in the text are in the new page.
+                              </li>
+                              <li>
+                                Click the <b>Verify and Publish</b> button
+                              </li>
+                              <li>
+                                Successfully, created, deployed and verified
+                                your smart contract.
+                              </li>
+                            </ol>
                           </AccordionContent>
                         </AccordionItem>
                       </>

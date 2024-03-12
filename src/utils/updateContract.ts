@@ -1,9 +1,8 @@
 export const FIRST_PART_CONTRACT = `
-// File: @openzeppelin/contracts/utils/Context.sol
-
-
-// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
 // SPDX-License-Identifier: MIT
+
+// File: @openzeppelin/contracts/utils/Context.sol
+// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)
 
 pragma solidity ^0.8.20;
 
@@ -137,7 +136,7 @@ abstract contract Ownable is Context {
 // File: cryptoSaves.sol
 
 
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.24;
 
 
 
