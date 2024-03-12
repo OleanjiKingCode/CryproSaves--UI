@@ -12,7 +12,7 @@ import { Navbar } from '@/components/Navbar';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { useEffect, useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
-import { ContractFactory } from 'ethers';
+import { ContractFactory, ethers } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -24,6 +24,8 @@ import { IoCopy } from 'react-icons/io5';
 import { useToast } from '@/components/ui/use-toast';
 import copy from 'clipboard-copy';
 import { mainnet, polygon } from 'viem/chains';
+import { toHex } from 'viem';
+import { SwitchChain } from '@/utils/swirchNetwork';
 interface ContractDetails {
   name: string;
   address: string;
@@ -135,9 +137,17 @@ const Setup = () => {
 
   const changeNetwork = async (e: string) => {
     if (e === 'mumbai' && chainId !== 80001) {
-      switchChain({ chainId: 137 });
+      await SwitchChain({
+        chainId: toHex(chains[0].id),
+        chainName: chains[0].name,
+        rpcUrls: [...chains[0].rpcUrls.default.http],
+      });
     } else if (e === 'mainnet' && chainId !== 137) {
-      switchChain({ chainId: 80001 });
+      await SwitchChain({
+        chainId: toHex(chains[1].id),
+        chainName: chains[1].name,
+        rpcUrls: [...chains[1].rpcUrls.default.http],
+      });
     }
   };
 
@@ -212,7 +222,7 @@ const Setup = () => {
               <select
                 {...register('chain', { required: true })}
                 onChange={(e) => changeNetwork(e.target.value)}
-                className="appearance-none bg-white border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 focus:bg-white focus:text-gray-900"
+                className=" col-span-2 md:col-span-2 bg-white border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 focus:bg-white focus:text-gray-900"
               >
                 <option value="mainnet"> Polygon Mainnet</option>
                 <option value="mumbai">Polygin Mumbai</option>
@@ -233,7 +243,7 @@ const Setup = () => {
                 type="text"
                 placeholder="My Crypto Savings"
                 {...register('contractName', { required: true })}
-                className="col-span-1 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
+                className="col-span-2 md:col-span-2 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
               />
               {errors.contractName?.type === 'required' && (
                 <p className="text-sm text-red-600 col-span-2">
@@ -242,10 +252,10 @@ const Setup = () => {
               )}
             </div>
             <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
-              <Label htmlFor="days" className="col-span-1">
+              <Label htmlFor="days" className=" col-span-3 md:col-span-">
                 Contract Properties
               </Label>
-              <div className="flex flex-col gap-4 w-full col-span-2">
+              <div className="flex flex-col gap-4 w-full col-span-3 md:col-span-2">
                 <div className="flex flex-row items-center gap-3">
                   <Checkbox id="lock" checked disabled />
                   <Label
@@ -327,14 +337,14 @@ const Setup = () => {
                 )}
               </div>
             )}
-            <div className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center mt-5">
               <input
                 type="checkbox"
                 id="terms"
                 className="w-4 h-4 col-span-1 accent-pink-600"
                 {...register('privacy', { required: true })}
               />
-              <Label htmlFor="terms" className="col-span-1">
+              <Label htmlFor="terms" className="col-span-1 ">
                 I Agree with the Terms and Privacy policy
               </Label>
               {errors.privacy?.type === 'required' && (
