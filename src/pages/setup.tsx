@@ -318,6 +318,7 @@ const Setup = () => {
                   id="emergency"
                   type="number"
                   placeholder="10"
+                  min={0}
                   {...register('emergencyTime', { required: true })}
                   className="col-span-1 border-[2px] border-gray-500 outline-none focus-visible:ring-0"
                 />
@@ -328,7 +329,7 @@ const Setup = () => {
                 )}
               </div>
             )}
-            <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
+            <div className="flex gap-3 items-center">
               <input
                 type="checkbox"
                 id="terms"
@@ -363,14 +364,24 @@ const Setup = () => {
                       </AccordionContent>
                     </AccordionItem>
                     {deployedContract && (
-                      <AccordionItem value="item-2" className="w-full">
-                        <AccordionTrigger className="w-full">
-                          CONTRACT ADDRESS
-                        </AccordionTrigger>
-                        <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
-                          <div>{data.address}</div>
-                        </AccordionContent>
-                      </AccordionItem>
+                      <>
+                        <AccordionItem value="item-2" className="w-full">
+                          <AccordionTrigger className="w-full">
+                            CONTRACT ADDRESS
+                          </AccordionTrigger>
+                          <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
+                            <div>{data.address}</div>
+                          </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="item-2" className="w-full">
+                          <AccordionTrigger className="w-full">
+                            VERIFY CONTRACT INSTRUCTIONS
+                          </AccordionTrigger>
+                          <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
+                            <div>{data.address}</div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </>
                     )}
                   </Accordion>
                 </div>
