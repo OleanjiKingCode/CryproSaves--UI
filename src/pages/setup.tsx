@@ -1,51 +1,26 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
-import { ContractFactory, ethers } from 'ethers';
+import { ContractFactory } from 'ethers';
 import { getEthersSigner } from '@/utils/getEthersSigner';
 import { config } from '@/utils/wagmiConfig';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useChainId } from 'wagmi';
 import { customizeCryptoSaves } from '@/utils/updateContract';
-import { RiLoader4Fill, RiLoader5Fill } from 'react-icons/ri';
+import { RiLoader4Fill } from 'react-icons/ri';
 import { Toaster } from '@/components/ui/toaster';
-import { IoCopy } from 'react-icons/io5';
 import { useToast } from '@/components/ui/use-toast';
-import copy from 'clipboard-copy';
-import { mainnet, polygon } from 'viem/chains';
 import { toHex } from 'viem';
 import { SwitchChain } from '@/utils/swirchNetwork';
-interface ContractDetails {
-  name: string;
-  address: string;
-  abi: any;
-  bytecode: any;
-  sourceCode: string;
-  args: any;
-  txn: string;
-}
-
-interface IFormInput {
-  contractName: string;
-  chain: string;
-  withdraw: boolean;
-  privacy: boolean;
-  extendTime: boolean;
-  emergencyTime?: number;
-}
+import { AccordionDetails } from '@/components/AccordionDetails';
+import { ContractDetails, IFormInput } from '@/types/ContractSetup';
 
 const Setup = () => {
+
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -55,35 +30,40 @@ const Setup = () => {
     args: '',
     txn: '',
   };
+
   const [pickedWithdraw, setPickedWithdraw] = useState(false);
   const { address, chainId } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
-  const { chains, switchChain } = useSwitchChain({ config });
+  const { chains } = useSwitchChain({ config });
   const { toast } = useToast();
   const [isLoading, setisLoading] = useState(false);
   const [isLoadingDeploy, setisLoadingDeploy] = useState(false);
-  const [isLoadingDetails, setisLoadingDetails] = useState(false);
   const [gottenContractDetails, setGottenContractDetails] = useState(false);
   const [deployedContract, setDeployedContract] = useState(false);
   const [allowWithdraw, setAllowWithdraw] = useState(false);
-
-  const handleCopyToClipboard = async (textToCopy: string, toCopy: string) => {
-    try {
-      await copy(textToCopy);
-      toast({
-        description: `Successfully Copied ${toCopy}`,
-        style: { backgroundColor: 'green', color: 'white' },
-      });
-    } catch (error) {
-      console.error('Error copying to clipboard', error);
-    }
-  };
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
+
+
+  const changeNetwork = async (e: string) => {
+    if (e === 'mumbai' && chainId !== 80001) {
+      await SwitchChain({
+        chainId: toHex(chains[0].id),
+        chainName: chains[0].name,
+        rpcUrls: [...chains[0].rpcUrls.default.http],
+      });
+    } else if (e === 'mainnet' && chainId !== 137) {
+      await SwitchChain({
+        chainId: toHex(chains[1].id),
+        chainName: chains[1].name,
+        rpcUrls: [...chains[1].rpcUrls.default.http],
+      });
+    }
+  };
+
 
   const onSubmit: SubmitHandler<IFormInput> = async (info) => {
     try {
@@ -96,7 +76,6 @@ const Setup = () => {
         });
         setisLoading(false);
       }
-
       setAllowWithdraw(info.withdraw);
       const contract = customizeCryptoSaves({
         author: address?.toString() ?? '',
@@ -135,27 +114,6 @@ const Setup = () => {
     }
   };
 
-  const changeNetwork = async (e: string) => {
-    if (e === 'mumbai' && chainId !== 80001) {
-      await SwitchChain({
-        chainId: toHex(chains[0].id),
-        chainName: chains[0].name,
-        rpcUrls: [...chains[0].rpcUrls.default.http],
-      });
-    } else if (e === 'mainnet' && chainId !== 137) {
-      await SwitchChain({
-        chainId: toHex(chains[1].id),
-        chainName: chains[1].name,
-        rpcUrls: [...chains[1].rpcUrls.default.http],
-      });
-    }
-  };
-
-  const formatText = (text: string) => {
-    const sourceCode = text.replace(/\\n/g, '\n'); // Replace '\\n' with actual line breaks
-    const formattedSourceCode = sourceCode.split('\n');
-    return formattedSourceCode;
-  };
 
   const deployContract = async (includeEmergencyWithdraw: boolean) => {
     try {
@@ -354,134 +312,10 @@ const Setup = () => {
               )}
             </div>
             {gottenContractDetails && (
-              <div className="w-full flex flex-col items-center gap-5">
-                <div className="w-full flex items-center">
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="item-1" className="w-full">
-                      <AccordionTrigger className="w-full">
-                        CONTRACT CODE
-                      </AccordionTrigger>
-                      <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
-                        <pre>
-                          {formatText(data.sourceCode).map((line, index) => (
-                            <p key={index} className="mb-1">
-                              {line}
-                            </p>
-                          ))}
-                        </pre>
-                      </AccordionContent>
-                    </AccordionItem>
-                    {deployedContract && (
-                      <>
-                        <AccordionItem value="item-2" className="w-full">
-                          <AccordionTrigger className="w-full">
-                            CONTRACT ADDRESS
-                          </AccordionTrigger>
-                          <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
-                            <div>{data.address}</div>
-                          </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-3" className="w-full">
-                          <AccordionTrigger className="w-full">
-                            VERIFY CONTRACT INSTRUCTIONS
-                          </AccordionTrigger>
-                          <AccordionContent className="bg-gray-200 rounded-xl p-3">
-                            <span>
-                              To verify your recently deployed contract, follow
-                              the following steps:
-                            </span>
-                            <ol className="flex flex-col gap-3 list-decimal pl-5 pt-2">
-                              <li>
-                                Go to{' '}
-                                <a
-                                  href={`https://mumbai.polygonscan.com/verifyContract?a=${data.address}`}
-                                  target="_blank"
-                                  className="text-blue-400 underline"
-                                >
-                                  Verify Page
-                                </a>{' '}
-                                to begin verification.
-                              </li>
-                              <b>Fill in the following:</b>
-                              <li>
-                                Please select Compiler Type:{' '}
-                                <b> Solidity (Single-file).</b>
-                              </li>
-                              <li>
-                                Please select Compiler Version:{' '}
-                                <b> v0.8.24+commit.e11b9ed9</b>{' '}
-                                <i className="pl-5">
-                                  Make sure{' '}
-                                  <b>
-                                    Un-Check to show all nightly Commits also
-                                  </b>{' '}
-                                  is checked.
-                                </i>
-                              </li>
-                              <li>
-                                Please select Open Source License Type:{' '}
-                                <b>MIT License (MIT)</b>
-                              </li>
-                              <li>
-                                Click the <b>Continue</b> button.
-                              </li>
-                              <li>
-                                Copy the Contract code form below and Paste the
-                                code in the text are in the new page.
-                              </li>
-                              <li>
-                                Click the <b>Verify and Publish</b> button
-                              </li>
-                              <li>
-                                Successfully, created, deployed and verified
-                                your smart contract.
-                              </li>
-                            </ol>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </>
-                    )}
-                  </Accordion>
-                </div>
-                <div className="w-full flex items-center justify-end flex-wrap gap-5">
-                  <div
-                    className="flex gap-2 items-center cursor-pointer"
-                    onClick={() =>
-                      handleCopyToClipboard(data.sourceCode, 'Contract code')
-                    }
-                  >
-                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
-                    Contract Code
-                  </div>
-                  {deployedContract && (
-                    <div
-                      className="flex gap-2 items-center cursor-pointer"
-                      onClick={() =>
-                        handleCopyToClipboard(data.address, 'Contract Address')
-                      }
-                    >
-                      <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
-                      Contract Address
-                    </div>
-                  )}
-                  <div
-                    className="flex gap-2 items-center cursor-pointer"
-                    onClick={() => handleCopyToClipboard(data.abi, 'ABI')}
-                  >
-                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
-                    ABI
-                  </div>
-                  <div
-                    className="flex gap-2 items-center cursor-pointer"
-                    onClick={() =>
-                      handleCopyToClipboard(data.bytecode, 'Bytecode')
-                    }
-                  >
-                    <IoCopy className="h-4 w-4 text-gray-300 hover:text-gray-600 " />
-                    Bytecode
-                  </div>
-                </div>
-              </div>
+              <AccordionDetails
+                data={data}
+                deployedContract={deployedContract}
+              />
             )}
 
             <div className="w-full flex flex-row gap-5 items-center justify-between flex-wrap ">
