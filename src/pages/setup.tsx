@@ -137,13 +137,12 @@ const Setup = () => {
     if (e === 'mumbai' && chainId !== 80001) {
       switchChain({ chainId: 137 });
     } else if (e === 'mainnet' && chainId !== 137) {
-      
       switchChain({ chainId: 80001 });
     }
   };
 
   const formatText = (text: string) => {
-    const sourceCode = data.sourceCode.replace(/\\n/g, '\n'); // Replace '\\n' with actual line breaks
+    const sourceCode = text.replace(/\\n/g, '\n'); // Replace '\\n' with actual line breaks
     const formattedSourceCode = sourceCode.split('\n');
     return formattedSourceCode;
   };
