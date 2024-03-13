@@ -1,4 +1,3 @@
-import fs from 'fs/promises';
 import solc from 'solc';
 
 export default async function handler(req, res) {
