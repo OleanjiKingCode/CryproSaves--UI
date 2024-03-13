@@ -46,7 +46,6 @@ const Setup = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-  
   const changeNetwork = async (e: string) => {
     if (e === 'Polygon Mumbai' && chainId !== 80001) {
       await SwitchChain({
@@ -81,7 +80,7 @@ const Setup = () => {
         includeExtendedEvent: info.extendTime,
         includeEmergencyWithdraw: info.withdraw,
       });
-
+      console.log(contract);
       const config: AxiosRequestConfig = {
         params: {
           contract: contract,
@@ -92,6 +91,7 @@ const Setup = () => {
       toast({
         description: 'Now compiling contract',
         style: { backgroundColor: 'green', color: 'white' },
+        duration: 1000,
       });
       const response = await axios.get('/api/Contract', config);
       const result = await response.data.artifact;
@@ -120,6 +120,7 @@ const Setup = () => {
         toast({
           description: 'Connect your wallet',
           style: { backgroundColor: 'red', color: 'white' },
+          duration: 1000,
         });
         setisLoadingDeploy(false);
       }
@@ -127,6 +128,7 @@ const Setup = () => {
       toast({
         description: 'Now Deploying contract',
         style: { backgroundColor: 'green', color: 'white' },
+        duration: 1000,
       });
       const signer = getEthersSigner(config);
       const factory = new ContractFactory(
@@ -151,6 +153,7 @@ const Setup = () => {
       toast({
         description: 'You have successfully deployed your contract',
         style: { backgroundColor: 'green', color: 'white' },
+        duration: 1000,
       });
       setisLoadingDeploy(false);
       setDeployedContract(true);
@@ -211,7 +214,7 @@ const Setup = () => {
               )}
             </div>
             <div className="grid grid-cols-3 gap-4 col-span-3 items-center">
-              <Label htmlFor="days" className=" col-span-3 md:col-span-">
+              <Label htmlFor="days" className=" col-span-3 md:col-span-1">
                 Contract Properties
               </Label>
               <div className="flex flex-col gap-4 w-full col-span-3 md:col-span-2">

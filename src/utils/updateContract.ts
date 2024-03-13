@@ -383,16 +383,12 @@ export const customizeCryptoSaves = ({
       ''
     );
   }
-
   if (!includeEmergencyWithdraw) {
     contractCode = contractCode.replace(
-      /constructor(uint256 _months) {/,
-      `constructor() {`
+      /constructor\(uint256 _months\) {([^}]*)emergencyUnlockTimestamp = block\.timestamp \+ \(_months \* 30 days\);([^}]*)}/,
+      'constructor() {$1$2}'
     );
   }
-
   // Return the customized contract code
   return contractCode;
 };
-
-// const customizedCode = customizeCryptoSaves('NewAuthor', 'CustomCryptoSaves', true, false);
