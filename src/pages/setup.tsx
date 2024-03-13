@@ -15,12 +15,11 @@ import { RiLoader4Fill } from 'react-icons/ri';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
 import { toHex } from 'viem';
-import { SwitchChain } from '@/utils/swirchNetwork';
+import { SwitchChain } from '@/utils/switchNetwork';
 import { AccordionDetails } from '@/components/AccordionDetails';
 import { ContractDetails, IFormInput } from '@/types/ContractSetup';
 
 const Setup = () => {
-
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -32,7 +31,7 @@ const Setup = () => {
   };
 
   const [pickedWithdraw, setPickedWithdraw] = useState(false);
-  const { address, chainId } = useAccount();
+  const { address, chainId, chain } = useAccount();
   const [data, setData] = useState<ContractDetails>(InitialValues);
   const { chains } = useSwitchChain({ config });
   const { toast } = useToast();
@@ -47,15 +46,15 @@ const Setup = () => {
     formState: { errors },
   } = useForm<IFormInput>();
 
-
+  
   const changeNetwork = async (e: string) => {
-    if (e === 'mumbai' && chainId !== 80001) {
+    if (e === 'Polygon Mumbai' && chainId !== 80001) {
       await SwitchChain({
         chainId: toHex(chains[0].id),
         chainName: chains[0].name,
         rpcUrls: [...chains[0].rpcUrls.default.http],
       });
-    } else if (e === 'mainnet' && chainId !== 137) {
+    } else if (e === 'Polygon' && chainId !== 137) {
       await SwitchChain({
         chainId: toHex(chains[1].id),
         chainName: chains[1].name,
@@ -63,7 +62,6 @@ const Setup = () => {
       });
     }
   };
-
 
   const onSubmit: SubmitHandler<IFormInput> = async (info) => {
     try {
@@ -113,7 +111,6 @@ const Setup = () => {
       console.error('Error fetching data:', error);
     }
   };
-
 
   const deployContract = async (includeEmergencyWithdraw: boolean) => {
     try {
@@ -178,12 +175,16 @@ const Setup = () => {
                 Desired Chain
               </Label>
               <select
+                value={chain?.name}
                 {...register('chain', { required: true })}
                 onChange={(e) => changeNetwork(e.target.value)}
                 className=" col-span-2 md:col-span-2 bg-white border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 focus:bg-white focus:text-gray-900"
               >
-                <option value="mainnet"> Polygon Mainnet</option>
-                <option value="mumbai">Polygin Mumbai</option>
+                {chains.map((item, i) => (
+                  <option key={i} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
 
               {errors.chain?.type === 'required' && (
