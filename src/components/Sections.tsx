@@ -159,9 +159,9 @@ export const Sections = ({ Saves }: { Saves: any[] }) => {
                       if (item.locked === true) {
                         return <LockedSaves key={i} save={item} />;
                       } else if (isToday(Number(item.releaseTime))) {
-                        return <TimeEndedSaves key={i} />;
+                        return <TimeEndedSaves key={i} save={item} />;
                       } else {
-                        return <UnlockedSaves key={i} />;
+                        return <UnlockedSaves key={i} save={item} />;
                       }
                     })}
                   </div>

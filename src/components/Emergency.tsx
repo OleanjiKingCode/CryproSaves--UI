@@ -18,7 +18,7 @@ export const Emergency = ({
   const { result, status } = GetTimer();
 
   const emergencyWithdrawl = () => {
-    //withdraw from the contract
+    //withdraw from the contract useWrteCOntract
     onClose();
   };
 

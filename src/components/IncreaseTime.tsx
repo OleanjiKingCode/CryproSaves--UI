@@ -10,11 +10,14 @@ import { FaLock } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
 import { Input } from '@/components/ui/input';
+import { calculateTimeLeft } from '@/utils/getTimer';
 
 export const IncreaseTimeModal = ({
+  data,
   isOpen,
   onClose,
 }: {
+  data: any;
   isOpen: boolean;
   onClose: () => void;
 }) => {
@@ -31,7 +34,7 @@ export const IncreaseTimeModal = ({
                 <span className="text-sm">Name</span>
                 <div className="py-1 px-2 bg-gray-400 flex items-center rounded-md w-[63%]  ">
                   <span className="font-semibold text-black text-sm">
-                    Name Of Save
+                    {data.name}
                   </span>
                 </div>
               </div>
@@ -40,16 +43,16 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-green-200 flex items-center rounded-md  w-[63%]  ">
                   <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
                   <span className="font-semibold text-black text-sm">
-                    300Eth
+                    {Number(data.amount)}
                   </span>
                 </div>
               </div>
               <div className="flex flex-row  items-center gap-4 justify-between">
-                <span className="text-sm">Lock Time</span>
+                <span className="text-sm">Lock Time Left</span>
                 <div className="py-1 px-2 bg-blue-200 flex items-center rounded-md w-[63%]  ">
                   <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
                   <span className=" flex flex-row items-center font-semibold text-black text-sm w-full">
-                    400 +{' '}
+                    {calculateTimeLeft(data.releaseTime, true).days} +{' '}
                     <Input
                       id="days"
                       type="number"
@@ -66,7 +69,7 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-red-100 flex items-center rounded-md w-[63%]  ">
                   <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
                   <span className="font-semibold text-black text-sm">
-                    Locked
+                    {data.locked}
                   </span>
                 </div>
               </div>

@@ -12,13 +12,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
 import { LockupABIFull } from '@/constants/LockupData';
-import { formatEther } from 'viem';
+import { formatEther, isAddress } from 'viem';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function Main() {
   const { address, isConnected } = useAccount();
   const { toast } = useToast();
   const [hasLockContract, setHasLockContract] = useState(false);
   const [constractDetails, setContractDetails] = useState<any>({});
+  const [userContractAddress, setUserContracAddress] = useState<
+    `0x${string}` | string
+  >();
 
   const { data: AllData } = useReadContract({
     abi: LockupABIFull,
@@ -26,22 +30,64 @@ export default function Main() {
     functionName: 'getAllLockUps',
   });
 
+  const { data: isOwner, refetch: OwnerRefetch } = useReadContract({
+    abi: LockupABIFull,
+    address: '0xf80ec3ffC2DB71E482e9B4A4032536d44ffb7CBf',
+    functionName: 'owner',
+  });
+
+  console.log(isOwner, AllData);
+  const getContractDetails = async () => {
+    console.log(isOwner, 'dcpkdjvj');
+    if (userContractAddress && isAddress(userContractAddress)) {
+      console.log(isOwner, 'dcpkdjvj', userContractAddress);
+      // await OwnerRefetch();
+      // console.log(isOwner, 'dcpkdjvj');
+      if (isOwner) {
+        toast({
+          description: 'You are not the owner of this contract',
+          style: { backgroundColor: 'red', color: 'white' },
+        });
+      } else {
+        console.log(AllData, 'dkcosdnbij');
+        // refetch({ throwOnError: true })
+        //   .then((result) => {
+        //     console.log(result, 'res');
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+        console.log(AllData, 'dkcosdnbij');
+        //setHasLockContract(true);
+      }
+    } else if (
+      !isConnected ||
+      (userContractAddress && !isAddress(userContractAddress))
+    ) {
+      toast({
+        description: 'connect your wallet or enter valid contract address ',
+        style: { backgroundColor: 'red', color: 'white' },
+      });
+    } else {
+      console.log('logic remains');
+      // check if the address has a contract connected
+      // get from the the connector contract
+    }
+  };
+
   const fetchData = async () => {
     try {
       let allSaves: any = [];
       let lockedCount = 0;
       let unlockedCount = 0;
       let totalEth = 0;
-      console.log(AllData, 'AllData');
       if (Array.isArray(AllData)) {
         allSaves = AllData;
         AllData.slice(1).forEach((save: any) => {
-          console.log(save);
           save.locked === true ? (lockedCount += 1) : (unlockedCount += 1);
           totalEth += Number(formatEther(save.amount));
         });
       }
-      console.log(totalEth);
       setContractDetails({
         allSaves,
         SavesNum: allSaves.length,
@@ -54,10 +100,6 @@ export default function Main() {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [AllData /*hasLockContract*/]);
-
   const handleCopyToClipboard = async (textToCopy: string) => {
     try {
       await copy(textToCopy);
@@ -69,6 +111,10 @@ export default function Main() {
       console.error('Error copying to clipboard', error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [AllData, hasLockContract]);
 
   return (
     <div className="w-full flex flex-col min-h-screen bg-pink-100">
@@ -122,6 +168,7 @@ export default function Main() {
               </Label>
               <Input
                 id="contract"
+                onChange={(e) => setUserContracAddress(e.target.value)}
                 type="text"
                 placeholder="Ex: 0x1234ABC"
                 className="border-[2px] border-gray-500 outline-none focus-visible:ring-0"
@@ -129,13 +176,15 @@ export default function Main() {
             </div>
             <Button
               className="bg-pink-200 hover:bg-pink-500 rounded-md shadow-md font-semibold text-black"
-              onClick={() => setHasLockContract(true)}
+              onClick={() => getContractDetails()}
+              //disabled={!isConnected || userContractAddress !== undefined}
             >
               Get Contract Details
             </Button>
           </div>
         </div>
       )}
+      <Toaster />
     </div>
   );
 }

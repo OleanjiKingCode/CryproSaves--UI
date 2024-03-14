@@ -6,18 +6,21 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { FaLockOpen  } from 'react-icons/fa';
+import { FaLockOpen } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import {
   RiMoneyDollarCircleFill,
   RiTimer2Fill,
   RiTimerFlashFill,
 } from 'react-icons/ri';
+import { formatTimestamp } from '@/utils/formatTimeStamp';
 
 export const UnlockModal = ({
+  data,
   isOpen,
   onClose,
 }: {
+  data: any;
   isOpen: boolean;
   onClose: () => void;
 }) => {
@@ -37,7 +40,7 @@ export const UnlockModal = ({
                 <span className="text-sm">Name</span>
                 <div className="py-1 px-2 bg-gray-400 flex items-center rounded-md w-[50%]  ">
                   <span className="font-semibold text-black text-sm">
-                    Name Of Save
+                    {data.name}
                   </span>
                 </div>
               </div>
@@ -46,16 +49,16 @@ export const UnlockModal = ({
                 <div className="py-1 px-2 bg-green-200 flex items-center rounded-md  w-[50%]  ">
                   <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
                   <span className="font-semibold text-black text-sm">
-                    300Eth
+                    {Number(data.amount)}
                   </span>
                 </div>
               </div>
               <div className="flex flex-row  items-center gap-4 justify-between">
-                <span className="text-sm">Lock Time</span>
+                <span className="text-sm">Lock Time Left</span>
                 <div className="py-1 px-2 bg-blue-200 flex items-center rounded-md w-[50%]  ">
                   <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
                   <span className="font-semibold text-black text-sm">
-                    400 Days
+                   {formatTimestamp(data.releaseTime)}
                   </span>
                 </div>
               </div>

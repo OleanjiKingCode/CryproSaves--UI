@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { formatTimestamp } from '@/utils/formatTimeStamp';
 import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
 
@@ -15,7 +16,7 @@ export const Details = ({
   isOpen,
   onClose,
 }: {
-  data: any | undefined;
+  data: any;
   isOpen: boolean;
   onClose: () => void;
 }) => {
@@ -32,7 +33,7 @@ export const Details = ({
             </Label>
             <div className="py-1 px-2 bg-gray-400 flex items-center w-[50%] rounded-md  col-span-3">
               <span className="font-semibold text-black text-sm">
-                Name Of Save
+                {data.name}
               </span>
             </div>
           </div>
@@ -42,16 +43,21 @@ export const Details = ({
             </Label>
             <div className="py-1 px-2 bg-green-200 flex items-center w-[50%] rounded-md   col-span-3">
               <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
-              <span className="font-semibold text-black text-sm">300Eth</span>
+              <span className="font-semibold text-black text-sm">
+                {Number(data.amount)}
+              </span>
             </div>
           </div>
           <div className="flex flex-row w-[80%] justify-between items-center gap-4">
             <Label htmlFor="name" className="">
-              Lock Time
+              Lock Time Left
             </Label>
             <div className="py-1 px-2 bg-blue-200 flex items-center w-[50%] rounded-md  col-span-3">
               <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
-              <span className="font-semibold text-black text-sm">400 Days</span>
+              <span className="font-semibold text-black text-sm">
+                {' '}
+                {formatTimestamp(data.releaseTime)}
+              </span>
             </div>
           </div>
           <div className="flex flex-row w-[80%] justify-between items-center gap-4">
@@ -60,7 +66,9 @@ export const Details = ({
             </Label>
             <div className="py-1 px-2 bg-red-100 flex items-center  w-[50%] rounded-md  col-span-3">
               <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
-              <span className="font-semibold text-black text-sm">Locked</span>
+              <span className="font-semibold text-black text-sm">
+                {data.locked}
+              </span>
             </div>
           </div>
         </div>
