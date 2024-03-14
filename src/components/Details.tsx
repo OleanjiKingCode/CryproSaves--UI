@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { formatTimestamp } from '@/utils/formatTimeStamp';
 import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
+import { formatEther } from 'viem';
 
 export const Details = ({
   data,
@@ -44,7 +45,7 @@ export const Details = ({
             <div className="py-1 px-2 bg-green-200 flex items-center w-[50%] rounded-md   col-span-3">
               <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
               <span className="font-semibold text-black text-sm">
-                {Number(data.amount)}
+                {Number(formatEther(data.amount))}
               </span>
             </div>
           </div>
@@ -56,7 +57,7 @@ export const Details = ({
               <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
               <span className="font-semibold text-black text-sm">
                 {' '}
-                {formatTimestamp(data.releaseTime)}
+                {formatTimestamp(Number(data.releaseTime))}
               </span>
             </div>
           </div>
@@ -67,7 +68,7 @@ export const Details = ({
             <div className="py-1 px-2 bg-red-100 flex items-center  w-[50%] rounded-md  col-span-3">
               <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
               <span className="font-semibold text-black text-sm">
-                {data.locked}
+                {data.locked ? 'Locked' : 'Unlocked'}
               </span>
             </div>
           </div>
@@ -76,7 +77,6 @@ export const Details = ({
           <Button
             type="submit"
             className="bg-red-400 font-medium px-7 w-fit"
-            disabled
             onClick={onClose}
           >
             Close

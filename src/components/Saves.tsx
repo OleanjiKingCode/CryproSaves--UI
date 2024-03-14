@@ -41,11 +41,11 @@ export const LockedSaves = ({ save }: { save: any }) => {
           <span className="font-semibold">{save.type}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
-          <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end">
-            <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
+          <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end cursor-pointer">
+            <ImCancelCircle className="mr-2 h-4 w-4 text-red-800" />
             <span className="font-semibold text-black text-sm">Locked</span>
           </div>
-          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end">
+          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end cursor-pointer">
             <RiTimer2Fill className="mr-2 h-4 w-4 text-green-800 " />
             <span className="font-semibold text-black text-sm">
               {formatTimestamp(Number(save.releaseTime))}
@@ -115,11 +115,11 @@ export const UnlockedSaves = ({ save }: { save: any }) => {
           <span className="font-semibold">{save.type}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
-          <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end">
+          <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end cursor-pointer">
             <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
             <span className="font-semibold text-black text-sm">Locked</span>
           </div>
-          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end">
+          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end cursor-pointer">
             <RiTimer2Fill className="mr-2 h-4 w-4 text-green-800 " />
             <span className="font-semibold text-black text-sm">Time Ended</span>
           </div>
@@ -176,11 +176,11 @@ export const TimeEndedSaves = ({ save }: { save: any }) => {
           <span className="font-semibold">{save.type}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
-          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end">
+          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end cursor-pointer">
             <ImCheckboxChecked className="mr-2 h-4 w-4 text-green-800 " />
             <span className="font-semibold text-black text-sm">Unlocked</span>
           </div>
-          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end">
+          <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end cursor-pointer">
             <RiTimer2Fill className="mr-2 h-4 w-4 text-green-800 " />
             <span className="font-semibold text-black text-sm">Time Ended</span>
           </div>

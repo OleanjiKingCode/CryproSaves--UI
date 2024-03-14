@@ -42,7 +42,7 @@ export default function Main() {
     if (userContractAddress && isAddress(userContractAddress)) {
       await OwnerRefetch();
       // console.log(isOwner, 'dcpkdjvj');
-      if (!isOwner) {
+      if (isOwner !== address) {
         toast({
           description: 'You are not the owner of this contract',
           style: { backgroundColor: 'red', color: 'white' },

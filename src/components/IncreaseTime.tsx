@@ -11,6 +11,7 @@ import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
 import { Input } from '@/components/ui/input';
 import { calculateTimeLeft } from '@/utils/getTimer';
+import { formatEther } from 'viem';
 
 export const IncreaseTimeModal = ({
   data,
@@ -43,7 +44,7 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-green-200 flex items-center rounded-md  w-[63%]  ">
                   <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
                   <span className="font-semibold text-black text-sm">
-                    {Number(data.amount)}
+                    {Number(formatEther(data.amount))}
                   </span>
                 </div>
               </div>
@@ -52,7 +53,7 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-blue-200 flex items-center rounded-md w-[63%]  ">
                   <RiTimer2Fill className="mr-2 h-4 w-4 text-blue-800 " />
                   <span className=" flex flex-row items-center font-semibold text-black text-sm w-full">
-                    {calculateTimeLeft(data.releaseTime, true).days} +{' '}
+                    {calculateTimeLeft(Number(data.releaseTime), true).days} +{' '}
                     <Input
                       id="days"
                       type="number"
@@ -69,7 +70,7 @@ export const IncreaseTimeModal = ({
                 <div className="py-1 px-2 bg-red-100 flex items-center rounded-md w-[63%]  ">
                   <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
                   <span className="font-semibold text-black text-sm">
-                    {data.locked}
+                    {data.locked ? 'Locked' : 'Unlocked'}
                   </span>
                 </div>
               </div>
