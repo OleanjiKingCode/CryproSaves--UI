@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
 import { useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 import { ContractFactory } from 'ethers';
@@ -18,6 +18,11 @@ import { toHex } from 'viem';
 import { SwitchChain } from '@/utils/switchNetwork';
 import { AccordionDetails } from '@/components/AccordionDetails';
 import { ContractDetails, IFormInput } from '@/types/ContractSetup';
+import {
+  ConnectorABIPolygon,
+  ConnectorAddress,
+  ConnectorAddressPolygon,
+} from '@/constants/LockupData';
 
 const Setup = () => {
   let InitialValues: ContractDetails = {
@@ -161,6 +166,22 @@ const Setup = () => {
       console.log('error:', error);
       setisLoadingDeploy(false);
     }
+  };
+
+  const { writeContract } = useWriteContract();
+
+  const connectContract = () => {
+    writeContract({
+      abi: ConnectorABIPolygon,
+      address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
+      functionName: 'addUser',
+      args: [data.address],
+    });
+
+    toast({
+      description: 'Successfully linked your contract with your adddress',
+      style: { backgroundColor: 'green', color: 'white' },
+    });
   };
 
   return (
@@ -348,7 +369,7 @@ const Setup = () => {
               </Button>
               <Button
                 type="button"
-                onClick={() => deployContract(allowWithdraw)}
+                onClick={() => connectContract()}
                 disabled={!deployedContract}
                 className="bg-pink-200 hover:bg-pink-600 rounded-md shadow-md text-sm w-[30%] font-semibold text-black"
               >

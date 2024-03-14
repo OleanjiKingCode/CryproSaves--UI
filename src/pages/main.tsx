@@ -14,13 +14,14 @@ import { useEffect, useState } from 'react';
 import {
   ConnectorABIPolygon,
   ConnectorAddress,
+  ConnectorAddressPolygon,
   LockupABIFull,
 } from '@/constants/LockupData';
 import { formatEther, isAddress } from 'viem';
 import { Toaster } from '@/components/ui/toaster';
 
 export default function Main() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
   const { toast } = useToast();
   const [hasLockContract, setHasLockContract] = useState(false);
   const [constractDetails, setContractDetails] = useState<any>({});
@@ -43,7 +44,7 @@ export default function Main() {
 
   const { data: addressesData } = useReadContract({
     abi: ConnectorABIPolygon,
-    address: ConnectorAddress,
+    address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
     functionName: 'getAddresses',
     args: [address],
   });
