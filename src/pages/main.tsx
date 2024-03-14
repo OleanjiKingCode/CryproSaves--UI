@@ -24,15 +24,15 @@ export default function Main() {
     `0x${string}` | string
   >();
 
-  const { data: AllData } = useReadContract({
+  const { data: AllData, refetch } = useReadContract({
     abi: LockupABIFull,
-    address: '0xf80ec3ffC2DB71E482e9B4A4032536d44ffb7CBf',
+    address: userContractAddress as `0x${string}`,
     functionName: 'getAllLockUps',
   });
 
   const { data: isOwner, refetch: OwnerRefetch } = useReadContract({
     abi: LockupABIFull,
-    address: '0xf80ec3ffC2DB71E482e9B4A4032536d44ffb7CBf',
+    address: userContractAddress as `0x${string}`,
     functionName: 'owner',
   });
 
@@ -40,25 +40,17 @@ export default function Main() {
   const getContractDetails = async () => {
     console.log(isOwner, 'dcpkdjvj');
     if (userContractAddress && isAddress(userContractAddress)) {
-      console.log(isOwner, 'dcpkdjvj', userContractAddress);
-      // await OwnerRefetch();
+      await OwnerRefetch();
       // console.log(isOwner, 'dcpkdjvj');
-      if (isOwner) {
+      if (!isOwner) {
         toast({
           description: 'You are not the owner of this contract',
           style: { backgroundColor: 'red', color: 'white' },
         });
       } else {
+        await refetch();
         console.log(AllData, 'dkcosdnbij');
-        // refetch({ throwOnError: true })
-        //   .then((result) => {
-        //     console.log(result, 'res');
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-        console.log(AllData, 'dkcosdnbij');
-        //setHasLockContract(true);
+        setHasLockContract(true);
       }
     } else if (
       !isConnected ||
