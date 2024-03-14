@@ -1,9 +1,5 @@
 import { useReadContract } from 'wagmi';
-import {
-  LockupABI,
-  LockupABIFull,
-  LockupAddress,
-} from '@/constants/LockupData';
+import { LockupABIFull } from '@/constants/LockupData';
 
 interface TimeLeftType {
   days?: number;

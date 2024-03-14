@@ -11,7 +11,11 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { LockupABIFull } from '@/constants/LockupData';
+import {
+  ConnectorABIPolygon,
+  ConnectorAddress,
+  LockupABIFull,
+} from '@/constants/LockupData';
 import { formatEther, isAddress } from 'viem';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -23,6 +27,7 @@ export default function Main() {
   const [userContractAddress, setUserContracAddress] = useState<
     `0x${string}` | string
   >();
+  const [contractAddresses, setContractAddresses] = useState([]);
 
   const { data: AllData, refetch } = useReadContract({
     abi: LockupABIFull,
@@ -36,12 +41,16 @@ export default function Main() {
     functionName: 'owner',
   });
 
-  console.log(isOwner, AllData);
+  const { data: addressesData } = useReadContract({
+    abi: ConnectorABIPolygon,
+    address: ConnectorAddress,
+    functionName: 'getAddresses',
+    args: [address],
+  });
+
   const getContractDetails = async () => {
-    console.log(isOwner, 'dcpkdjvj');
     if (userContractAddress && isAddress(userContractAddress)) {
       await OwnerRefetch();
-      // console.log(isOwner, 'dcpkdjvj');
       if (isOwner !== address) {
         toast({
           description: 'You are not the owner of this contract',
@@ -49,7 +58,6 @@ export default function Main() {
         });
       } else {
         await refetch();
-        console.log(AllData, 'dkcosdnbij');
         setHasLockContract(true);
       }
     } else if (
@@ -61,9 +69,17 @@ export default function Main() {
         style: { backgroundColor: 'red', color: 'white' },
       });
     } else {
-      console.log('logic remains');
-      // check if the address has a contract connected
-      // get from the the connector contract
+      if (Array.isArray(addressesData) && addressesData.length > 0) {
+        setUserContracAddress(addressesData[0]);
+        await refetch();
+      } else {
+        toast({
+          description: 'your address is not connected to any saving contract',
+          style: { backgroundColor: 'red', color: 'white' },
+        });
+        return;
+      }
+      setHasLockContract(true);
     }
   };
 

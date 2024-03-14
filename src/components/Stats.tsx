@@ -18,7 +18,7 @@ export const Stats = ({
       </div>
       <div className="rounded-2xl  py-7 px-5 lg:w-[230px] md:w-[200px] sm:w-[170px] w-[150px] h-[150px] flex flex-col items-center  justify-center text-center gap-4 bg-white cursor-pointer">
         <span className="text-2xl font-bold text-green-300 ">
-          {EthSaved} ETH
+          {EthSaved} MATIC
         </span>
         <span className="text-sm font-bold">Total Value Saved</span>
       </div>
