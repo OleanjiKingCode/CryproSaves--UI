@@ -11,9 +11,11 @@ import { ImCancelCircle } from 'react-icons/im';
 import { RiMoneyDollarCircleFill, RiTimer2Fill } from 'react-icons/ri';
 
 export const Details = ({
+  data,
   isOpen,
   onClose,
 }: {
+  data: any | undefined;
   isOpen: boolean;
   onClose: () => void;
 }) => {

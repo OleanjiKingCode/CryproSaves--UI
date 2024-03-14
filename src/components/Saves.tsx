@@ -8,7 +8,19 @@ import { Details } from './Details';
 import { UnlockModal } from './UnlockModal';
 import { IncreaseTimeModal } from './IncreaseTime';
 
-export const LockedSaves = () => {
+export const formatTimestamp = (timestamp: number) => {
+  const now = Math.floor(Date.now() / 1000); // Current Unix timestamp in seconds
+  const difference = timestamp - now;
+
+  const days = Math.floor(difference / (60 * 60 * 24));
+  const hours = Math.floor((difference % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((difference % (60 * 60)) / 60);
+  const seconds = difference % 60;
+
+  return `${days}d:${hours}h:${minutes}m:${seconds}s`;
+};
+
+export const LockedSaves = ({ save }: { save: any }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {
@@ -35,7 +47,7 @@ export const LockedSaves = () => {
         <FaLock className="mr-2 h-14 w-14 text-red-600 " />
       </div>
       <div className="w-full flex flex-col justify-center items-start gap-4">
-        <span className="font-semibold">Name Of Save</span>
+        <span className="font-semibold">{save.name}</span>
         <div className="w-full flex-row flex items-center justify-between">
           <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end">
             <ImCancelCircle className="mr-2 h-4 w-4 text-red-800 " />
@@ -44,7 +56,7 @@ export const LockedSaves = () => {
           <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end">
             <RiTimer2Fill className="mr-2 h-4 w-4 text-green-800 " />
             <span className="font-semibold text-black text-sm">
-              30d:16h:10m:34s
+              {formatTimestamp(Number(save.releaseTime))}
             </span>
           </div>
         </div>
@@ -65,7 +77,11 @@ export const LockedSaves = () => {
           Details
         </Button>
       </div>
-      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
+      <Details
+        onClose={handleCloseDetailsModal}
+        isOpen={detailsOpen}
+        data={save}
+      />
       <IncreaseTimeModal onClose={handleCloseTimeModal} isOpen={timeOpen} />
     </div>
   );
@@ -131,7 +147,11 @@ export const UnlockedSaves = () => {
         </Button> */}
       </div>
       <UnlockModal onClose={handleCloseUnlockModal} isOpen={unlockModalOpen} />
-      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
+      <Details
+        onClose={handleCloseDetailsModal}
+        isOpen={detailsOpen}
+        data={undefined}
+      />
     </div>
   );
 };
@@ -173,7 +193,11 @@ export const TimeEndedSaves = () => {
           Details
         </Button>
       </div>
-      <Details onClose={handleCloseDetailsModal} isOpen={detailsOpen} />
+      <Details
+        onClose={handleCloseDetailsModal}
+        isOpen={detailsOpen}
+        data={undefined}
+      />
     </div>
   );
 };

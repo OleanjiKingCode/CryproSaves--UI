@@ -17,15 +17,13 @@ import {
   TableRow,
 } from './ui/table';
 import { useState } from 'react';
-import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import { useAccount } from 'wagmi';
 import { useToast } from './ui/use-toast';
 
-export const Sections = () => {
+export const Sections = ({ Saves }: { Saves: any[] }) => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
-  const { Saves } = useGetSavesDetails();
   const { isConnected } = useAccount();
   const { toast } = useToast();
   const invoices = [
@@ -101,6 +99,18 @@ export const Sections = () => {
     setIsOpenPop(false);
   };
 
+  const isToday = (timestamp: number) => {
+    const timestampMs = timestamp * 1000;
+    const date = new Date(timestampMs);
+    const today = new Date();
+
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
   return (
     <>
       <Tabs
@@ -143,12 +153,12 @@ export const Sections = () => {
             </div>
             <ScrollArea className="w-full h-[30rem]">
               <>
-                {Saves.length <= 0 ? (
+                {Saves.length - 1 > 0 ? (
                   <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
-                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((item, i) => {
-                      if (i % 3 === 0) {
-                        return <LockedSaves key={i} />;
-                      } else if (i % 2 === 0) {
+                    {Saves.slice(1).map((item, i) => {
+                      if (item.locked === true) {
+                        return <LockedSaves key={i} save={item} />;
+                      } else if (isToday(Number(item.releaseTime))) {
                         return <TimeEndedSaves key={i} />;
                       } else {
                         return <UnlockedSaves key={i} />;

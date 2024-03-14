@@ -1,7 +1,6 @@
-import { useGetSavesDetails } from '@/hooks/useGetSavesDetails';
 import shortenAccount from '@/utils/shoternAddress';
 import { IoCopy } from 'react-icons/io5';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import { useToast } from '@/components/ui/use-toast';
 import copy from 'clipboard-copy';
 import { Navbar } from '@/components/Navbar';
@@ -11,14 +10,54 @@ import { Stats } from '@/components/Stats';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { LockupABIFull } from '@/constants/LockupData';
+import { formatEther } from 'viem';
 
 export default function Main() {
   const { address, isConnected } = useAccount();
   const { toast } = useToast();
   const [hasLockContract, setHasLockContract] = useState(false);
-  const { SavesNum, LockedSaves, UnlockedSaves, EthSaved } =
-    useGetSavesDetails();
+  const [constractDetails, setContractDetails] = useState<any>({});
+
+  const { data: AllData } = useReadContract({
+    abi: LockupABIFull,
+    address: '0xf80ec3ffC2DB71E482e9B4A4032536d44ffb7CBf',
+    functionName: 'getAllLockUps',
+  });
+
+  const fetchData = async () => {
+    try {
+      let allSaves: any = [];
+      let lockedCount = 0;
+      let unlockedCount = 0;
+      let totalEth = 0;
+      console.log(AllData, 'AllData');
+      if (Array.isArray(AllData)) {
+        allSaves = AllData;
+        AllData.slice(1).forEach((save: any) => {
+          console.log(save);
+          save.locked === true ? (lockedCount += 1) : (unlockedCount += 1);
+          totalEth += Number(formatEther(save.amount));
+        });
+      }
+      console.log(totalEth);
+      setContractDetails({
+        allSaves,
+        SavesNum: allSaves.length,
+        lockedCount,
+        unlockedCount,
+        totalEth,
+      });
+    } catch (err) {
+      console.log('Error fetching data: ', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [AllData /*hasLockContract*/]);
+
   const handleCopyToClipboard = async (textToCopy: string) => {
     try {
       await copy(textToCopy);
@@ -38,10 +77,10 @@ export default function Main() {
         <>
           <>
             <Stats
-              SavesNum={SavesNum ?? 0}
-              LockedSaves={LockedSaves ?? 0}
-              UnlockedSaves={UnlockedSaves ?? 0}
-              EthSaved={EthSaved ?? 0}
+              SavesNum={constractDetails.SavesNum ?? 0}
+              LockedSaves={constractDetails.lockedCount ?? 0}
+              UnlockedSaves={constractDetails.unlockedCount ?? 0}
+              EthSaved={constractDetails.totalEth ?? 0}
             />
 
             {isConnected && address && (
@@ -67,7 +106,7 @@ export default function Main() {
               </>
             )}
           </>
-          <Sections />
+          <Sections Saves={constractDetails.allSaves} />
         </>
       ) : (
         <div className="w-full flex flex-col min-h-[80vh] items-center justify-center px-20">
