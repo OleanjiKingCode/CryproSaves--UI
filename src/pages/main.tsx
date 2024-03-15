@@ -232,6 +232,7 @@ export default function Main() {
           <Sections
             Saves={constractDetails.allSaves}
             CA={userContractAddress ?? ''}
+            refetch={refetch}
           />
         </>
       ) : (
@@ -258,7 +259,6 @@ export default function Main() {
               <Button
                 className="w-[80%]  bg-pink-200 hover:bg-pink-500 rounded-md shadow-md font-semibold text-black"
                 onClick={() => getContractDetails()}
-                //disabled={!isConnected || userContractAddress !== undefined}
               >
                 {isLoading ? (
                   <RiLoader4Fill className="animate-spin w-6 h-6" />

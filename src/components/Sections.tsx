@@ -20,7 +20,15 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useToast } from './ui/use-toast';
 
-export const Sections = ({ Saves, CA }: { Saves: any[]; CA: string }) => {
+export const Sections = ({
+  Saves,
+  CA,
+  refetch,
+}: {
+  Saves: any[];
+  CA: string;
+  refetch: () => void;
+}) => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
@@ -159,7 +167,7 @@ export const Sections = ({ Saves, CA }: { Saves: any[]; CA: string }) => {
                       if (item.locked === true) {
                         return <LockedSaves key={i} save={item} CA={CA} />;
                       } else if (isToday(Number(item.releaseTime))) {
-                        return <TimeEndedSaves key={i} save={item}/>;
+                        return <TimeEndedSaves key={i} save={item} />;
                       } else {
                         return <UnlockedSaves key={i} save={item} CA={CA} />;
                       }
@@ -235,7 +243,12 @@ export const Sections = ({ Saves, CA }: { Saves: any[]; CA: string }) => {
         </TabsContent>
       </Tabs>
       <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} CA={CA} />
-      <Create isOpen={isOpen} onClose={handleCloseDialog} CA={CA} />
+      <Create
+        isOpen={isOpen}
+        onClose={handleCloseDialog}
+        CA={CA}
+        refetch={refetch}
+      />
     </>
   );
 };

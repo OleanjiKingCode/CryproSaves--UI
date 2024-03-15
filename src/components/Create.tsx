@@ -23,9 +23,11 @@ export const Create = ({
   isOpen,
   onClose,
   CA,
+  refetch,
 }: {
   CA: string;
   isOpen: boolean;
+  refetch: () => void;
   onClose: () => void;
 }) => {
   const {
@@ -53,6 +55,7 @@ export const Create = ({
             description: 'Successfully created a new save',
             style: { backgroundColor: 'green', color: 'white' },
           });
+          refetch();
           setisLoading(false);
           onClose();
         })

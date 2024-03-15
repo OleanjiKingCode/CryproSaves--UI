@@ -31,7 +31,6 @@ import {
 import Link from 'next/link';
 
 const Setup = () => {
-
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -248,7 +247,12 @@ const Setup = () => {
       <Navbar />
       <section className="w-full px-10 md:px-16 py-4 ">
         <div className=" w-full flex  px-10 md:px-16 py-6 item-center flex-col gap-3  bg-white rounded-lg">
-          <h2 className="font-semibold w-full text-lg">Contract Setup</h2>
+          <h2 className="font-semibold w-full text-lg">
+            Contract Setup{' '}
+            <span className="font-italic ml-5">
+              NOTE: Ticking all boxes makes the contract more functional{' '}
+            </span>
+          </h2>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
