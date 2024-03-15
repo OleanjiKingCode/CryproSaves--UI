@@ -40,6 +40,16 @@ export const Details = ({
           </div>
           <div className="flex flex-row w-[80%] justify-between items-center gap-4">
             <Label htmlFor="name" className="">
+              Type
+            </Label>
+            <div className="py-1 px-2 bg-orange-400 flex items-center w-[50%] rounded-md  col-span-3">
+              <span className="font-semibold text-black text-sm">
+                {data.lockType}
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-row w-[80%] justify-between items-center gap-4">
+            <Label htmlFor="name" className="">
               Amount Locked
             </Label>
             <div className="py-1 px-2 bg-green-200 flex items-center w-[50%] rounded-md   col-span-3">

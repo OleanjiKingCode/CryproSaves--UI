@@ -32,14 +32,14 @@ export const LockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 p-3 md:p-5 rounded-lg w-[300px] text-black">
+    <div className="bg-gray-50 flex flex-col items-center shadow-md justify-center gap-3 px-3 pt-3 md:pt-5 md:px-5 rounded-lg w-[300px] text-black">
       <div className="bg-red-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
         <FaLock className="mr-2 h-14 w-14 text-red-600 " />
       </div>
       <div className="w-full flex flex-col justify-center items-start gap-4">
         <div className="w-full flex-row flex items-center justify-between">
           <span className="font-semibold">{save.name}</span>
-          <span className="font-semibold">{save.type}</span>
+          <span className="font-semibold">{save.lockType}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
           <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end cursor-pointer">
@@ -108,14 +108,14 @@ export const UnlockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
+    <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md px-3 pt-3 md:pt-5 md:px-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
         <FaUnlock className="mr-2 h-14 w-14 text-green-600 " />
       </div>
       <div className="w-full flex flex-col justify-center items-start gap-2">
         <div className="w-full flex-row flex items-center justify-between">
           <span className="font-semibold">{save.name}</span>
-          <span className="font-semibold">{save.type}</span>
+          <span className="font-semibold">{save.lockType}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
           <div className="py-1 px-2 bg-red-100 flex items-center rounded-md justify-end self-end cursor-pointer">
@@ -159,7 +159,7 @@ export const UnlockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   );
 };
 
-export const TimeEndedSaves = ({ save}: { save: any}) => {
+export const TimeEndedSaves = ({ save }: { save: any }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {
@@ -170,14 +170,14 @@ export const TimeEndedSaves = ({ save}: { save: any}) => {
     setDetailsOpen(false);
   };
   return (
-    <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md p-5 rounded-lg w-[300px]">
+    <div className="bg-gray-50 flex flex-col items-center justify-center gap-3 shadow-md px-3 pt-3 md:pt-5 md:px-5 rounded-lg w-[300px]">
       <div className="bg-green-200 rounded-md items-center w-full flex justify-center shadow-md py-10 ">
         <FaLockOpen className="mr-2 h-14 w-14 text-green-600" />
       </div>
       <div className="w-full flex flex-col justify-center items-start gap-4">
         <div className="w-full flex-row flex items-center justify-between">
           <span className="font-semibold">{save.name}</span>
-          <span className="font-semibold">{save.type}</span>
+          <span className="font-semibold">{save.lockType}</span>
         </div>
         <div className="w-full flex-row flex items-center justify-between">
           <div className="py-1 px-2 bg-green-100 flex items-center rounded-md justify-end self-end cursor-pointer">
