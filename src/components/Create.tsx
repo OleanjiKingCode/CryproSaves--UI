@@ -48,7 +48,7 @@ export const Create = ({
         args: [info.months, info.name, info.type],
         value: parseEther(info.amount),
       })
-        .then((receipt) => {
+        .then(() => {
           toast({
             description: 'Successfully created a new save',
             style: { backgroundColor: 'green', color: 'white' },

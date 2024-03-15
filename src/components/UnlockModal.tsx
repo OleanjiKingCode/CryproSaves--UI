@@ -16,7 +16,7 @@ import {
 import { formatTimestamp } from '@/utils/formatTimeStamp';
 import { formatEther } from 'viem';
 import { useState } from 'react';
-import { useWriteContract, useAccount } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 import { useToast } from './ui/use-toast';
 import { LockupABIFull } from '@/constants/LockupData';
 
@@ -44,7 +44,7 @@ export const UnlockModal = ({
         functionName: 'unlockEther',
         args: [data.lockId],
       })
-        .then((receipt) => {
+        .then(() => {
           toast({
             description: 'Successfully unlock your save',
             style: { backgroundColor: 'green', color: 'white' },

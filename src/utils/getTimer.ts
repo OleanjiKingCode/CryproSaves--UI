@@ -11,10 +11,10 @@ interface TimeLeftType {
 export const calculateTimeLeft = (
   emergencyTime: number,
   finishedStatus: boolean
-): TimeLeftType => {
+) => {
   const currentTime = Math.floor(new Date().getTime() / 1000);
   const difference = emergencyTime - currentTime;
-  let timeLeft = {};
+  let timeLeft: TimeLeftType = {};
 
   if (difference > 0) {
     const numDaysLeft = Math.floor(difference / 86400);
@@ -40,7 +40,7 @@ export const calculateTimeLeft = (
     };
     finishedStatus = true;
   }
-  return timeLeft;
+  return { timeLeft, finishedStatus };
 };
 export const GetTimer = () => {
   let finishedStatus = false;
@@ -51,7 +51,8 @@ export const GetTimer = () => {
   });
 
   return {
-    result: calculateTimeLeft(Number(emergencyTime), finishedStatus),
-    status: finishedStatus,
+    result: calculateTimeLeft(Number(emergencyTime), finishedStatus).timeLeft,
+    status: calculateTimeLeft(Number(emergencyTime), finishedStatus)
+      .finishedStatus,
   };
 };

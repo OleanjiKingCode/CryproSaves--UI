@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { formatEther } from 'viem';
 import { useToast } from './ui/use-toast';
 import { LockupABIFull } from '@/constants/LockupData';
-import { useAccount, useWriteContract } from 'wagmi';
+import {  useWriteContract } from 'wagmi';
 import { useState } from 'react';
 import { formatTimestamp } from '@/utils/formatTimeStamp';
 import { Toaster } from './ui/toaster';
@@ -48,7 +48,7 @@ export const IncreaseTimeModal = ({
           functionName: 'extendLockTime',
           args: [addtionalMonths, data.lockId],
         })
-          .then((receipt) => {
+          .then(() => {
             toast({
               description: 'Successfully extended your save time',
               style: { backgroundColor: 'green', color: 'white' },

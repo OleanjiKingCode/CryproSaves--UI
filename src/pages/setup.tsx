@@ -31,7 +31,7 @@ import {
 import Link from 'next/link';
 
 const Setup = () => {
-  
+
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -175,7 +175,7 @@ const Setup = () => {
     }
   };
 
-  const { writeContractAsync, error } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const { data: addressesData } = useReadContract({
     abi: ConnectorABIPolygon,
@@ -194,7 +194,7 @@ const Setup = () => {
           functionName: 'updateAddress',
           args: [data.address],
         })
-          .then((receipt) => {
+          .then(() => {
             toast({
               description:
                 'Successfully linked your contract with your adddress',
@@ -217,7 +217,7 @@ const Setup = () => {
           functionName: 'addUser',
           args: [data.address],
         })
-          .then((receipt) => {
+          .then(() => {
             toast({
               description:
                 'Successfully linked your contract with your adddress',

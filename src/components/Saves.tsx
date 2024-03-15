@@ -159,7 +159,7 @@ export const UnlockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   );
 };
 
-export const TimeEndedSaves = ({ save, CA }: { save: any; CA: string }) => {
+export const TimeEndedSaves = ({ save}: { save: any}) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {

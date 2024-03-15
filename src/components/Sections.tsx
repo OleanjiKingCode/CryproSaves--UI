@@ -159,7 +159,7 @@ export const Sections = ({ Saves, CA }: { Saves: any[]; CA: string }) => {
                       if (item.locked === true) {
                         return <LockedSaves key={i} save={item} CA={CA} />;
                       } else if (isToday(Number(item.releaseTime))) {
-                        return <TimeEndedSaves key={i} save={item} CA={CA} />;
+                        return <TimeEndedSaves key={i} save={item}/>;
                       } else {
                         return <UnlockedSaves key={i} save={item} CA={CA} />;
                       }

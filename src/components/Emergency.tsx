@@ -9,7 +9,7 @@ import { FaLock } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { RiLoader4Fill } from 'react-icons/ri';
-import { useWriteContract, useAccount } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 import { useToast } from './ui/use-toast';
 import { LockupABIFull } from '@/constants/LockupData';
 
@@ -35,7 +35,7 @@ export const Emergency = ({
         address: CA as `0x${string}`,
         functionName: 'emergencyWithdraw',
       })
-        .then((receipt) => {
+        .then(() => {
           toast({
             description: 'Successfully withdrawn your locked MATIC',
             style: { backgroundColor: 'green', color: 'white' },
