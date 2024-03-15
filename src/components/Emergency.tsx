@@ -7,19 +7,54 @@ import {
 import { GetTimer } from '@/utils/getTimer';
 import { FaLock } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { RiLoader4Fill } from 'react-icons/ri';
+import { useWriteContract, useAccount } from 'wagmi';
+import { useToast } from './ui/use-toast';
+import { LockupABIFull } from '@/constants/LockupData';
 
 export const Emergency = ({
   isOpen,
   onClose,
+  CA,
 }: {
+  CA: string;
   isOpen: boolean;
   onClose: () => void;
 }) => {
   const { result, status } = GetTimer();
+  const { writeContractAsync } = useWriteContract();
+  const [isLoading, setisLoading] = useState(false);
+  const { toast } = useToast();
 
   const emergencyWithdrawl = () => {
-    //withdraw from the contract useWrteCOntract
-    onClose();
+    try {
+      setisLoading(true);
+      writeContractAsync({
+        abi: LockupABIFull,
+        address: CA as `0x${string}`,
+        functionName: 'emergencyWithdraw',
+      })
+        .then((receipt) => {
+          toast({
+            description: 'Successfully withdrawn your locked MATIC',
+            style: { backgroundColor: 'green', color: 'white' },
+          });
+          setisLoading(false);
+          onClose();
+        })
+        .catch((error) => {
+          console.error(`Error sending transaction: ${error}`);
+          toast({
+            description: 'Error sending transaction',
+            style: { backgroundColor: 'red', color: 'white' },
+          });
+          setisLoading(false);
+        });
+    } catch (error) {
+      console.log('error', error);
+      setisLoading(false);
+    }
   };
 
   return (
@@ -37,16 +72,17 @@ export const Emergency = ({
           </div>
         </div>
         {status && (
-          <DialogFooter
-            className="flex flex-row items-center "
-            onClick={emergencyWithdrawl}
-          >
+          <DialogFooter className="flex flex-row items-center ">
             <Button
               type="submit"
               className="bg-green-400 font-medium px-7"
-              disabled
+              onClick={emergencyWithdrawl}
             >
-              Withdraw
+              {isLoading ? (
+                <RiLoader4Fill className="animate-spin w-6 h-6" />
+              ) : (
+                'Withdraw'
+              )}
             </Button>
           </DialogFooter>
         )}

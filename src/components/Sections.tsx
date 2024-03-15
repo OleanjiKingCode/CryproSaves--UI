@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useToast } from './ui/use-toast';
 
-export const Sections = ({ Saves }: { Saves: any[] }) => {
+export const Sections = ({ Saves, CA }: { Saves: any[]; CA: string }) => {
   const [active, setActive] = useState('saves');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPop, setIsOpenPop] = useState(false);
@@ -115,7 +115,7 @@ export const Sections = ({ Saves }: { Saves: any[] }) => {
     <>
       <Tabs
         defaultValue="saves"
-        className="w-full px-10 md:px-16 py-10"
+        className="w-full px-10 md:px-16 pt-3 pb-10"
         onValueChange={(val) => setActive(val)}
       >
         <TabsList className="grid w-full grid-cols-2 gap-2 bg-gray-100">
@@ -151,17 +151,17 @@ export const Sections = ({ Saves }: { Saves: any[] }) => {
                 New Save
               </Button>
             </div>
-            <ScrollArea className="w-full h-[30rem]">
+            <ScrollArea className="w-full h-[25rem]">
               <>
                 {Saves.length - 1 > 0 ? (
                   <div className="w-full flex flex-row flex-wrap gap-4 md:gap-10 items-center justify-evenly py-5">
                     {Saves.slice(1).map((item, i) => {
                       if (item.locked === true) {
-                        return <LockedSaves key={i} save={item} />;
+                        return <LockedSaves key={i} save={item} CA={CA} />;
                       } else if (isToday(Number(item.releaseTime))) {
-                        return <TimeEndedSaves key={i} save={item} />;
+                        return <TimeEndedSaves key={i} save={item} CA={CA} />;
                       } else {
-                        return <UnlockedSaves key={i} save={item} />;
+                        return <UnlockedSaves key={i} save={item} CA={CA} />;
                       }
                     })}
                   </div>
@@ -234,8 +234,8 @@ export const Sections = ({ Saves }: { Saves: any[] }) => {
           </div>
         </TabsContent>
       </Tabs>
-      <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} />
-      <Create isOpen={isOpen} onClose={handleCloseDialog} />
+      <Emergency isOpen={isOpenPop} onClose={handleCloseDialogPop} CA={CA} />
+      <Create isOpen={isOpen} onClose={handleCloseDialog} CA={CA} />
     </>
   );
 };

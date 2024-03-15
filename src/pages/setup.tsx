@@ -3,7 +3,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Navbar } from '@/components/Navbar';
-import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
+import {
+  useAccount,
+  useReadContract,
+  useSwitchChain,
+  useWriteContract,
+} from 'wagmi';
 import { useState } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
 import { ContractFactory } from 'ethers';
@@ -23,8 +28,10 @@ import {
   ConnectorAddress,
   ConnectorAddressPolygon,
 } from '@/constants/LockupData';
+import Link from 'next/link';
 
 const Setup = () => {
+  
   let InitialValues: ContractDetails = {
     name: '',
     address: '',
@@ -45,6 +52,7 @@ const Setup = () => {
   const [gottenContractDetails, setGottenContractDetails] = useState(false);
   const [deployedContract, setDeployedContract] = useState(false);
   const [allowWithdraw, setAllowWithdraw] = useState(false);
+  const [doneSetup, setDoneSetup] = useState(false);
   const {
     register,
     handleSubmit,
@@ -85,7 +93,6 @@ const Setup = () => {
         includeExtendedEvent: info.extendTime,
         includeEmergencyWithdraw: info.withdraw,
       });
-      console.log(contract);
       const config: AxiosRequestConfig = {
         params: {
           contract: contract,
@@ -168,20 +175,72 @@ const Setup = () => {
     }
   };
 
-  const { writeContract } = useWriteContract();
+  const { writeContractAsync, error } = useWriteContract();
+
+  const { data: addressesData } = useReadContract({
+    abi: ConnectorABIPolygon,
+    address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
+    functionName: 'getAddresses',
+    args: [address],
+  });
 
   const connectContract = () => {
-    writeContract({
-      abi: ConnectorABIPolygon,
-      address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
-      functionName: 'addUser',
-      args: [data.address],
-    });
-
-    toast({
-      description: 'Successfully linked your contract with your adddress',
-      style: { backgroundColor: 'green', color: 'white' },
-    });
+    try {
+      setisLoading(true);
+      if (Array.isArray(addressesData) && addressesData.length > 0) {
+        writeContractAsync({
+          abi: ConnectorABIPolygon,
+          address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
+          functionName: 'updateAddress',
+          args: [data.address],
+        })
+          .then((receipt) => {
+            toast({
+              description:
+                'Successfully linked your contract with your adddress',
+              style: { backgroundColor: 'green', color: 'white' },
+            });
+            setisLoading(false);
+          })
+          .catch((error) => {
+            console.error(`Error sending transaction: ${error}`);
+            toast({
+              description: 'Error sending transaction',
+              style: { backgroundColor: 'red', color: 'white' },
+            });
+            setisLoading(false);
+          });
+      } else {
+        writeContractAsync({
+          abi: ConnectorABIPolygon,
+          address: chainId === 137 ? ConnectorAddressPolygon : ConnectorAddress,
+          functionName: 'addUser',
+          args: [data.address],
+        })
+          .then((receipt) => {
+            toast({
+              description:
+                'Successfully linked your contract with your adddress',
+              style: { backgroundColor: 'green', color: 'white' },
+            });
+            setDoneSetup(true);
+            setisLoading(false);
+          })
+          .catch((error) => {
+            console.error(`Error sending transaction: ${error}`);
+            toast({
+              description: 'Error sending transaction',
+              style: { backgroundColor: 'red', color: 'white' },
+            });
+            setisLoading(false);
+          });
+      }
+    } catch (error) {
+      toast({
+        description: 'An error occurred, try again',
+        style: { backgroundColor: 'red', color: 'white' },
+      });
+    }
   };
 
   return (
@@ -380,6 +439,16 @@ const Setup = () => {
                 )}
               </Button>
             </div>
+            {doneSetup && (
+              <Link
+                href="/main"
+                className="w-full flex flex-row gap-5 items-center justify-center flex-wrap "
+              >
+                <Button className="w-full bg-pink-200 hover:bg-pink-500 rounded-md shadow-md font-semibold text-black">
+                  Go To Login
+                </Button>
+              </Link>
+            )}
           </form>
         </div>
       </section>

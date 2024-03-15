@@ -9,22 +9,63 @@ import { Button } from '@/components/ui/button';
 import { FaLockOpen } from 'react-icons/fa';
 import { ImCancelCircle } from 'react-icons/im';
 import {
+  RiLoader4Fill,
   RiMoneyDollarCircleFill,
   RiTimer2Fill,
-  RiTimerFlashFill,
 } from 'react-icons/ri';
 import { formatTimestamp } from '@/utils/formatTimeStamp';
 import { formatEther } from 'viem';
+import { useState } from 'react';
+import { useWriteContract, useAccount } from 'wagmi';
+import { useToast } from './ui/use-toast';
+import { LockupABIFull } from '@/constants/LockupData';
 
 export const UnlockModal = ({
   data,
   isOpen,
   onClose,
+  CA,
 }: {
+  CA: string;
   data: any;
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const { writeContractAsync } = useWriteContract();
+  const [isLoading, setisLoading] = useState(false);
+  const { toast } = useToast();
+
+  const unlockSave = () => {
+    try {
+      setisLoading(true);
+      writeContractAsync({
+        abi: LockupABIFull,
+        address: CA as `0x${string}`,
+        functionName: 'unlockEther',
+        args: [data.lockId],
+      })
+        .then((receipt) => {
+          toast({
+            description: 'Successfully unlock your save',
+            style: { backgroundColor: 'green', color: 'white' },
+          });
+          setisLoading(false);
+          onClose();
+        })
+        .catch((error) => {
+          console.error(`Error sending transaction: ${error}`);
+          toast({
+            description: 'Error sending transaction',
+            style: { backgroundColor: 'red', color: 'white' },
+          });
+          setisLoading(false);
+        });
+    } catch (error) {
+      console.log('error', error);
+      setisLoading(false);
+    }
+  };
+
   return (
     <Dialog open={isOpen} modal onOpenChange={onClose}>
       <DialogContent className="text-black bg-white outline-none">
@@ -50,7 +91,7 @@ export const UnlockModal = ({
                 <div className="py-1 px-2 bg-green-200 flex items-center rounded-md  w-[50%]  ">
                   <RiMoneyDollarCircleFill className="mr-2 h-4 w-4 text-green-800 " />
                   <span className="font-semibold text-black text-sm">
-                  {Number(formatEther(data.amount))}
+                    {Number(formatEther(data.amount))}
                   </span>
                 </div>
               </div>
@@ -76,7 +117,7 @@ export const UnlockModal = ({
           </span>
         </div>
         <DialogFooter className="flex flex-row items-center justify-between md:justify-end gap-3 w-full ">
-          <Button
+          {/* <Button
             className="bg-blue-200 rounded-md shadow-md"
             onClick={() => {
               //open increase time modal
@@ -85,13 +126,17 @@ export const UnlockModal = ({
           >
             <RiTimerFlashFill className="mr-2 h-4 w-4 text-blue-500 text-sm" />
             Increase Time
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             className="bg-green-400 font-medium px-7"
-            disabled
+            onClick={unlockSave}
           >
-            Unlock
+            {isLoading ? (
+              <RiLoader4Fill className="animate-spin w-6 h-6" />
+            ) : (
+              'Unlock'
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

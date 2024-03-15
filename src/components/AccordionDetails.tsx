@@ -36,7 +36,7 @@ export const AccordionDetails = ({
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem
           value="item-1"
-          className="w-full rounded-xl px-10 border-[1px] border-slate-400"
+          className="w-full rounded-xl py-3 px-10 border-[1px] border-slate-400"
         >
           <AccordionTrigger className="w-full ">CONTRACT CODE</AccordionTrigger>
           <AccordionContent className="bg-gray-200 rounded-xl p-3 ">
@@ -53,7 +53,7 @@ export const AccordionDetails = ({
           <>
             <AccordionItem
               value="item-2"
-              className="w-full rounded-xl px-10 border-[1px] border-slate-400"
+              className="w-full rounded-xl py-3 px-10 border-[1px] my-5 border-slate-400"
             >
               <AccordionTrigger className="w-full">
                 CONTRACT ADDRESS
@@ -64,9 +64,9 @@ export const AccordionDetails = ({
             </AccordionItem>
             <AccordionItem
               value="item-3"
-              className="w-full rounded-xl px-10 border-[1px] border-slate-400"
+              className="w-full rounded-xl px-10 py-3 border-[1px] border-slate-400"
             >
-              <AccordionTrigger className="w-full">
+              <AccordionTrigger className="w-full font-black text-green-500">
                 VERIFY CONTRACT INSTRUCTIONS
               </AccordionTrigger>
               <AccordionContent className="bg-gray-200 rounded-xl p-3">

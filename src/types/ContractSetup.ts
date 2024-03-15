@@ -16,3 +16,10 @@ export interface IFormInput {
   extendTime: boolean;
   emergencyTime?: number;
 }
+
+export interface IFormCreateSave {
+  name: string;
+  amount: string;
+  type: string;
+  months: number;
+}

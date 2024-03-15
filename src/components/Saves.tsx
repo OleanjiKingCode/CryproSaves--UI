@@ -8,8 +8,9 @@ import { Details } from './Details';
 import { UnlockModal } from './UnlockModal';
 import { IncreaseTimeModal } from './IncreaseTime';
 import { formatTimestamp } from '@/utils/formatTimeStamp';
+import { Toaster } from './ui/toaster';
 
-export const LockedSaves = ({ save }: { save: any }) => {
+export const LockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {
@@ -69,6 +70,7 @@ export const LockedSaves = ({ save }: { save: any }) => {
           Details
         </Button>
       </div>
+      <Toaster />
       <Details
         onClose={handleCloseDetailsModal}
         isOpen={detailsOpen}
@@ -78,12 +80,13 @@ export const LockedSaves = ({ save }: { save: any }) => {
         onClose={handleCloseTimeModal}
         isOpen={timeOpen}
         data={save}
+        CA={CA}
       />
     </div>
   );
 };
 
-export const UnlockedSaves = ({ save }: { save: any }) => {
+export const UnlockedSaves = ({ save, CA }: { save: any; CA: string }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {
@@ -145,6 +148,7 @@ export const UnlockedSaves = ({ save }: { save: any }) => {
         onClose={handleCloseUnlockModal}
         isOpen={unlockModalOpen}
         data={save}
+        CA={CA}
       />
       <Details
         onClose={handleCloseDetailsModal}
@@ -155,7 +159,7 @@ export const UnlockedSaves = ({ save }: { save: any }) => {
   );
 };
 
-export const TimeEndedSaves = ({ save }: { save: any }) => {
+export const TimeEndedSaves = ({ save, CA }: { save: any; CA: string }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   const handleDetailsModal = () => {
