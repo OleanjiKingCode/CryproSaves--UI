@@ -3,7 +3,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { WagmiProvider } from 'wagmi';
-
 import '../styles/globals.css';
 import { config } from '@/utils/wagmiConfig';
 
