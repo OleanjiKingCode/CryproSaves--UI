@@ -1,3 +1,5 @@
+![image](https://github.com/OleanjiKingCode/CryproSaves--UI/assets/75235148/eea0f2f7-7e3e-48c4-a90f-c6ac980d4663)
+
 # CryptoSaves Frontend Implementation
 
 ## Overview
